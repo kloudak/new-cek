@@ -1,0 +1,15 @@
+{% extends 'web/base.html' %}
+
+{% block title %}ČEK{% endblock %}
+
+{% block content %}
+<h1>ČEK</h1>
+<ul>
+    <li><a href="{% url 'author_detail' id=1 %}">Autor s id=1</a></li>
+    <li><a href="{% url 'book_detail' id=1 %}">Kniha s id=1</a></li>
+    <li><a href="{% url 'poem_text' id=1 %}">Báseň s id=1 - text</a></li>
+    <li><a href="{% url 'poem_in_book' id=1 %}">Báseň s id=1 - v knize</a></li>
+    <li><a href="{% url 'poem_versology' id=1 %}">Báseň s id=1 - versologie</a></li>
+    <li><a href="{% url 'poem_AI' id=1 %}">Báseň s id=1 - AI</a></li>
+</ul>
+{% endblock %}

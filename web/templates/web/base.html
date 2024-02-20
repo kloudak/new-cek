@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% block title %}My Site{% endblock %}</title>
+</head>
+<body>
+    <header>
+        {% include 'web/navigation.html' %}
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer>
+        <a href="{% url 'about_project' %}">O projektu</a><br>
+        <a href="{% url 'personal_data' %}">Osobní údaje</a>
+    </footer>
+</body>
+</html>
