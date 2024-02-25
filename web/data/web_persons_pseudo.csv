@@ -1,5 +1,6 @@
 id,firstname,surname,date_of_birth,date_of_death,place_of_birth,place_of_death,place_of_birth_original_name,place_of_death_original_name,remark,sex,pseudonym_for_id
 7,Ladislav,Andělíček,,,,,,,Viz ř. 362,M,361
+8,,Anna S.,,,,,,,Viz ř. 531,M,530
 9,E.,Antonowicz,,,,,,,Viz ř. 23,M,22
 12,Ladislav,Arietto,,,,,,,Viz ř. 14,M,13
 27,V. Ch.,Banjom,,,,,,,viz ř. 21,M,20
@@ -89,6 +90,7 @@ id,firstname,surname,date_of_birth,date_of_death,place_of_birth,place_of_death,p
 735,,Otomar V.,,,,,,,,M,435
 736,Josef Jiří,Polabský,,,,,,,,M,473
 737,Jaroslav Sv.,Rypáček,,,,,,,,M,522
+738,Anna,Sázavská,,,,,,,,F,530
 739,Miloslav,Sojka,,,,,,,,M,571
 740,Rudolf,Strupavský,,,,,,,,M,596
 741,Antonín,Sychrovský,,,,,,,,M,611
