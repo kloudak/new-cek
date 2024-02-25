@@ -35,3 +35,25 @@ class Person(models.Model):
 
     def __str__(self):
         return f"{self.firstname} {self.surname}"
+
+
+class Book(models.Model):
+    title = models.CharField(max_length=255)
+
+    authors = models.ManyToManyField(Person, through='Authorship', related_name='books')
+
+    def __str__(self):
+        return self.title
+    
+
+class Authorship(models.Model):
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="authorships")
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="authorships")
+    author_order = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ['author_order']
+        unique_together = (('person', 'book', 'author_order'),)  # Ensures uniqueness
+
+    def __str__(self):
+        return f"{self.person} - {self.book}"
