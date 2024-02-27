@@ -38,7 +38,21 @@ class Person(models.Model):
 
 
 class Book(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.TextField(null=True)  # 'titul'
+    subtitle = models.TextField(blank=True, null=True)  # 'podtitul'
+    place_of_publication = models.CharField(max_length=255, blank=True, null=True)  # 'misto'
+    publisher = models.TextField(blank=True, null=True)  # 'vydavatel'
+    year = models.IntegerField(blank=True, null=True)  # 'rok' as YYYY
+    edition = models.CharField(max_length=255, blank=True, null=True)  # 'vydani'
+    pages = models.CharField(max_length=255, blank=True, null=True)  # 'stran'
+    dedication = models.TextField(blank=True, null=True)  # 'venovani'
+    motto = models.TextField(blank=True, null=True)  # 'moto'
+    author_of_motto = models.TextField(blank=True, null=True)  # 'autormota'
+    format = models.CharField(max_length=255, blank=True, null=True)  # 'format'
+    description = models.TextField(blank=True, null=True)  # 'popis'
+    source_signature = models.CharField(max_length=255, blank=True, null=True)  # 'zdroj-signatura'
+    editorial_note = models.TextField(blank=True, null=True)  # 'edicnipoznamka'
+    author_xml = models.TextField(blank=True, null=True)  # 'autor' in the source XML
 
     authors = models.ManyToManyField(Person, through='Authorship', related_name='books')
 
