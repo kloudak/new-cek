@@ -43,7 +43,7 @@ class Book(models.Model):
     place_of_publication = models.CharField(max_length=255, blank=True, null=True)  # 'misto'
     publisher = models.TextField(blank=True, null=True)  # 'vydavatel'
     year = models.IntegerField(blank=True, null=True)  # 'rok' as YYYY
-    edition = models.CharField(max_length=255, blank=True, null=True)  # 'vydani'
+    edition = models.TextField(blank=True, null=True)  # 'vydani'
     pages = models.CharField(max_length=255, blank=True, null=True)  # 'stran'
     dedication = models.TextField(blank=True, null=True)  # 'venovani'
     motto = models.TextField(blank=True, null=True)  # 'moto'
