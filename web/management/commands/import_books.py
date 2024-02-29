@@ -17,7 +17,6 @@ class Command(BaseCommand):
             # Use a transaction to ensure data integrity
             with transaction.atomic():
                 for row in reader:
-                    print(row)
                     Book.objects.create(
                         id=row['id'] if 'id' in row and row['id'] else None,
                         title=row['title'] if 'title' in row and row['title'] else None,
@@ -37,4 +36,4 @@ class Command(BaseCommand):
                         year=row['year'] if 'year' in row and row['year'] else None
                     )
 
-        self.stdout.write(self.style.SUCCESS('Successfully imported persons'))
+        self.stdout.write(self.style.SUCCESS('Successfully imported books'))
