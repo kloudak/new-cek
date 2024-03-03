@@ -7,3 +7,8 @@ def is_active(context, *url_names):
     if context['request'].resolver_match.url_name in url_names:
         return "active"
     return ""
+
+@register.filter(name='replace_spaces')
+def replace_spaces(value):
+    """Replace all spaces in the string with &nbsp;."""
+    return value.replace(' ', '&nbsp;')

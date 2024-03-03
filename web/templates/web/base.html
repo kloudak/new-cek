@@ -19,10 +19,11 @@
         {% block content %}{% endblock %}
     </main>
     
-    <footer class="container mt-4">
-        <a href="{% url 'about_project' %}">O projektu</a><br>
-        <a href="{% url 'personal_data' %}">Osobní údaje</a>
+    <footer class="container mt-4 py-3 border-top">
+        <a href="{% url 'about_project' %}" class="text-decoration-none">O projektu</a> |
+        <a href="{% url 'personal_data' %}" class="text-decoration-none">Osobní údaje</a>
     </footer>
+    
     
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>

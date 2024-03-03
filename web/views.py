@@ -20,8 +20,9 @@ def author_detail(request, id):
 
 # BOOKS
 def book_list(request):
+    books = Book.objects.prefetch_related('authorships__person').all().order_by('title', 'year')
     return render(request, "web/book_list.html", {
-        
+        'books' : books
     })
 
 def book_detail(request, id):

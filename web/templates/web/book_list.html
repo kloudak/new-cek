@@ -1,10 +1,56 @@
 {% extends 'web/base.html' %}
+{% load web_tags %}
 
 {% block title %}Seznam knih{% endblock %}
 
 {% block content %}
 <h2>Knihy</h2>
-<p>
-    <i>TBA</i>
-</p>
+<table id="booksTable" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>Název</th>
+            <th>Autor</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for book in books %}
+        <tr>
+            <td>{{ book.id }}</td>
+            <td>{{ book.title|safe }}</td>
+            <td>
+                {% if book.authorships.all|length > 4%}
+                    <i>{{ book.authorships.all|length }} autorů</i>
+                {% elif book.authorships.all|length > 2%}
+                    <i>{{ book.authorships.all|length }} autoři</i>
+                {% else%}
+                    {% for as in book.authorships.all %}
+                        {% if forloop.counter > 1 %};{% endif %}
+                        {{ as.person.surname }}&nbsp;{{ as.person.firstname|replace_spaces|safe }}
+                    {% empty %}
+                        <i>neznámý autor</i>
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td><a href="{% url 'book_detail' id=book.id %}">edit</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready( function () {
+    $('#booksTable').DataTable({
+        order : [[1, 'asc'], [2, 'asc']],
+        pageLength: 25,
+        columnDefs: [
+            { "orderable": false, "targets": -1 },
+        ],
+        language: dataTableCS,
+    });
+} );
+</script>
 {% endblock %}
