@@ -1,9 +1,22 @@
-<nav>
-    <ul>
-        <li><a href="{% url 'index' %}">Domů</a></li>
-        <li><a href="{% url 'author_list' %}">Autoři</a></li>
-        <li><a href="{% url 'book_list' %}">Knihy</a></li>
-        <li><a href="{% url 'for_schools' %}">Pro školy</a></li>
-
-    </ul>
+{% load web_tags %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">ČEK</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% is_active 'index' %}">
+                    <a class="nav-link" href="{% url 'index' %}">Domů</a>
+                </li>
+                <li class="nav-item {% is_active 'author_list' 'author_detail' %}"">
+                    <a class="nav-link" href="{% url 'author_list' %}">Autoři</a>
+                </li>
+                <li class="nav-item {% is_active 'book_list' %}">
+                    <a class="nav-link" href="{% url 'book_list' %}">Knihy</a>
+                </li>
+                <li class="nav-item {% is_active 'for_schools' %}">
+                    <a class="nav-link" href="{% url 'for_schools' %}">Pro školy</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
