@@ -1,0 +1,21 @@
+/* Custom styles for DataTable */
+.dataTables_wrapper .dataTable {
+    border-collapse: collapse; /* Ensures borders are handled in the most compact way */
+}
+
+.dataTables_wrapper .dataTable th,
+.dataTables_wrapper .dataTable td {
+    border-right: 0px !important; /* Removes vertical borders */
+    padding: 5px !important; /* Reduces padding to make it more compact */
+}
+
+/* Additional styling to make the table more compact */
+.dataTables_wrapper .dataTable thead th {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.dataTables_wrapper .dataTable tbody td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}

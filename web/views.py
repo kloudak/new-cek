@@ -1,13 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.db.models import Count
+from .models import Person, Book, Authorship
 
 def index(request):
     return render(request, "web/index.html")
 
 # AUTHORS
 def author_list(request):
+    persons = Person.objects.annotate(num_books=Count('authorships__book')).order_by('surname', 'firstname')
     return render(request, "web/author_list.html", {
-        
+        'persons': persons
     })
 
 def author_detail(request, id):
