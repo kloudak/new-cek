@@ -12,7 +12,7 @@
 {% endfor %}
 </h4>
 <p>
-    <b>Podtitul:</b> {{ book.subtitle|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Podtitul:</b> {{ book.subtitle|default:'<i>neuvedeno</i>'|safe}}<br/>
     <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
     <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
     <b>Rok vydání:</b> {{ book.year|default:'<i>neuveden</i>'}}<br/>
