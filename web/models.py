@@ -20,6 +20,7 @@ class Person(models.Model):
         max_length=100, null=True, blank=True
     )
     remark = models.TextField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
     sex = models.CharField(
         max_length=1,
         choices=SEX_CHOICES,
