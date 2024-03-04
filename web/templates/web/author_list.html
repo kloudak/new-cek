@@ -32,7 +32,7 @@
                 {% endif%}
             </td>
             <td>{{ person.num_books }}</td>
-            <td><a href="{% url 'author_detail' id=person.id %}">edit</a></td>
+            <td><a href="{% url 'author_detail' id=person.id %}">detail</a></td>
         </tr>
         {% endfor %}
     </tbody>

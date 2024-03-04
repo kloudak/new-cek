@@ -10,6 +10,7 @@
         <tr>
             <th>id</th>
             <th>Název</th>
+            <th>Rok</th>
             <th>Autor</th>
             <th></th>
         </tr>
@@ -19,6 +20,7 @@
         <tr>
             <td>{{ book.id }}</td>
             <td>{{ book.title|safe }}</td>
+            <td>{{ book.year| default:'<i>neznámý</i>' }}</td>
             <td>
                 {% if book.authorships.all|length > 4%}
                     <i>{{ book.authorships.all|length }} autorů</i>
@@ -33,7 +35,7 @@
                     {% endfor %}
                 {% endif %}
             </td>
-            <td><a href="{% url 'book_detail' id=book.id %}">edit</a></td>
+            <td><a href="{% url 'book_detail' id=book.id %}">detail</a></td>
         </tr>
         {% endfor %}
     </tbody>
