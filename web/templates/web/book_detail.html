@@ -1,10 +1,38 @@
 {% extends 'web/base.html' %}
 
-{% block title %}Kniha s id={{ id }}{% endblock %}
+{% block title %}{{ book.title }}{% endblock %}
 
 {% block content %}
-<h1>Kniha s id={{ id }}</h1>
+<h1>{{ book.title|safe }}</h1>
+<h4>
+{% for a in book.authorships.all %}
+    <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+{% empty %}
+<i>autor neznámý</i>
+{% endfor %}
+</h4>
 <p>
-    <i>TBA</i>
+    <b>Podtitul:</b> {{ book.subtitle|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
+    <b>Rok vydání:</b> {{ book.year|default:'<i>neuveden</i>'}}<br/>
+    <b>Vydání:</b> {{ book.edition|default:'<i>neuvedena</i>'}}<br/>
+    <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Signatura:</b> {{ book.signature|default:'<i>neuvedeno</i>'}}<br/>
+    <b>Autor motta:</b> {{ book.author_of_motto|default:'<i>neuveden</i>'}}<br/>
+    <b>Autor v původní XML:</b> {{ book.author_xml|default:'<i>neuveden</i>'}}<br/>
+</p>
+<h5>Moto</h5>
+<p>
+    {{ book.motto|default:'<i>neuvedeno</i>'|safe}}<br/>
+</p>
+<h5>Popis knihy</h5>
+<p>
+    {{ book.description|default:'<i>neuveden</i>'|safe}}<br/>
+</p>
+<h5>Ediční poznámka</h5>
+<p>
+    {{ book.editorial_note|default:'<i>neuvedena</i>'|safe}}<br/>
 </p>
 {% endblock %}

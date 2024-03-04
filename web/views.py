@@ -57,8 +57,9 @@ def book_list(request):
     })
 
 def book_detail(request, id):
+    book = get_object_or_404(Book.objects.prefetch_related('authorships__person'), id=id)
     return render(request, "web/book_detail.html", {
-        "id" : id
+        "book" : book
     })
 
 # POEMS
