@@ -6,7 +6,11 @@
 <h1>{{ book.title|safe }}</h1>
 <h4>
 {% for a in book.authorships.all %}
-    <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+    {% if a.person.pseudonym_for %}
+        <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+    {% else %}
+        <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+    {% endif %}
 {% empty %}
 <i>autor neznámý</i>
 {% endfor %}
