@@ -10,29 +10,28 @@
             <th>id</th>
             <th>Příjmení</th>
             <th>Jméno</th>
-            <th>Narození</th>
-            <th>Úmrtí</th>
-            <th>Pseudonym autora</th>
+            <!-- <th>Narození</th> -->
+            <!-- <th>Úmrtí</th> -->
+            <th>Další jména</th>
             <th>Knih</th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        {% for person in persons %}
+        {% for p in persons %}
         <tr>
-            <td>{{ person.id }}</td>
-            <td>{{ person.surname }}</td>
-            <td>{{ person.firstname }}</td>
-            <td>{{ person.date_of_birth|date:"Y-m-d" }}</td>
-            <td>{{ person.date_of_death|date:"Y-m-d" }}</td>
+            <td>{{ p.person.id }}</td>
+            <td>{{ p.person.surname }}</td>
+            <td>{{ p.person.firstname }}</td>
+            <!-- <td>{{ p.person.date_of_birth|date:"Y-m-d" }}</td> -->
+            <!-- <td>{{ p.person.date_of_death|date:"Y-m-d" }}</td> -->
             <td>
-                {% if person.pseudonym_for %}
-                    {{ person.pseudonym_for.surname  }}
-                    {{ person.pseudonym_for.firstname  }}
-                {% endif%}
+                {% for pseudonym in p.pseudonyms %}
+                    {{ pseudonym.surname  }} {{ pseudonym.firstname  }}{% if forloop.counter < p.pseudonyms|length %},{% endif %}
+                {% endfor%}
             </td>
-            <td>{{ person.num_books }}</td>
-            <td><a href="{% url 'author_detail' id=person.id %}">detail</a></td>
+            <td>{{ p.books_count }}</td>
+            <td><a href="{% url 'author_detail' id=p.person.id %}">detail</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -47,7 +46,8 @@ $(document).ready( function () {
         pageLength: 25,
         columnDefs: [
             { "orderable": false, "targets": -1 },
-            {
+            /*
+            {            
                 targets: [3,4],
                 render: function (data, type, row) {
                     if (type === 'display' || type === 'filter') {
@@ -60,6 +60,7 @@ $(document).ready( function () {
                     return data; // Return unmodified data for other data types
                 }
             },
+            */
         ],
         language: dataTableCS,
     });

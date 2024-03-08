@@ -5,14 +5,10 @@
 
 {% block content %}
 <h1>{{ author }}</h1>
-{% if author.pseudonym_for %}
-<h3>(pseudonym <a href="{% url 'author_detail' id=author.pseudonym_for.id %}">{{ author.pseudonym_for }}</a>)</h3>
-{% endif %}
 {% if pseudonyms|length > 0 %}
-    <h3>Psudonymy: 
+    <h3>Další jména: 
         {% for p in pseudonyms %}
-            {% if forloop.counter > 1 %},{% endif %}
-            <a href="{% url 'author_detail' id=p.id %}">{{ p }}</a>
+            {{ p }}{% if forloop.counter < pseudonyms|length %},{% endif %}
         {% endfor%}
     </h3>
 {% endif %}
@@ -38,7 +34,7 @@
             <th>id</th>
             <th>Název</th>
             <th>Rok</th>
-            <th>Autor</th>
+            <th>Jméno autora</th>
             <th></th>
         </tr>
     </thead>
