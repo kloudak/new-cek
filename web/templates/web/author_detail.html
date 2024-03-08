@@ -45,10 +45,17 @@
             <td>{{ book.title|safe }}</td>
             <td>{{ book.year| default:'<i>neznámý</i>' }}</td>
             <td>
-                {% if book.authorships.all|length > 4%}
-                    <i>{{ book.authorships.all|length }} autorů</i>
-                {% elif book.authorships.all|length > 2%}
-                    <i>{{ book.authorships.all|length }} autoři</i>
+                {% if book.authorships.all|length > 2%}
+                    {% for as in book.authorships.all %}
+                        {% if as.person.id == author.id or as.person.pseudonym_for.id == author.id %}
+                            {{ as.person.surname }}&nbsp;{{ as.person.firstname|replace_spaces|safe }}
+                        {% endif %}
+                    {% endfor %}
+                    {% if book.authorships.all|length > 5%}
+                        <i>(a dalších {{ book.authorships.all|length|add:"-1" }} autorů)</i>
+                        {% elif book.authorships.all|length > 3%}
+                        <i>(a další {{ book.authorships.all|length|add:"-1"  }} autoři)</i>
+                        {% endif %}
                 {% else%}
                     {% for as in book.authorships.all %}
                         {% if forloop.counter > 1 %};{% endif %}
