@@ -17,7 +17,6 @@ class Command(BaseCommand):
             # Use a transaction to ensure data integrity
             with transaction.atomic():
                 for row in reader:
-                    pseudonym_for = None
                     # Check if book_id is present and is a valid integer
                     if row.get('book_id'):
                         try:
@@ -31,7 +30,8 @@ class Command(BaseCommand):
                             # Handle case where no Book matches the book_id
                             self.stdout.write(self.style.ERROR(f"Importing book {row['id']} : Book with id {book_id} does not exist."))
                             continue
-
+                    
+                    #self.stdout.write(f'Processing poem id {row['id']}...')
                     Poem.objects.create(
                         id=row['id'] if row['id'] else None,
                         title=row['title'] if row['title'] else None,
