@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 
 def years_difference(date1, date2):
     """
@@ -18,3 +19,22 @@ def years_difference(date1, date2):
         difference -= 1
     
     return difference
+
+
+def remove_html_tags(xml_string):
+    """
+    Removes all HTML tags from the given XML string.
+
+    Parameters:
+    - xml_string: The XML content as a string.
+
+    Returns:
+    - The string with all HTML tags removed.
+    """
+    # Define a regular expression pattern for HTML tags
+    html_tag_pattern = re.compile(r'<.*?>')
+    
+    # Replace HTML tags with an empty string
+    no_xml_string = re.sub(html_tag_pattern, ' ', xml_string).replace('  ', ' ')
+    
+    return no_xml_string

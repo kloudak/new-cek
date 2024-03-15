@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.postgres.search import SearchVectorField, SearchVector
+from .utils import remove_html_tags
 
 
 class Person(models.Model):
@@ -89,8 +91,9 @@ class Poem(models.Model):
         Book, on_delete=models.PROTECT, related_name="poems"
     )  # the book the poem is part of
     text = models.TextField(null=True)  # 'text'
-    text_search = models.TextField(
-        null=True, editable=False, db_index=True
+    text_search = models.TextField(null=True, editable=False)  # 'text'
+    text_search_vector = SearchVectorField(
+        null=True, editable=False
     )  # 'text without tags'
     author = models.ForeignKey(
         Person, on_delete=models.PROTECT, null=True, blank=True
@@ -98,3 +101,12 @@ class Poem(models.Model):
 
     def __str__(self):
         return self.title if self.title is not None else f"Untitled Poem #{self.id}"
+
+    def save(self, *args, **kwargs):
+        # Modify the text_search field before saving
+        # remove HTML tags from self.text and assign it to self.text_search
+        if self.text is not None:
+            self.text_search = remove_html_tags(self.text)
+        # Call the superclass's save method to handle the actual saving
+        super().save(*args, **kwargs)
+        Poem.objects.filter(pk=self.pk).update(text_search_vector =SearchVector('text_search'))
