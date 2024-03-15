@@ -172,3 +172,7 @@ config.py
 # VS code
 new-cek.code-workspace
 .vscode
+
+# XML files withtexts
+web/data/poems/*.xml
+web/data/books/*.xml
