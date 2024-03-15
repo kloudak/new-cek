@@ -54,6 +54,9 @@ class Book(models.Model):
     source_signature = models.CharField(max_length=255, blank=True, null=True)  # 'zdroj-signatura'
     editorial_note = models.TextField(blank=True, null=True)  # 'edicnipoznamka'
     author_xml = models.TextField(blank=True, null=True)  # 'autor' in the source XML
+    text = models.TextField(null=True)  # 'text'
+    text_search = models.TextField(null=True, editable=False, db_index=True)  # text without tags
+    content = models.TextField(null=True, editable=False)  # content of the book
 
     authors = models.ManyToManyField(Person, through='Authorship', related_name='books')
 
@@ -62,8 +65,8 @@ class Book(models.Model):
     
 
 class Authorship(models.Model):
-    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name="authorships")
-    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="authorships")
+    person = models.ForeignKey(Person, on_delete=models.PROTECT, related_name="authorships")
+    book = models.ForeignKey(Book, on_delete=models.PROTECT, related_name="authorships")
     author_order = models.PositiveIntegerField()
 
     class Meta:
@@ -72,3 +75,4 @@ class Authorship(models.Model):
 
     def __str__(self):
         return f"{self.person} - {self.book}"
+    
