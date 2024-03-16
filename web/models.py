@@ -57,9 +57,10 @@ class Book(models.Model):
     editorial_note = models.TextField(blank=True, null=True)  # 'edicnipoznamka'
     author_xml = models.TextField(blank=True, null=True)  # 'autor' in the source XML
     text = models.TextField(null=True)  # 'text'
-    text_search = models.TextField(
-        null=True, editable=False, db_index=True
-    )  # text without tags
+    text_search = models.TextField(null=True, editable=False)  # 'text'
+    text_search_vector = SearchVectorField(
+        null=True, editable=False
+    )  # 'text without tags'
     content = models.TextField(null=True, editable=False)  # content of the book
 
     authors = models.ManyToManyField(Person, through="Authorship", related_name="books")
@@ -67,6 +68,17 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, import_xml=False, **kwargs):
+        # Modify the text_search field before saving
+        # remove HTML tags from self.text and assign it to self.text_search
+        if not import_xml:
+            pass # additional checking
+        if self.text is not None:
+            self.text_search = remove_html_tags(self.text)
+        # Call the superclass's save method to handle the actual saving
+        super().save(*args, **kwargs)
+        Poem.objects.filter(pk=self.pk).update(text_search_vector =SearchVector('text_search'))
+    
 
 class Authorship(models.Model):
     person = models.ForeignKey(
