@@ -38,3 +38,34 @@ def remove_html_tags(xml_string):
     no_xml_string = re.sub(html_tag_pattern, ' ', xml_string).replace('  ', ' ')
     
     return no_xml_string
+
+def compare_lists(xml_list, db_list):
+    # Check if lists are exactly the same
+    if xml_list == db_list:
+        return True, ""
+    
+    message_parts = []
+    
+    # Check for missing elements in db_list
+    missing_in_db_list = [item for item in xml_list if item not in db_list]
+    if missing_in_db_list:
+        missing_str = ", ".join(str(item) for item in missing_in_db_list)
+        message_parts.append(f"V databázi chybí básně s id: {missing_str}.")
+    
+    # Check for extra elements in db_list
+    extra_in_db_list = [item for item in db_list if item not in xml_list]
+    if extra_in_db_list:
+        extra_str = ", ".join(str(item) for item in extra_in_db_list)
+        message_parts.append(f"V databázi jsou navíc básně s id: {extra_str}.")
+    
+    # Check for elements in the wrong order
+    if not missing_in_db_list and not extra_in_db_list:
+        message_parts.append("V textu i databázi jsou stejné básně, ale v jiném pořadí.")
+    elif not set(xml_list) == set(db_list):
+        common_elements = set(xml_list) & set(db_list)
+        common_order_issues = [item for item in xml_list if item in common_elements and xml_list.index(item) != db_list.index(item)]
+        if common_order_issues:
+            order_str = ", ".join(str(item) for item in common_order_issues)
+            message_parts.append(f"Básně {order_str} jsou ve špatném pořadí oproti databázi.")
+    
+    return False, "<br />\n".join(message_parts)

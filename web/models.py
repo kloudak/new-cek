@@ -1,6 +1,8 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.postgres.search import SearchVectorField, SearchVector
-from .utils import remove_html_tags
+import xml.etree.ElementTree as ET
+from .utils import remove_html_tags, compare_lists
 
 
 class Person(models.Model):
@@ -37,6 +39,8 @@ class Person(models.Model):
 
 
 class Book(models.Model):
+    complete_text = None
+
     title = models.TextField(null=True)  # 'titul'
     subtitle = models.TextField(blank=True, null=True)  # 'podtitul'
     place_of_publication = models.CharField(
@@ -69,16 +73,103 @@ class Book(models.Model):
         return self.title
 
     def save(self, *args, import_xml=False, **kwargs):
+       
+        if not import_xml:
+            db_ids = list(self.poems.order_by('order_in_book').values_list('id', flat=True))
+            xml_ids = self._get_cekid_values()
+            # print(f"poems: \n {db_ids} \n {xml_ids}")
+            is_ok, message = compare_lists(xml_ids, db_ids)
+            if not is_ok:
+                raise ValidationError(message)
+        self._content_string()
+        print(self.content)
         # Modify the text_search field before saving
         # remove HTML tags from self.text and assign it to self.text_search
-        if not import_xml:
-            pass # additional checking
         if self.text is not None:
             self.text_search = remove_html_tags(self.text)
         # Call the superclass's save method to handle the actual saving
         super().save(*args, **kwargs)
         Poem.objects.filter(pk=self.pk).update(text_search_vector =SearchVector('text_search'))
+
+    def _get_cekid_values(self):
+        # Parse the XML string
+        root = ET.fromstring(self.text)
+        # Initialize an empty list to store cekid values
+        cekid_values = []
+        # Iterate through all 'basen' tags and extract the 'cekid' attribute
+        for basen in root.findall('.//basen'):
+            cekid = basen.attrib.get('cekid')
+            if cekid is not None:
+                cekid_values.append(int(cekid))
+        
+        return cekid_values
     
+    def _content_string(self):
+        content = self._extract_content()
+        self.content = "<ul id=\"book-content\">\n"
+        for idx, ci in enumerate(content):
+            if len(ci['title']) > 0:
+                title = remove_html_tags(ci['title']).strip()
+            else:
+                if ci['tag_name'] == 'basen':
+                    if ci['cekid']:
+                        ptitle = self.poems.get(id=ci['cekid']).title
+                        if isinstance(ptitle, str):
+                            title = remove_html_tags(ptitle).strip()
+                        else:
+                            title = f"<i>báseň bez názvu</i>"    
+                    else:
+                        title = f"<i>báseň bez názvu</i>"
+                elif ci['tag_name'] == 'oddil':
+                    title = f"<i>oddíl bez názvu</i>"
+                else:
+                    title = f"<i>položka bez názvu</i>"
+            self.content += f"""
+            <li data-level=\"{ci['level']}\">
+                <a href=\"#polozka-obsahu-{idx}\">{title}</a>
+            </li>"""
+        self.content += "</ul>\n"
+    
+    def _extract_content(self):
+        # Parse the XML string into an ElementTree object
+        root = ET.fromstring(self.text)
+        
+        # Initialize an empty list to store dictionaries of tag info
+        tag_info_list = []
+        
+        # Initialize a counter to track the order of elements
+        order_counter = 0
+        
+        # Define a recursive function to traverse the tree
+        def traverse(element, level):
+            nonlocal order_counter
+            if element.get('data-to-content') == "1":
+                cekid = element.attrib['cekid'] if 'cekid' in element.attrib else None
+                order_counter += 1
+                # Initialize title as an empty string
+                title = ""
+                # Check if the first child is a <nadpis> tag and capture its content
+                nadpis = next((child for child in element if child.tag == 'nadpis'), None)
+                if nadpis is not None:
+                    # Using ET.tostring to include tags within the content and decode it
+                    title = ET.tostring(nadpis, encoding='unicode', method='xml')
+                
+                tag_info_list.append({
+                    'tag_name': element.tag,
+                    'order': order_counter,
+                    'level': level,
+                    'title': title,
+                    "cekid" : cekid
+                })
+            
+            for child in element:
+                traverse(child, level + 1)
+            
+        # Start traversing from the root
+        traverse(root, 0)
+        
+        return tag_info_list
+        
 
 class Authorship(models.Model):
     person = models.ForeignKey(
