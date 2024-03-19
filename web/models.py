@@ -82,7 +82,6 @@ class Book(models.Model):
             if not is_ok:
                 raise ValidationError(message)
         self._content_string()
-        print(self.content)
         # Modify the text_search field before saving
         # remove HTML tags from self.text and assign it to self.text_search
         if self.text is not None:
@@ -93,7 +92,7 @@ class Book(models.Model):
 
     def _get_cekid_values(self):
         # Parse the XML string
-        root = ET.fromstring(self.text)
+        root = ET.fromstring(f"<bookroot>{self.text}</bookroot>")
         # Initialize an empty list to store cekid values
         cekid_values = []
         # Iterate through all 'basen' tags and extract the 'cekid' attribute
@@ -132,7 +131,7 @@ class Book(models.Model):
     
     def _extract_content(self):
         # Parse the XML string into an ElementTree object
-        root = ET.fromstring(self.text)
+        root = ET.fromstring(f"<bookroot>{self.text}</bookroot>")
         
         # Initialize an empty list to store dictionaries of tag info
         tag_info_list = []
