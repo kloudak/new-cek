@@ -219,6 +219,8 @@ class Authorship(models.Model):
 
 
 class Poem(models.Model):
+    html_text = None
+
     title = models.TextField(null=True)  # 'titul'
     original_id = models.PositiveIntegerField(null=True)  # id in the original XML
     order_in_book = models.PositiveIntegerField(null=False, blank=False)  # order in the book
@@ -245,3 +247,15 @@ class Poem(models.Model):
         # Call the superclass's save method to handle the actual saving
         super().save(*args, **kwargs)
         Poem.objects.filter(pk=self.pk).update(text_search_vector =SearchVector('text_search'))
+
+    def set_html_text(self):
+        root = ET.fromstring(f"<div class=\"poem-text\">\n{self.text}\n</div>")
+        # Iterate through all <basen> elements
+        for nadpis in root.findall(".//nadpis[@prazdny='ano']"):
+            parent = nadpis.find("..")
+            if parent is not None:
+                parent.remove(nadpis)
+
+        self.html_text = ET.tostring(root, encoding='unicode', method='xml')
+        self.html_text = self.html_text.replace("<nbsp />","&nbsp;").\
+                                replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;")
