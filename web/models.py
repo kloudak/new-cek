@@ -109,9 +109,10 @@ class Book(models.Model):
                 basen.append(basen_content)
 
         order = 0
-        for elem in root.findall("*[@data-to-content='1']"):
+        for elem in root.findall(".//*[@data-to-content='1']"):
             elem.set('id', f'polozka-obsahu-{order}')
             order += 1
+            print(order)
         self.complete_text = ET.tostring(root, encoding='unicode', method='xml')
 
     def _get_cekid_values(self):
