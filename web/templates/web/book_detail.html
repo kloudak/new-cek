@@ -39,4 +39,25 @@
 <p>
     {{ book.editorial_note|default:'<i>neuvedena</i>'|safe}}<br/>
 </p>
+<div class="row">
+    <div class="col-3" id="left-column">
+        {{ book.content|safe }}
+    </div>
+    <div class="col-6 scrollable-content" id="middle-column">
+        {{ book.complete_text|safe }}
+    </div>
+    <div class="col-3" id="right-column">
+        
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready( function () {
+        var leftColumnHeight = Math.max($('#left-column ul').height(),800);
+        $('#middle-column').height(leftColumnHeight);
+        $('#right-column').height(leftColumnHeight);
+    });
+</script>
 {% endblock %}

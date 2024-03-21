@@ -72,6 +72,7 @@ def book_list(request):
 
 def book_detail(request, id):
     book = get_object_or_404(Book.objects.prefetch_related('authorships__person'), id=id)
+    book.set_complete_text()
     return render(request, "web/book_detail.html", {
         "book" : book
     })
