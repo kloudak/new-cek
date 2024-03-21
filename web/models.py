@@ -103,10 +103,15 @@ class Book(models.Model):
                 poem_url = reverse('poem_in_book', kwargs={'id': cekid})
                 a_element = ET.Element('a', href=poem_url)
                 a_element.text = 'detail básně'
+                a_element.set('class', 'poem-link')
                 basen.append(a_element)
             if cekid in texts:
                 basen_content = ET.fromstring(f"\n<div class=\"poem-text\">{texts[cekid]}\n</div>\n")
                 basen.append(basen_content)
+            for nadpis in root.findall(".//nadpis[@prazdny='ano']"):
+                parent = nadpis.find("..")
+                if parent is not None:
+                    parent.remove(nadpis)
 
         order = 0
         for elem in root.findall(".//*[@data-to-content='1']"):
@@ -114,6 +119,9 @@ class Book(models.Model):
             order += 1
             print(order)
         self.complete_text = ET.tostring(root, encoding='unicode', method='xml')
+        self.complete_text = self.complete_text.replace("<nbsp />","&nbsp;").\
+                                replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;")
+        
 
     def _get_cekid_values(self):
         # Parse the XML string
