@@ -23,3 +23,112 @@
 .scrollable-content {
     overflow-y: auto;
 }
+
+/* book content */
+ul#book-content {
+    list-style: none;
+    padding-left: 0;
+}
+
+ul#book-content li[data-level="1"] {
+    padding-left: 10px;
+}
+
+ul#book-content li[data-level="2"] {
+    padding-left: 20px;
+}
+
+ul#book-content li[data-level="3"] {
+    padding-left: 30px;
+}
+
+ul#book-content li[data-level="4"] {
+    padding-left: 40px;
+}
+
+ul#book-content li[data-level="5"] {
+    padding-left: 50px;
+}
+
+/* book and poem text */
+
+div.book-text {
+    padding: 20px; /* Adds some space inside the div around the text */
+    background-color: #fdf6e3; /* Soft background color for ease of reading */
+    color: #333; /* Dark text color for contrast */
+    font-family: "Times New Roman", Times, serif; /* Classic book font, but feel free to choose another */
+    font-size: 18px; /* Adjust based on your preference, 18px is generally readable */
+    line-height: 1.6; /* Space between lines, 1.6 is a good starting point for readability */
+    margin: 20px auto; /* Centers the div and adds space around it */
+    border: 1px solid #ccc; /* Adds a subtle border */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Optional: adds a light shadow for depth */
+    border-radius: 4px; /* Optional: rounds the corners of the div */
+}
+
+/* tags for parts, poems and sections */
+basen, kniha, oddil, oddilbasne, pododdil, sbirka, strofa {
+    display: block;
+    position: relative;
+}
+
+a.poem-link {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+/* tags for an ordinary text aligned to the left */
+doprovod, moto-text, obsah, tiraz, venovani, zakladnitext {
+    display: block;
+}
+
+nadpis, fales-titulbasen, fales-tituloddil, nadpisvbasni, 
+podtitul, podtitulbasne, podtitulsbirky, poznpodcarou, 
+titulsbirka {
+    display: block;
+    margin-top: 10px;
+}
+
+strana {
+    display: block;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+    text-align: right;
+    padding-right: 5px;
+    font-size: 80%;
+    color: darkgray;
+}
+
+prolozeno {
+    letter-spacing: 5px;
+}
+
+sifra, spisovatel, moto-autor {
+    display: block;
+    font-style: italic;
+}
+
+v {
+    display: block;
+    padding-left: 20px;
+}
+
+strofa {
+    display: block;
+    margin-bottom: 20px;
+}
+
+vpravo {
+    float: right;
+}
+
+verze[typ="puvodni"] {
+    color: red;
+    display: None;
+}
+
+verze[typ="editorska"] {
+    color: blue;
+    display: inline;
+}
