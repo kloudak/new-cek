@@ -1,7 +1,13 @@
 {% extends "web/poem_base.html" %}
 
-{% block poem_title %} - ve sbírcet{% endblock %}
-
 {% block poem_content %}
-    <h1>Báseň s id = {{ id }} - ve sbírce</h1>
+    <h1>{{ poem.title|safe }}</h1>
+    <div class="row">
+        <div class="col-9">
+            {{ poem.html_text|safe }}
+        </div>
+        <div class="col-3">
+
+        </div>
+    </div>
 {% endblock %}

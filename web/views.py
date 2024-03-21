@@ -1,7 +1,7 @@
 from django.http import HttpResponse, Http404
 from django.shortcuts import render, get_object_or_404
 from django.db import models
-from .models import Person, Book, Authorship
+from .models import Person, Book, Authorship, Poem
 from .utils import years_difference
 
 def index(request):
@@ -79,23 +79,31 @@ def book_detail(request, id):
 
 # POEMS
 def poem_text(request, id):
+    poem = get_object_or_404(Poem, id=id)
+    poem.set_html_text()
     return render(request, "web/poem_text.html", {
-        "id" : id
+        "poem" : poem
     })
 
 def poem_in_book(request, id):
+    poem = get_object_or_404(Poem, id=id)
+    poem.set_html_text()
     return render(request, "web/poem_in_book.html", {
-        "id" : id
+        "poem" : poem
     })
 
 def poem_versology(request, id):
+    poem = get_object_or_404(Poem, id=id)
+    poem.set_html_text()
     return render(request, "web/poem_versology.html", {
-        "id" : id
+        "poem" : poem
     })
 
 def poem_AI(request, id):
+    poem = get_object_or_404(Poem, id=id)
+    poem.set_html_text()
     return render(request, "web/poem_AI.html", {
-        "id" : id
+        "poem" : poem
     })
 
 # STATIC PAGES

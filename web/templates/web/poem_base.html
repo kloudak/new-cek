@@ -1,20 +1,20 @@
 {% extends "web/base.html" %}
 
-{% block title %}Báseň - {% block poem_title %}{% endblock %}{% endblock %}
-
 {% block content %}
-    <div class="poem-navigation">
-        <ul>
-            <li><a href="{% url 'poem_text' id=id %}">Báseň s id={{ id }} - text</a></li>
-            <li><a href="{% url 'poem_in_book' id=id %}">Báseň s id={{ id }} - v knize</a></li>
-            <li><a href="{% url 'poem_versology' id=id %}">Báseň s id={{ id }} - versologie</a></li>
-            <li><a href="{% url 'poem_AI' id=id %}">Báseň s id={{ id }} - AI</a></li>
-        </ul>
-    </div>
-    
-    <div class="poem-content">
-        {% block poem_content %}
+    <div class="row">
+        <div class="col-3 poem-navigation">
+            <ul>
+                <li><a href="{% url 'poem_text' id=poem.id %}">Báseň s id={{ poem.id }} - text</a></li>
+                <li><a href="{% url 'poem_in_book' id=poem.id %}">Báseň s id={{ poem.id }} - v knize</a></li>
+                <li><a href="{% url 'poem_versology' id=poem.id %}">Báseň s id={{ poem.id }} - versologie</a></li>
+                <li><a href="{% url 'poem_AI' id=poem.id %}">Báseň s id={{ poem.id }} - AI</a></li>
+            </ul>
+        </div>
         
-        {% endblock %}
+        <div class="col-9 poem-content">
+            {% block poem_content %}
+            
+            {% endblock %}
+        </div>
     </div>
 {% endblock %}
