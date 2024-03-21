@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.search import SearchVectorField, SearchVector
 import xml.etree.ElementTree as ET
@@ -89,6 +90,29 @@ class Book(models.Model):
         # Call the superclass's save method to handle the actual saving
         super().save(*args, **kwargs)
         Poem.objects.filter(pk=self.pk).update(text_search_vector =SearchVector('text_search'))
+
+    def set_complete_text(self):
+        texts = {p.id : p.text for p in self.poems.order_by('order_in_book')}
+        root = ET.fromstring(f"<div class=\"book-text\">\n{self.text}\n</div>")
+        # Iterate through all <basen> elements
+        for basen in root.findall('.//basen'):
+            if not 'cekid' in basen.attrib:
+                continue
+            cekid = int(basen.get('cekid'))
+            if cekid:
+                poem_url = reverse('poem_in_book', kwargs={'id': cekid})
+                a_element = ET.Element('a', href=poem_url)
+                a_element.text = 'detail básně'
+                basen.append(a_element)
+            if cekid in texts:
+                basen_content = ET.fromstring(f"\n<div class=\"poem-text\">{texts[cekid]}\n</div>\n")
+                basen.append(basen_content)
+
+        order = 0
+        for elem in root.findall("*[@data-to-content='1']"):
+            elem.set('id', f'polozka-obsahu-{order}')
+            order += 1
+        self.complete_text = ET.tostring(root, encoding='unicode', method='xml')
 
     def _get_cekid_values(self):
         # Parse the XML string
