@@ -88,8 +88,10 @@ def poem_text(request, id):
 def poem_in_book(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
+    poems_in_book = poem.book.poems.all().order_by('order_in_book')
     return render(request, "web/poem_in_book.html", {
-        "poem" : poem
+        "poem" : poem,
+        "poems_in_book" : poems_in_book
     })
 
 def poem_versology(request, id):
