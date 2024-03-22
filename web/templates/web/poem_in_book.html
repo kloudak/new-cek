@@ -22,3 +22,18 @@
         </div>
     </div>
 {% endblock %}
+
+
+{% block extra_js %}
+<script>
+    $(document).ready( function () {
+        var komentars = document.querySelectorAll('komentar');
+        komentars.forEach(function(komentar) {
+            var dataText = komentar.getAttribute('data-text');
+            komentar.setAttribute('title', dataText);
+        });
+        
+        $('komentar').tooltip()
+    });
+</script>
+{% endblock %}

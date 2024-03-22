@@ -132,3 +132,10 @@ verze[typ="editorska"] {
     color: blue;
     display: inline;
 }
+
+komentar {
+    display: inline;
+    position: relative;
+    cursor: pointer;
+    border-bottom: 1px #007bff dotted; /* Underlines the text to indicate it's special, using a dotted line for subtlety */
+}
