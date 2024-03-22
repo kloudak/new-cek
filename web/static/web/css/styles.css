@@ -52,7 +52,7 @@ ul#book-content li[data-level="5"] {
 
 /* book and poem text */
 
-div.book-text, div.poem-text {
+div.book-text, #poem-text-container div.poem-text {
     padding: 20px; /* Adds some space inside the div around the text */
     background-color: #fdf6e3; /* Soft background color for ease of reading */
     color: #333; /* Dark text color for contrast */
@@ -73,8 +73,8 @@ basen, kniha, oddil, oddilbasne, pododdil, sbirka, strofa {
 
 a.poem-link {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: 1px;
+    right: 5px;
     z-index: 1000;
 }
 
@@ -111,7 +111,7 @@ sifra, spisovatel, moto-autor {
 
 v {
     display: block;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 
 strofa {
