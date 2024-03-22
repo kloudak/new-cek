@@ -1,13 +1,24 @@
 {% extends "web/poem_base.html" %}
 
 {% block poem_content %}
-    <h1>{{ poem.title|safe }}</h1>
+    <h1>{{ poem|safe }}</h1>
     <div class="row">
-        <div class="col-9">
+        <div class="col-9" id="poem-text-container">
             {{ poem.html_text|safe }}
         </div>
         <div class="col-3">
-
+            Básně v knize <a href="{%url 'book_detail' id=poem.book.id %}">{{ poem.book.title }}</a>:
+            <ol>
+                {% for p in poems_in_book %}
+                {% if p.id == poem.id %}
+                    <li>{{ p|safe }}</li>
+                {% else %}
+                    <li><a href="{% url 'poem_in_book' id=p.id %}">{{ p|safe }}</a></li>
+                {% endif %}
+                {% empty %}
+                <li>V této knize nejsou žádné básně.</li>
+                {% endfor %}
+            </ol>
         </div>
     </div>
 {% endblock %}
