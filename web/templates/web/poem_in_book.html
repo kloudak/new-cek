@@ -45,9 +45,6 @@
         if(!document.querySelector('#poem-text-container').querySelector('verze')) {
             document.querySelector('#versions-selector').style.display = 'none';
         }
-
-        // Set default display
-        document.querySelector('verze[typ="editorska"]').style.display = 'inline';
         
         // Listen to change event on radio buttons
         document.querySelectorAll('input[name="verze"]').forEach(function (radio) {
