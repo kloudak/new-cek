@@ -71,7 +71,7 @@ class Book(models.Model):
     authors = models.ManyToManyField(Person, through="Authorship", related_name="books")
 
     def __str__(self):
-        return self.title
+        return remove_html_tags(self.title)
 
     def save(self, *args, import_xml=False, **kwargs):
        
@@ -99,10 +99,14 @@ class Book(models.Model):
             if not 'cekid' in basen.attrib:
                 continue
             cekid = int(basen.get('cekid'))
-            if cekid:
+            if cekid > 0:
                 poem_url = reverse('poem_in_book', kwargs={'id': cekid})
                 a_element = ET.Element('a', href=poem_url)
-                a_element.text = 'detail básně'
+                icon_element = ET.Element('i')
+                icon_element.set('class', 'bi bi-arrow-right-square')
+                icon_element.text = " "
+                a_element.text=" "
+                a_element.append(icon_element)
                 a_element.set('class', 'poem-link')
                 basen.append(a_element)
             if cekid in texts:
@@ -237,7 +241,7 @@ class Poem(models.Model):
     )  # author is taken from the book if this is null and the book has axactly one author
 
     def __str__(self):
-        return self.title if self.title is not None else f"Untitled Poem #{self.id}"
+        return remove_html_tags(self.title) if self.title is not None else f"Báseň bez názvu #{self.id}"
 
     def save(self, *args, **kwargs):
         # Modify the text_search field before saving
