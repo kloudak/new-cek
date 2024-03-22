@@ -47,7 +47,13 @@
         {{ book.complete_text|safe }}
     </div>
     <div class="col-3" id="right-column">
-        
+        <div class="btn-group" data-toggle="buttons">
+            <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
+            <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
+            
+            <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
+        </div>
     </div>
 </div>
 {% endblock %}
@@ -64,8 +70,35 @@
             var dataText = komentar.getAttribute('data-text');
             komentar.setAttribute('title', dataText);
         });
-        
+
         $('komentar').tooltip()
+
+        // Set default display
+        document.querySelector('verze[typ="editorska"]').style.display = 'inline';
+        
+        // Listen to change event on radio buttons
+        document.querySelectorAll('input[name="verze"]').forEach(function (radio) {
+            radio.addEventListener('change', function () {
+                // Display Původní verze content
+                if (document.getElementById('puvodni').checked) {
+                    document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
+                        verze.style.display = 'inline';
+                    });
+                    document.querySelectorAll('verze[typ="editorska"]').forEach(function(verze) {
+                        verze.style.display = 'none';
+                    });
+                }
+                // Display Editorská verze content
+                else {
+                    document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
+                        verze.style.display = 'none';
+                    });
+                    document.querySelectorAll('verze[typ="editorska"]').forEach(function(verze) {
+                        verze.style.display = 'inline';
+                    });
+                }
+            });
+        });
     });
 </script>
 {% endblock %}
