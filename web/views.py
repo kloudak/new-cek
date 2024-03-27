@@ -1,11 +1,19 @@
 from django.http import HttpResponse, Http404
+from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from django.db import models
-from .models import Person, Book, Authorship, Poem
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay
 from .utils import years_difference
 
 def index(request):
-    return render(request, "web/index.html")
+    n_books = Book.objects.count()
+    n_authors = Person.objects.count()
+    poem_of_today = PoemOfTheDay.objects.filter(day = timezone.localtime().date()).first()
+    return render(request, "web/index.html", {
+        'n_books': n_books,
+        'n_authors' : n_authors,
+        'pod' : poem_of_today
+    })
 
 # AUTHORS
 def author_list(request):
