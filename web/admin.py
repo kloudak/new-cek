@@ -28,7 +28,7 @@ class BookAdmin(admin.ModelAdmin):
 class PoemAdmin(admin.ModelAdmin):
     list_display = ('id','title', 'book')
     list_display_links = ('title',)
-    search_fields = ('id','title', 'book')
+    search_fields = ('id','title')
     ordering = ('id','title')
 
 class PoemOfTheDayAdmin(admin.ModelAdmin):
