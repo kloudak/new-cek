@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Person, Authorship, Book, Poem
+from .models import Person, Authorship, Book, Poem, PoemOfTheDay
+from .forms import PoemOfTheDayAdminForm
 
 class PersonAdmin(admin.ModelAdmin):
     list_display = ('id','surname', 'firstname', 'date_of_birth', 'date_of_death', 'sex', 'pseudonym_for')
@@ -30,6 +31,14 @@ class PoemAdmin(admin.ModelAdmin):
     search_fields = ('id','title', 'book')
     ordering = ('id','title')
 
+class PoemOfTheDayAdmin(admin.ModelAdmin):
+    form = PoemOfTheDayAdminForm
+    list_display = ('day', 'description', 'poem')
+    list_display_links = ('day',)
+    search_fields = ('day', 'description', 'poem')
+    ordering = ('day',)
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Poem, PoemAdmin)
+admin.site.register(PoemOfTheDay, PoemOfTheDayAdmin)

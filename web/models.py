@@ -262,3 +262,12 @@ class Poem(models.Model):
         self.html_text = ET.tostring(root, encoding='unicode', method='xml')
         self.html_text = self.html_text.replace("<nbsp />","&nbsp;").\
                                 replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;")
+        
+
+class PoemOfTheDay(models.Model):
+    day = models.DateField(blank=False)
+    poem = models.ForeignKey(Poem, on_delete=models.SET_NULL, related_name="day", null=True)
+    description= models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.day.strftime('%Y-%m-%d')
