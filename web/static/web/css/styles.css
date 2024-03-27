@@ -52,7 +52,10 @@ ul#book-content li[data-level="5"] {
 
 /* book and poem text */
 
-div.book-text, #poem-text-container div.poem-text {
+div.book-text, 
+#poem-text-container div.poem-text, 
+#poem-text-only-container div.poem-text 
+{
     padding: 20px; /* Adds some space inside the div around the text */
     background-color: #fdf6e3; /* Soft background color for ease of reading */
     color: #333; /* Dark text color for contrast */
@@ -100,6 +103,16 @@ strana {
     color: darkgray;
 }
 
+#poem-text-only-container div.poem-text strana {
+    display: none;
+}
+
+#poem-text-only-container div.poem-text v {
+    
+    padding-left: 0px;
+}
+
+
 prolozeno {
     letter-spacing: 5px;
 }
@@ -137,5 +150,15 @@ komentar {
     display: inline;
     position: relative;
     cursor: pointer;
-    border-bottom: 1px #007bff dotted; /* Underlines the text to indicate it's special, using a dotted line for subtlety */
+    border-bottom: 1px #007bff dotted;
+}
+
+.verse-number {
+    color: #007bff;
+    opacity: 50%; 
+    margin-right: 5px;
+    font-family: sans-serif;
+    font-size: 70%;
+    display: inline-block;
+    padding: 2px;
 }
