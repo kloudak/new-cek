@@ -9,6 +9,7 @@ def index(request):
     n_books = Book.objects.count()
     n_authors = Person.objects.count()
     poem_of_today = PoemOfTheDay.objects.filter(day = timezone.localtime().date()).first()
+    poem_of_today.set_poem_text()
     return render(request, "web/index.html", {
         'n_books': n_books,
         'n_authors' : n_authors,
@@ -63,7 +64,6 @@ def author_detail(request, id):
     # Extract books from the dictionary and sort them by year
     books = sorted(books_dict.values(), key=lambda book: (book.year if book.year else 0))
 
-    print(len(books), books)
     return render(request, 'web/author_detail.html', {
         'author': author, 
         'books': books,

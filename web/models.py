@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.postgres.search import SearchVectorField, SearchVector
 import xml.etree.ElementTree as ET
-from .utils import remove_html_tags, compare_lists
+from .utils import remove_html_tags, compare_lists, remove_elements_after
 
 
 class Person(models.Model):
@@ -253,7 +253,6 @@ class Poem(models.Model):
 
     def set_html_text(self):
         root = ET.fromstring(f"<div class=\"poem-text\">\n{self.text}\n</div>")
-        # Iterate through all <basen> elements
         for nadpis in root.findall(".//nadpis[@prazdny='ano']"):
             parent = nadpis.find("..")
             if parent is not None:
@@ -265,9 +264,65 @@ class Poem(models.Model):
         
 
 class PoemOfTheDay(models.Model):
+    html_text = ""
+
     day = models.DateField(blank=False)
     poem = models.ForeignKey(Poem, on_delete=models.SET_NULL, related_name="day", null=True)
     description= models.TextField(blank=True, null=True)
 
     def __str__(self):
         return self.day.strftime('%Y-%m-%d')
+
+    def set_poem_text(self):
+        """
+        Truncates the poem text associated with the PoemOfTheDay instance to a maximum of max_n_strophes strophes 
+        or max_n_verses verses. If the original poem exceeds these limits, it is truncated, 
+        and an ellipsis (...) is appended to indicate the poem text is incomplete.
+
+        All tags after the last strophe/verse is truncated.
+
+        Attributes modified:
+        - self.html_text
+        """
+
+        # settings
+        max_n_strophes = 2
+        max_n_verses = 14
+
+        root = ET.fromstring(f"<div class=\"poem-text\">\n{self.poem.text}\n</div>")
+        sc = 1
+        vc = 1
+        incomplete = False
+        last_strofa = None
+        last_verse = None
+        # removing strofa and v tags
+        for strofa in root.findall(".//strofa"):
+            if sc > max_n_strophes:
+                root.remove(strofa)
+                incomplete = True
+            else:
+                last_strofa = strofa
+                for verse in strofa.findall(".//v"):
+                    if vc > max_n_verses:
+                        strofa.remove(verse)
+                        incomplete = True
+                    else:
+                        last_verse = verse
+                    vc += 1
+            sc += 1
+        # removing everithing after the last tag
+        last_element = last_verse if last_verse is not None else last_strofa
+        root = remove_elements_after(root, last_element)
+
+        # adding span tag <span>...</span> to indicate incomplete text
+        if incomplete:
+            span_tag = ET.Element('span')
+            span_tag.text = "..."
+            span_tag.set('class', 'incomplete-poem')
+            root.append(span_tag)
+
+        # saving modified XML to a string
+        self.html_text = ET.tostring(root, encoding='unicode', method='xml')
+        self.html_text = self.html_text.replace("<nbsp />","&nbsp;").\
+                                replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;").\
+                                replace("<br />", "")

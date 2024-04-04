@@ -69,3 +69,22 @@ def compare_lists(xml_list, db_list):
             message_parts.append(f"Básně {order_str} jsou ve špatném pořadí oproti databázi.")
     
     return False, "<br />\n".join(message_parts)
+
+def remove_elements_after(root, tag):
+    """
+    Remove all elements that are after tag
+    The search is based on depth-first traversal.
+    """
+    parent_map = {c: p for p in root.iter() for c in p}
+    element_found = False
+    for elem in root.iter():
+        # Once we encounter the given element, we set element_found to True
+        if elem == tag:
+            element_found = True
+        # If element_found is True, and this is not the given element,
+        # we remove it from its parent
+        elif element_found:
+            parent = parent_map[elem]
+            parent.remove(elem)
+    
+    return root
