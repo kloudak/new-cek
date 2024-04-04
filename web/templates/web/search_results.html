@@ -24,4 +24,20 @@
     {% endfor %}
     </ol>
 {% endif %}
+{% if poems|length > 0 %}
+    <h2>Nalezené básně
+        {% if poems|length <= max_results %}
+            ({{ poems|length}})
+        {% else %}
+            (prvních {{ max_results}} výsledků)
+        {% endif %}
+    </h2>
+    <ol>
+    {% for p in poems %}
+        {% if forloop.counter <= max_results %}
+            <li><a href="{% url 'poem_text' id=p.id %}">{{ p|safe }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ol>
+{% endif %}
 {% endblock %}

@@ -2,6 +2,7 @@ from django.http import HttpResponse, Http404
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay
 from .utils import years_difference
 import datetime
@@ -94,8 +95,12 @@ def book_detail(request, id):
 def poem_text(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
+    show_text = False
+    if poem.book.public_domain_year is not None:
+        show_text = datetime.datetime.now().year >= poem.book.public_domain_year
     return render(request, "web/poem_text.html", {
-        "poem" : poem
+        "poem" : poem,
+        "show_text" : show_text
     })
 
 def poem_in_book(request, id):
@@ -136,9 +141,22 @@ def search(request):
     authors = Person.objects.filter(
         models.Q(firstname__icontains=query) | models.Q(surname__icontains=query)
     )
+    # search in poems titles
+    poems_title = Poem.objects.filter(title__icontains=query)
+    poems_fulltext = []
+    if poems_title.count() < max_results:
+        limit = max_results - poems_title.count()
+        poems_fulltext = Poem.objects.exclude(id__in=poems_title.values('id')).\
+            filter(text_search_vector=query).\
+            annotate(
+                rank=SearchRank('text_search_vector', query)
+            ).\
+            order_by("-rank")[:limit]
+    poems = list(poems_title) + list(poems_fulltext)
     return render(request, "web/search_results.html", {
         "query": query,
         "authors" : authors,
+        "poems" : poems,
         "max_results" : max_results,
     })
 
