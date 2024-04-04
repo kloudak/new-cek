@@ -103,9 +103,8 @@ strana {
     color: darkgray;
 }
 
-#poem-text-only-container div.poem-text, 
-#poem-of-today-text div.poem-text
-strana {
+#poem-text-only-container div.poem-text strana, 
+#poem-of-today-text div.poem-text strana {
     display: none;
 }
 
@@ -123,7 +122,7 @@ v {
     padding-left: 10px;
 }
 
-#poem-text-only-container div.poem-text,
+#poem-text-only-container div.poem-text v,
 #poem-of-today-text div.poem-text v 
 {
     padding-left: 0px;
