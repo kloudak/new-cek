@@ -1,0 +1,27 @@
+{% extends 'web/base.html' %}
+
+{% block title %}Výsledky hledání{% endblock %}
+
+{% block content %}
+<h1>Výsledky hledání '<i>{{ query|default:'' }}</i>'</h1>
+{% if authors|length > 0 %}
+    <h2>Nalezení autoři 
+        {% if authors|length <= max_results %}
+            ({{ authors|length}})
+        {% else %}
+            ({{ max_results}} z {{ authors|length}} výsledků)
+        {% endif %}
+    </h2>
+    <ol>
+    {% for a in authors %}
+        {% if forloop.counter <= max_results %}
+            {% if a.pseudonym_for %}
+                <li><a href="{% url 'author_detail' id=a.pseudonym_for.id %}">{{ a }}</a></li>
+            {% else %}
+                <li><a href="{% url 'author_detail' id=a.id %}">{{ a }}</a></li>
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+    </ol>
+{% endif %}
+{% endblock %}

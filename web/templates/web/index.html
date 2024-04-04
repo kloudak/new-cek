@@ -7,7 +7,9 @@
     <h1>Česká elektronická knihovna</h1>
     <h2>Poezie 19. a počátku 20. století</h2>
     <div>
-        <input type="search" class="form-control" placeholder="Vyhledávání">
+        <form method="get" action="{% url 'search' %}">
+            <input type="search" class="form-control" name="q" placeholder="Vyhledávání" />
+        </form>
     </div>
 </div>
 

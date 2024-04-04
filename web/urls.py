@@ -15,6 +15,8 @@ urlpatterns = [
     path("basen/<int:id>/v-knize", views.poem_in_book, name="poem_in_book"),
     path("basen/<int:id>/versologie", views.poem_versology, name="poem_versology"),
     path("basen/<int:id>/AI", views.poem_AI, name="poem_AI"),
+    # search
+    path("hledani", views.search, name="search"),
     # static pages
     path("o-projektu", views.about_project, name="about_project"),
     path("pro-skoly", views.for_schools, name="for_schools"),

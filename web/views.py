@@ -1,6 +1,6 @@
 from django.http import HttpResponse, Http404
 from django.utils import timezone
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay
 from .utils import years_difference
@@ -123,6 +123,23 @@ def poem_AI(request, id):
     poem.set_html_text()
     return render(request, "web/poem_AI.html", {
         "poem" : poem
+    })
+# SEARCH
+def search(request):
+    query = None
+    max_results = 50 # SETTING
+    if 'q' in request.GET and len(request.GET['q'].strip()) > 0:
+        query = request.GET['q'].strip()
+    if query is None:
+        redirect('index')
+    # search in authors name
+    authors = Person.objects.filter(
+        models.Q(firstname__icontains=query) | models.Q(surname__icontains=query)
+    )
+    return render(request, "web/search_results.html", {
+        "query": query,
+        "authors" : authors,
+        "max_results" : max_results,
     })
 
 # STATIC PAGES
