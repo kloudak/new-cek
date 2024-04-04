@@ -286,8 +286,8 @@ class PoemOfTheDay(models.Model):
         """
 
         # settings
-        max_n_strophes = 2
-        max_n_verses = 14
+        max_n_strophes = 3
+        max_n_verses = 10
 
         root = ET.fromstring(f"<div class=\"poem-text\">\n{self.poem.text}\n</div>")
         sc = 1
@@ -297,18 +297,19 @@ class PoemOfTheDay(models.Model):
         last_verse = None
         # removing strofa and v tags
         for strofa in root.findall(".//strofa"):
-            if sc > max_n_strophes:
+            if sc > max_n_strophes or vc > max_n_verses:
                 root.remove(strofa)
                 incomplete = True
+                continue
             else:
                 last_strofa = strofa
-                for verse in strofa.findall(".//v"):
-                    if vc > max_n_verses:
-                        strofa.remove(verse)
-                        incomplete = True
-                    else:
-                        last_verse = verse
-                    vc += 1
+            for verse in strofa.findall(".//v"):
+                if vc > max_n_verses:
+                    strofa.remove(verse)
+                    incomplete = True
+                else:
+                    last_verse = verse
+                vc += 1
             sc += 1
         # removing everithing after the last tag
         last_element = last_verse if last_verse is not None else last_strofa
