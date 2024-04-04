@@ -103,15 +103,11 @@ strana {
     color: darkgray;
 }
 
-#poem-text-only-container div.poem-text strana {
+#poem-text-only-container div.poem-text, 
+#poem-of-today-text div.poem-text
+strana {
     display: none;
 }
-
-#poem-text-only-container div.poem-text v {
-    
-    padding-left: 0px;
-}
-
 
 prolozeno {
     letter-spacing: 5px;
@@ -126,6 +122,13 @@ v {
     display: block;
     padding-left: 10px;
 }
+
+#poem-text-only-container div.poem-text,
+#poem-of-today-text div.poem-text v 
+{
+    padding-left: 0px;
+}
+
 
 strofa {
     display: block;

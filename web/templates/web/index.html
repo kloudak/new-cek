@@ -16,7 +16,7 @@
     <div class="col-6">
             <h4>BÁSEŇ DNE {{ pod.day|date:"d. m." }}</h4>
             <p>{{ pod.description|safe }}</p>
-            <p>{{ pod.html_text|safe }}</p>
+            <div id="poem-of-today-text">{{ pod.html_text|safe }}</div>
     </div>
     <div class="col-6">
         <div class="mb-3">
