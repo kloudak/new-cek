@@ -49,6 +49,12 @@ class Book(models.Model):
     )  # 'misto'
     publisher = models.TextField(blank=True, null=True)  # 'vydavatel'
     year = models.IntegerField(blank=True, null=True)  # 'rok' as YYYY
+    public_domain_year = models.IntegerField(
+        verbose_name="Public Domain Start Year",
+        help_text="Year when the book enters the public domain, based on the author's death year + 70 years.",
+        null=True,
+        blank=True
+    )
     edition = models.TextField(blank=True, null=True)  # 'vydani'
     pages = models.CharField(max_length=255, blank=True, null=True)  # 'stran'
     dedication = models.TextField(blank=True, null=True)  # 'venovani'
@@ -72,6 +78,16 @@ class Book(models.Model):
 
     def __str__(self):
         return remove_html_tags(self.title)
+    
+    def clean(self):
+        super().clean()  # Don't forget to call the superclass's clean method
+
+        if self.public_domain_start_year:
+            year_str = str(self.public_domain_start_year)
+            if len(year_str) != 4 or not year_str.isdigit():
+                raise ValidationError({
+                    'public_domain_start_year': "Year must be in YYYY format."
+                })
 
     def save(self, *args, import_xml=False, **kwargs):
        
