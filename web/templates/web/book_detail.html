@@ -39,6 +39,12 @@
 <p>
     {{ book.editorial_note|default:'<i>neuvedena</i>'|safe}}<br/>
 </p>
+{% if not show_text %}
+    <div class="alert alert-warning" role="alert">
+        Tato kniha je chráněna autorskými právy, bude zveřejněna až v roce 
+        <b>{{ book.public_domain_year|default:"<i>rok zveřejnění není nastaven</i>"}}</b>.
+    </div>
+{% endif %}
 <div class="row">
     <div class="col-3" id="left-column">
         {{ book.content|safe }}

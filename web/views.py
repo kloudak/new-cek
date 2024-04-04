@@ -4,6 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from django.db import models
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay
 from .utils import years_difference
+import datetime
 
 def index(request):
     n_books = Book.objects.count()
@@ -81,8 +82,12 @@ def book_list(request):
 def book_detail(request, id):
     book = get_object_or_404(Book.objects.prefetch_related('authorships__person'), id=id)
     book.set_complete_text()
+    show_text = False
+    if book.public_domain_year is not None:
+        show_text = datetime.datetime.now().year >= book.public_domain_year
     return render(request, "web/book_detail.html", {
-        "book" : book
+        "book" : book,
+        "show_text" : show_text
     })
 
 # POEMS
@@ -97,9 +102,13 @@ def poem_in_book(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
     poems_in_book = poem.book.poems.all().order_by('order_in_book')
+    show_text = False
+    if poem.book.public_domain_year is not None:
+        show_text = datetime.datetime.now().year >= poem.book.public_domain_year
     return render(request, "web/poem_in_book.html", {
         "poem" : poem,
-        "poems_in_book" : poems_in_book
+        "poems_in_book" : poems_in_book,
+        "show_text" : show_text
     })
 
 def poem_versology(request, id):

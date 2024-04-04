@@ -4,6 +4,12 @@
 
 {% block poem_content %}
 <h1>{{ poem|safe }}</h1>
+{% if not show_text %}
+    <div class="alert alert-warning" role="alert">
+        Tato báseň je chráněna autorskými právy, bude zveřejněna až v roce 
+        <b>{{ poem.book.public_domain_year|default:"<i>rok zveřejnění není nastaven</i>"}}</b>.
+    </div>
+{% endif %}
 <div class="row">
     <div class="col-9" id="poem-text-only-container">
         {{ poem.html_text|safe }}
