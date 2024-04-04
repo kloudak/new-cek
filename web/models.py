@@ -80,7 +80,7 @@ class Book(models.Model):
         return remove_html_tags(self.title)
     
     def clean(self):
-        super().clean()  # Don't forget to call the superclass's clean method
+        super().clean()
 
         if self.public_domain_year:
             year_str = str(self.public_domain_year)
