@@ -82,11 +82,11 @@ class Book(models.Model):
     def clean(self):
         super().clean()  # Don't forget to call the superclass's clean method
 
-        if self.public_domain_start_year:
-            year_str = str(self.public_domain_start_year)
+        if self.public_domain_year:
+            year_str = str(self.public_domain_year)
             if len(year_str) != 4 or not year_str.isdigit():
                 raise ValidationError({
-                    'public_domain_start_year': "Year must be in YYYY format."
+                    'public_domain_year': "Year must be in YYYY format."
                 })
 
     def save(self, *args, import_xml=False, **kwargs):
