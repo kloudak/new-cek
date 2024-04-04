@@ -20,14 +20,14 @@ class PoemInline(admin.StackedInline):
 
 class BookAdmin(admin.ModelAdmin):
     inlines = (AuthorshipInline, PoemInline)
-    list_display = ('id','title','year','author_xml')
+    list_display = ('id','title','year', 'public_domain_year','author_xml')
     list_display_links = ('id', 'title')
-    search_fields = ('id','title','year','author_xml')
-    ordering = ('id','title','year','author_xml')
+    search_fields = ('id','title','year', 'public_domain_year','author_xml')
+    ordering = ('id','title','year', 'public_domain_year','author_xml')
 
 class PoemAdmin(admin.ModelAdmin):
     list_display = ('id','title', 'book')
-    list_display_links = ('title',)
+    list_display_links = ('id','title',)
     search_fields = ('id','title')
     ordering = ('id','title')
 
