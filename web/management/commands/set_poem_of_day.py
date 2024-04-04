@@ -29,9 +29,9 @@ class Command(BaseCommand):
 
         # Fetch the poem instance
         try:
-            poem = Poem.objects.get(id=15700008)
+            poem = Poem.objects.get(id=50600001)
         except Poem.DoesNotExist:
-            raise CommandError('Poem with ID 15700008 does not exist.')
+            raise CommandError('Poem with ID 50600001 does not exist.')
 
         # Create PoemOfTheDay instances
         current_date = from_date
