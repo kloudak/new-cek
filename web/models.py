@@ -51,7 +51,7 @@ class Book(models.Model):
     year = models.IntegerField(blank=True, null=True)  # 'rok' as YYYY
     public_domain_year = models.IntegerField(
         verbose_name="Public Domain Start Year",
-        help_text="Year when the book enters the public domain, based on the author's death year + 70 years.",
+        help_text="Year when the book enters the public domain, based on the author's death year + 71 years.",
         null=True,
         blank=True
     )
