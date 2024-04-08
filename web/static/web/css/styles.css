@@ -1,3 +1,38 @@
+body {
+    background-color: rgb(245,245,245);
+    font-family: Montserrat, Arial;
+    font-weight: 400;
+    color: rgba(6,7,7,0.87);
+}
+
+@media (min-width:992px) {
+    li.nav-item a {
+        position: relative;
+        text-decoration: none;
+    }
+    
+    li.nav-item a.active::after, li.nav-item a:hover::after {
+        content: ''; /* Required for pseudo-elements */
+        display: block;
+        width: 50%; /* Sets the line width to half the width of the link */
+        height: 1px; /* The thickness of the underline */
+        background-color: rgb(211,90,1); /* Color of the underline */
+        position: absolute;
+        left: 25%; /* Centers the line (50% width - 25% left offset) */
+        bottom: 8px; /* Adjusts vertical position of the line */
+    }
+    
+    nav.navbar {
+        background-color: transparent !important;
+        font-size: 18px;
+        padding: 45px 0;
+    }
+
+    nav.navbar li.nav-item {
+        padding-left: 45px;
+    }
+}
+
 /* Custom styles for DataTable */
 .dataTables_wrapper .dataTable {
     border-collapse: collapse; /* Ensures borders are handled in the most compact way */

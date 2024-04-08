@@ -1,8 +1,16 @@
 {% load web_tags %}
+{% load static %}
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'index' %}">ČEK</a>
-        <div class="collapse navbar-collapse">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            <img src="{% static 'web/images/ucl-logo-nav.png' %}"/>
+        </a>
+        <!-- Toggle button for small screens -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navigation items -->
+        <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'index' %}" href="{% url 'index' %}">Domů</a>
@@ -15,6 +23,9 @@
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'for_schools' %}" href="{% url 'for_schools' %}">Pro školy</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="">Badatelské nástroje</a>
                 </li>
             </ul>
         </div>
