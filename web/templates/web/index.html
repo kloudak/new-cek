@@ -3,7 +3,7 @@
 {% block title %}ČEK{% endblock %}
 
 {% block content %}
-<div>
+<div id="homepage-head">
     <h1>Česká elektronická knihovna</h1>
     <h2>Poezie 19. a počátku 20. století</h2>
     <div>
@@ -14,13 +14,13 @@
 </div>
 
 
-<div class="row">
-    <div class="col-6">
+<div class="row homepage-poem-of-today-container">
+    <div class="col-6 left-col">
             <h4>BÁSEŇ DNE {{ pod.day|date:"d. m." }}</h4>
             <p>{{ pod.description|safe }}</p>
             <div id="poem-of-today-text">{{ pod.html_text|safe }}</div>
     </div>
-    <div class="col-6">
+    <div class="col-6 right-col-flex-container">
         <div class="mb-3">
             <h4>{{ n_authors }} autorů</h4>
             <p>
