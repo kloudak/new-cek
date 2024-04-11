@@ -25,7 +25,7 @@ body {
     nav.navbar {
         background-color: transparent !important;
         font-size: 18px;
-        padding: 45px 0;
+        padding: 40px 0;
     }
 
     nav.navbar li.nav-item {
@@ -35,6 +35,32 @@ body {
 
 div#homepage-head {
     margin-bottom: 20px;
+    gap: 30px;
+    height: 310px;
+    display: flex;
+    padding: 0px 24px;
+    z-index: 1;
+    align-items: center;
+    flex-shrink: 0;
+    flex-direction: column;
+    color: rgba(6,7,7,0.87);;
+}
+
+div#homepage-head h1 {
+    font-size: 60px;
+    font-weight: 400;
+}
+
+div#homepage-head h2 {
+    font-size: 34px;
+    font-weight: 400;
+}
+
+div#homepage-head input {
+    border-color: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    padding: 12px 16px;
+    width: 450px;
 }
 
 .homepage-poem-of-today-container {
@@ -81,12 +107,15 @@ div#homepage-head {
     margin-bottom: 0 !important;
 
     font-size: 20px;
+
+    color: rgba(6,7,7,0.87);
+    opacity: 0.8;
 }
 
 .right-col-flex-container > div h4 {
     font-size: 34px;
     font-weight: 400;
-    color: rgba(6,7,7,0.87);
+
 }
 
 .right-col-flex-container > div p {
@@ -249,6 +278,19 @@ komentar {
     position: relative;
     cursor: pointer;
     border-bottom: 1px #007bff dotted;
+}
+
+#poem-of-today-text div.poem-text komentar {
+    border-bottom: none;
+    cursor: default;
+}
+
+#poem-of-today-text div.poem-text verze[typ="editordska"] {
+    color: inherit;
+}
+
+#poem-of-today-text div.poem-text verze[typ="puvodni"] {
+    display: none;
 }
 
 .verse-number {
