@@ -1,5 +1,7 @@
 {% extends 'web/base.html' %}
 
+{% load static %}
+
 {% block title %}ČEK{% endblock %}
 
 {% block content %}
@@ -20,35 +22,51 @@
             <p class="poem-of-today-description">{{ pod.description|safe }}</p>
             <div id="poem-of-today-text">{{ pod.html_text|safe }}</div>
     </div>
-    <div class="col-6 right-col-flex-container">
+    <div class="col-md-6 right-col-flex-container">
         <div class="mb-3">
             <h4>{{ n_authors }} autorů</h4>
             <p>
                 Seznam autorů a autorek 
-                <a href="{% url 'author_list'%}"><span class="bi bi-arrow-right-square"></span></a>
+                <a href="{% url 'author_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>{{ n_books }} sbírek</h4>
             <p>
                 Seznam všech knih
-                <a href="{% url 'book_list'%}"><span class="bi bi-arrow-right-square"></span></a>
+                <a href="{% url 'book_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>Studujete</h4>
             <p>
                 Tohlese vám bude hodit
-                <a href="{% url 'for_schools'%}"><span class="bi bi-arrow-right-square"></span></a>
+                <a href="{% url 'for_schools'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>Bádáte?</h4>
             <p>
                 Pokročilé vyhledávání
-                <a href=""><span class="bi bi-arrow-right-square"></span></a>
+                <a href=""><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 homapage-text">
+        <h2>Kde to jste a co tu najdete?</h2>
+        
+        <p>
+            Česká elektronická knihovna shromažďuje díla českých i zahraničních básníků a básnířek z období 19. a 20. století, kteří ovlivnili nejen literaturu, ale i společenský a kulturní vývoj. Naleznete zde básně od klasiků jako je Karel Hynek Mácha, Jaroslav Seifert, Vítězslav Nezval, a mnoho dalších.
+        </p>
+        <p>
+            Projekt je zaměřen na digitalizaci těchto děl a má za cíl umožnit široké veřejnosti, studentům, vědcům a milovníkům poezie přístup k těmto výjimečným dílům. Více o projektu
+        </p>
+    </div>
+    <div class="col-md-6 homapage-video">
+        <img src="{% static 'web/images/video.png'%}" style="width: 100%;">
     </div>
 </div>
 {% endblock %}

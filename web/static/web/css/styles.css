@@ -60,7 +60,7 @@ div#homepage-head input {
     border-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     padding: 12px 16px;
-    width: 450px;
+    width: 650px;
 }
 
 .homepage-poem-of-today-container {
@@ -90,6 +90,11 @@ div#homepage-head input {
     flex-direction: column;
     height: 100%;
     gap: 20px;
+    padding-left: 20px;
+}
+
+.right-col-flex-container a {
+    float: right;
 }
 
 .right-col-flex-container > div {
@@ -110,6 +115,26 @@ div#homepage-head input {
 
     color: rgba(6,7,7,0.87);
     opacity: 0.8;
+}
+
+.homapage-text {
+    padding: 40px 20px 20px 0px;
+    color: rgba(6,7,7,0.87);
+    opacity: 0.8;
+}
+
+.homapage-video {
+    padding: 40px 10px 20px 20px;
+}
+
+.homapage-text h2 {
+    font-weight: 400;
+    padding-left: 0px;
+}
+
+.homapage-text p {
+    text-align: justify;
+    padding-top: 10px;
 }
 
 .right-col-flex-container > div h4 {
@@ -290,6 +315,10 @@ komentar {
 }
 
 #poem-of-today-text div.poem-text verze[typ="puvodni"] {
+    display: none;
+}
+
+#poem-of-today-text div.poem-text nadpis {
     display: none;
 }
 
