@@ -17,38 +17,56 @@
 
 
 <div class="row homepage-poem-of-today-container">
-    <div class="col-6 left-col">
+    <div class="col-md-6 left-col">
             <h4>BÁSEŇ DNE {{ pod.day|date:"d. m." }}</h4>
-            <p class="poem-of-today-description">{{ pod.description|safe }}</p>
-            <div id="poem-of-today-text">{{ pod.html_text|safe }}</div>
+            <p id="poem-of-today-description">
+                <img src="{% static 'web/images/info-icon.png'%}" alt="info icon">
+                {{ pod.description|safe }}
+            </p>
+            <div id="poem-of-today-text">
+                <span class="title">{{ pod.poem.title|striptags }}</span>
+                <span class="author-name">
+                    {% if pod.poem.author %}
+                        {{ pod.poem.author }}
+                    {% elif pod.poem.book.authorships.all|length == 1 %}
+                        {% if pod.poem.book.authorships.first.person.pseudonym_for %}
+                            {{ pod.poem.book.authorships.first.person.pseudonym_for }}kk
+                        {% else %}
+                            {{ pod.poem.book.authorships.first.person }}
+                        {% endif %}
+                    {% endif%}
+                </span>
+                {{ pod.html_text|safe }}
+                <a class="link-arrow" href="{% url 'poem_text' id=pod.poem.id %}">celá báseň <img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+            </div>
     </div>
     <div class="col-md-6 right-col-flex-container">
         <div class="mb-3">
             <h4>{{ n_authors }} autorů</h4>
             <p>
                 Seznam autorů a autorek 
-                <a href="{% url 'author_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'author_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>{{ n_books }} sbírek</h4>
             <p>
                 Seznam všech knih
-                <a href="{% url 'book_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'book_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
-            <h4>Studujete</h4>
+            <h4>Studujete?</h4>
             <p>
                 Tohlese vám bude hodit
-                <a href="{% url 'for_schools'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'for_schools'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>Bádáte?</h4>
             <p>
                 Pokročilé vyhledávání
-                <a href=""><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href=""><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
             </p>
         </div>
     </div>
@@ -67,6 +85,49 @@
     </div>
     <div class="col-md-6 homapage-video">
         <img src="{% static 'web/images/video.png'%}" style="width: 100%;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6 homapage-text">
+        <h2>Poděkování patří</h2>
+        
+        <p>
+            Technologické agentuře České republiky TAČR, která umožnila vznik tohoto projektu.
+        </p>
+        
+    </div>
+    <div class="col-md-6 homapage-text">
+        <img src="{% static 'web/images/TACR.png'%}" style="width: 100%;">
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 homapage-text homepage-darker-row">
+        <h2>Máte námět, připomínku či dotaz?</h2>
+        <p>
+            Napište nám na <a href="mailto:literatura@ucl.cas.cz">literatura@ucl.cas.cz</a>.
+        </p>
+    </div> 
+</div>
+<div class="row">
+    <div class="col-md-12 homapage-text">
+        <h2>Tiráž</h2>
+        <p>
+            Česká elektronická knihovna shromažďuje díla českých i zahraničních básníků a básnířek z období 19. a 20. století, kteří ovlivnili nejen literaturu, ale i společenský a kulturní vývoj. Naleznete zde básně od klasiků, jako je Karel Hynek Mácha, Jaroslav Seifert, Vítězslav Nezval, a mnoho dalších.
+        </p>
+        <p>
+            Projekt je zaměřen na digitalizaci těchto děl a má za cíl umožnit široké veřejnosti, studentům, vědcům a milovníkům poezie přístup k těmto výjimečným dílům. Zobrazit <a href="{% url 'about_project' %}">více o projektu</a>.
+        </p>
+    </div> 
+</div>
+<div class="row homepage-logos">
+    <div class="col-md-4 text-end">
+        <img src="{% static 'web/images/AVCR.png'%}">
+    </div>
+    <div class="col-md-3">
+        
+    </div>
+    <div class="col-md-4">
+        <img src="{% static 'web/images/UCL.png'%}">
     </div>
 </div>
 {% endblock %}

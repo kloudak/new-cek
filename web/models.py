@@ -302,8 +302,8 @@ class PoemOfTheDay(models.Model):
         """
 
         # settings
-        max_n_strophes = 3
-        max_n_verses = 10
+        max_n_strophes = 4
+        max_n_verses = 12
 
         root = ET.fromstring(f"<div class=\"poem-text\">\n{self.poem.text}\n</div>")
         sc = 1
@@ -333,10 +333,11 @@ class PoemOfTheDay(models.Model):
 
         # adding span tag <span>...</span> to indicate incomplete text
         if incomplete:
+            last_verse.set('class', 'last-verse')
             span_tag = ET.Element('span')
             span_tag.text = "..."
             span_tag.set('class', 'incomplete-poem')
-            root.append(span_tag)
+            # last_strofa.append(span_tag)
 
         # saving modified XML to a string
         self.html_text = ET.tostring(root, encoding='unicode', method='xml')

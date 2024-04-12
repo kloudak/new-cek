@@ -5,38 +5,10 @@ body {
     color: rgba(6,7,7,0.87);
 }
 
-@media (min-width:992px) {
-    li.nav-item a {
-        position: relative;
-        text-decoration: none;
-    }
-    
-    li.nav-item a.active::after, li.nav-item a:hover::after {
-        content: ''; /* Required for pseudo-elements */
-        display: block;
-        width: 50%; /* Sets the line width to half the width of the link */
-        height: 1px; /* The thickness of the underline */
-        background-color: rgb(211,90,1); /* Color of the underline */
-        position: absolute;
-        left: 25%; /* Centers the line (50% width - 25% left offset) */
-        bottom: 8px; /* Adjusts vertical position of the line */
-    }
-    
-    nav.navbar {
-        background-color: transparent !important;
-        font-size: 18px;
-        padding: 40px 0;
-    }
-
-    nav.navbar li.nav-item {
-        padding-left: 45px;
-    }
-}
-
 div#homepage-head {
     margin-bottom: 20px;
     gap: 30px;
-    height: 310px;
+    min-height: 310px;
     display: flex;
     padding: 0px 24px;
     z-index: 1;
@@ -44,6 +16,12 @@ div#homepage-head {
     flex-shrink: 0;
     flex-direction: column;
     color: rgba(6,7,7,0.87);;
+}
+
+@media (max-width:768px) {
+    div#homepage-head {
+        gap: 5px;
+    }
 }
 
 div#homepage-head h1 {
@@ -60,7 +38,64 @@ div#homepage-head input {
     border-color: rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     padding: 12px 16px;
-    width: 650px;
+    width: 350px;
+}
+
+#poem-of-today-text {
+    position: relative;
+}
+
+#poem-of-today-text a.link-arrow {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+#poem-of-today-text a.link-arrow:hover {
+    text-decoration: none;
+}
+
+#poem-of-today-text span.author-name {
+    display: block;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+#poem-of-today-text span.title {
+    display: block;
+    font-size: 34px;
+    opacity: 0.8;
+}
+
+#poem-of-today-text .last-verse {
+    position: relative;
+    display: block;
+    overflow: hidden;
+}
+
+#poem-of-today-text .last-verse::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(
+                    rgba(255, 255, 255, 0) 0%, 
+                    rgba(255, 255, 255, 1) 85%,
+                    rgba(255, 255, 255, 1) 100%
+    );
+}
+
+#poem-of-today-description img {
+    width: 17px;
+    position: relative;
+    top: -1px;
+}
+
+#poem-of-today-description {
+    font-style: italic;
+    font-size: 90%;
 }
 
 .homepage-poem-of-today-container {
@@ -88,7 +123,6 @@ div#homepage-head input {
 .right-col-flex-container {
     display: flex;
     flex-direction: column;
-    height: 100%;
     gap: 20px;
     padding-left: 20px;
 }
@@ -129,12 +163,14 @@ div#homepage-head input {
 
 .homapage-text h2 {
     font-weight: 400;
-    padding-left: 0px;
+    padding-left: 20px;
 }
 
 .homapage-text p {
     text-align: justify;
     padding-top: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .right-col-flex-container > div h4 {
@@ -147,6 +183,77 @@ div#homepage-head input {
     margin-bottom: 0;
 }
 
+.homepage-darker-row {
+    background-color: rgb(239, 238, 234);
+}
+
+.homepage-logos {
+    opacity: 0.6;
+    margin-top: 20px;
+}
+
+@media (max-width:768px) {
+    .right-col-flex-container{
+        padding: 20px 20px;
+    }
+
+    .homapage-text {
+        padding: 20px 0;
+    }
+
+    .homapage-video {
+        padding: 20px 0;
+    }
+}
+
+@media (min-width:992px) {
+    li.nav-item a {
+        position: relative;
+        text-decoration: none;
+    }
+    
+    li.nav-item a.active::after, li.nav-item a:hover::after {
+        content: ''; /* Required for pseudo-elements */
+        display: block;
+        width: 50%; /* Sets the line width to half the width of the link */
+        height: 1px; /* The thickness of the underline */
+        background-color: rgb(211,90,1); /* Color of the underline */
+        position: absolute;
+        left: 25%; /* Centers the line (50% width - 25% left offset) */
+        bottom: 8px; /* Adjusts vertical position of the line */
+    }
+    
+    nav.navbar {
+        background-color: transparent !important;
+        font-size: 18px;
+        padding: 40px 0;
+    }
+
+    nav.navbar li.nav-item {
+        padding-left: 45px;
+    }
+
+    div#homepage-head input {
+        width: 650px;
+    }
+}
+
+a.link-arrow img {
+    transition: transform 0.3s ease;
+}
+
+a.link-arrow:hover img {
+    transform: translateX(5px);
+}
+
+a {
+    color: rgb(211,90,1);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
 
 /* Custom styles for DataTable */
 .dataTables_wrapper .dataTable {
