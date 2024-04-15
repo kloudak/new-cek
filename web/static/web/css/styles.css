@@ -255,6 +255,29 @@ a:hover {
     text-decoration: underline;
 }
 
+h1.page-title {
+    font-size: 60px;
+    font-weight: 400;
+}
+
+h2.page-subtitle {
+    font-size: 30px;
+    font-weight: 400;
+}
+
+p.author-dates {
+    font-size: 20px;
+    opacity: 0.8;
+}
+
+div.content-table-wrapper {
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 20px;
+    height: 100%;
+}
+
 /* Custom styles for DataTable */
 .dataTables_wrapper .dataTable {
     border-collapse: collapse; /* Ensures borders are handled in the most compact way */
