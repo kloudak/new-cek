@@ -1,3 +1,19 @@
+function getElementHeightWithMargin(elem) {
+    // Get the element's computed style
+    const style = window.getComputedStyle(elem);
+
+    // Get element's offsetHeight
+    const height = elem.offsetHeight;
+
+    // Get margins (convert them to integer values)
+    const marginTop = parseInt(style.marginTop, 10);
+    const marginBottom = parseInt(style.marginBottom, 10);
+
+    // Total height calculation including margins
+    return height + marginTop + marginBottom;
+}
+
+
 dataTableCS = {
     "emptyTable": "Tabulka neobsahuje žádná data",
     "info": "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",

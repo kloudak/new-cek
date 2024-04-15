@@ -3,56 +3,37 @@
 {% block title %}{{ book.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ book.title|safe }}</h1>
+<div id="page-title-wrapper">
+<h1 class="page-title">{{ book.title|safe }}</h1>
+{% if book.subtitle %}
+<h2 class="page-subtitle">{{ book.subtitle }}</h2>
+{% endif %}
 <h4>
-{% for a in book.authorships.all %}
-    {% if a.person.pseudonym_for %}
-        <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
-    {% else %}
-        <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
-    {% endif %}
-{% empty %}
-<i>autor neznámý</i>
-{% endfor %}
+    {% for a in book.authorships.all %}
+        {% if a.person.pseudonym_for %}
+            <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+        {% else %}
+            <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+        {% endif %}
+    {% empty %}
+        <i>autor neznámý</i>
+    {% endfor %}
 </h4>
-<p>
-    <b>Podtitul:</b> {{ book.subtitle|default:'<i>neuvedeno</i>'|safe}}<br/>
-    <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
-    <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
-    <b>Rok vydání:</b> {{ book.year|default:'<i>neuveden</i>'}}<br/>
-    <b>Vydání:</b> {{ book.edition|default:'<i>neuvedena</i>'}}<br/>
-    <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
-    <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
-    <b>Zdroj. signatura:</b> {{ book.signature|default:'<i>neuvedeno</i>'}}<br/>
-    <b>Autor motta:</b> {{ book.author_of_motto|default:'<i>neuveden</i>'}}<br/>
-    <b>Autor v původní XML:</b> {{ book.author_xml|default:'<i>neuveden</i>'}}<br/>
-</p>
-<h5>Moto</h5>
-<p>
-    {{ book.motto|default:'<i>neuvedeno</i>'|safe}}<br/>
-</p>
-<h5>Popis knihy</h5>
-<p>
-    {{ book.description|default:'<i>neuveden</i>'|safe}}<br/>
-</p>
-<h5>Ediční poznámka</h5>
-<p>
-    {{ book.editorial_note|default:'<i>neuvedena</i>'|safe}}<br/>
-</p>
 {% if not show_text %}
     <div class="alert alert-warning" role="alert">
         Tato kniha je chráněna autorskými právy, bude zveřejněna až v roce 
         <b>{{ book.public_domain_year|default:"<i>rok zveřejnění není nastaven</i>"}}</b>.
     </div>
 {% endif %}
-<div class="row">
-    <div class="col-3" id="left-column">
+</div>
+<div class="row" id="book-content-wrapper">
+    <div class="col-3 col-wrapper scrollable-content" id="left-column">
         {{ book.content|safe }}
     </div>
     <div class="col-6 scrollable-content" id="middle-column">
         {{ book.complete_text|safe }}
     </div>
-    <div class="col-3" id="right-column">
+    <div class="col-3 col-wrapper scrollable-content" id="right-column">
         <div class="btn-group" data-toggle="buttons">
             <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
             <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
@@ -60,6 +41,69 @@
             <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
             <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
         </div>
+        <p>
+            <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
+            <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
+            <b>Rok vydání:</b> {{ book.year|default:'<i>neuveden</i>'}}<br/>
+            <b>Vydání:</b> {{ book.edition|default:'<i>neuvedena</i>'}}<br/>
+            <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
+            <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
+            <b>Zdroj. signatura:</b> {{ book.signature|default:'<i>neuvedeno</i>'}}<br/>
+            <b>Autor motta:</b> {{ book.author_of_motto|default:'<i>neuveden</i>'}}<br/>
+        </p>
+        <h5>Moto</h5>
+        <p>
+            {{ book.motto|default:'<i>neuvedeno</i>'|safe}}<br/>
+        </p>
+        {% if book.description %}
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookDescriptionModal">
+                popis knihy
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="bookDescriptionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookDescriptionModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="bookDescriptionModalLabel">Popis knihy</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    {{ book.description|safe }}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">zavřít</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}
+        {% if book.editorial_note %}
+            <br><br>
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookEditorialNoteModal">
+                ediční poznámka
+            </button>
+            
+            <!-- Modal -->
+            <div class="modal fade" id="bookEditorialNoteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookEditorialNoteModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="bookEditorialNoteModalLabel">Ediční poznámka</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    {{ book.editorial_note|safe }}
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">zavřít</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        {% endif %}  
     </div>
 </div>
 {% endblock %}
@@ -67,9 +111,11 @@
 {% block extra_js %}
 <script>
     $(document).ready( function () {
-        var leftColumnHeight = Math.max($('#left-column ul').height(),800);
-        $('#middle-column').height(leftColumnHeight);
-        $('#right-column').height(leftColumnHeight);
+        var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
+                        +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
+                        + getElementHeightWithMargin(document.querySelector('footer'))
+                        +  44; 
+        $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
 
         var komentars = document.querySelectorAll('komentar');
         komentars.forEach(function(komentar) {
