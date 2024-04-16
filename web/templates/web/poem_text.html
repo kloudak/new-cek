@@ -3,48 +3,50 @@
 {% block poem_title %} - text{% endblock %}
 
 {% block poem_content %}
-<h1>{{ poem|safe }}</h1>
-{% if not show_text %}
-    <div class="alert alert-warning" role="alert">
-        Tato báseň je chráněna autorskými právy, bude zveřejněna až v roce 
-        <b>{{ poem.book.public_domain_year|default:"<i>rok zveřejnění není nastaven</i>"}}</b>.
-    </div>
-{% endif %}
-<div class="row">
-    <div class="col-9" id="poem-text-only-container">
+    <div id="poem-text-only-container">
         {{ poem.html_text|safe }}
     </div>
-    <div class="col-3">
-        <div class="btn-group" data-toggle="buttons" id="versions-selector">
-            <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
-            <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
-            
-            <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
-        </div>
-        <p>
-            Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a><br>
-            Autor 
-            {% if poem.author %}
-            kkk
-            {% elif poem.book.authorships.all|length == 1 %}
-                {% for a in poem.book.authorships.all %}
-                    {% if a.person.pseudonym_for %}
-                        <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person.pseudonym_for }}</a>
-                    {% else %}
-                        <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>
-                    {% endif %}
-                {% endfor %}
-            {% endif%}
+{% endblock%}
 
-        </p>
+{% block poem_right_content%}
+    <div class="btn-group" data-toggle="buttons" id="versions-selector">
+        <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
+        <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
+        
+        <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
+        <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
     </div>
-</div>
+    <p>
+        Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a><br>
+        Autor 
+        {% if poem.author %}
+            {% if poem.author.pseudonym_for %}
+                <a href="{% url 'author_detail' id=poem.author.pseudonym_for.id %}">{{ poem.author.pseudonym_for }}</a>
+            {% else %}
+                <a href="{% url 'author_detail' id=poem.author.id %}">{{ poem.author }}</a>
+            {% endif %}
+        {% elif poem.book.authorships.all|length == 1 %}
+            {% for a in poem.book.authorships.all %}
+                {% if a.person.pseudonym_for %}
+                    <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person.pseudonym_for }}</a>
+                {% else %}
+                    <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>
+                {% endif %}
+            {% endfor %}
+        {% endif%}
+
+    </p>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     $(document).ready( function () {
+        var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
+                        +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
+                        + getElementHeightWithMargin(document.querySelector('footer'))
+                        +  44; 
+        $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+
         var komentars = document.querySelectorAll('komentar');
         komentars.forEach(function(komentar) {
             var dataText = komentar.getAttribute('data-text');

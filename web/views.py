@@ -119,15 +119,23 @@ def poem_in_book(request, id):
 def poem_versology(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
+    show_text = False
+    if poem.book.public_domain_year is not None:
+        show_text = datetime.datetime.now().year >= poem.book.public_domain_year
     return render(request, "web/poem_versology.html", {
-        "poem" : poem
+        "poem" : poem,
+        "show_text" : show_text
     })
 
 def poem_AI(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
+    show_text = False
+    if poem.book.public_domain_year is not None:
+        show_text = datetime.datetime.now().year >= poem.book.public_domain_year
     return render(request, "web/poem_AI.html", {
-        "poem" : poem
+        "poem" : poem,
+        "show_text" : show_text
     })
 # SEARCH
 def search(request):

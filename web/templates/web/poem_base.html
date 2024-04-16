@@ -1,8 +1,30 @@
 {% extends "web/base.html" %}
 
+{% block title %}{{ poem.title|striptags }} - ČEK {% block poem_title %}{% endblock %}{% endblock %}
+
 {% block content %}
-    <div class="row">
-        <div class="col-3 poem-navigation">
+    <div id="page-title-wrapper">
+        <h1 class="page-title">{{ poem.title|striptags }}</h1>
+        <h4>
+            {% for a in poem.book.authorships.all %}
+                {% if a.person.pseudonym_for %}
+                    <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+                {% else %}
+                    <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
+                {% endif %}
+            {% empty %}
+                <i>autor neznámý</i>
+            {% endfor %}
+        </h4>
+        {% if not show_text %}
+            <div class="alert alert-warning" role="alert">
+                Tato báseň je chráněna autorskými právy, bude zveřejněna až v roce 
+                <b>{{ poem.book.public_domain_year|default:"<i>rok zveřejnění není nastaven</i>"}}</b>.
+            </div>
+        {% endif %}
+    </div>
+    <div class="row" id="book-content-wrapper">
+        <div class="col-md-3 poem-navigation col-wrapper" id="left-column">
             <ul>
                 <li><a href="{% url 'poem_text' id=poem.id %}">Báseň s id={{ poem.id }} - text</a></li>
                 <li><a href="{% url 'poem_in_book' id=poem.id %}">Báseň s id={{ poem.id }} - v knize</a></li>
@@ -11,8 +33,14 @@
             </ul>
         </div>
         
-        <div class="col-9 poem-content">
+        <div class="col-md-6 poem-content scrollable-content" id="middle-column">
             {% block poem_content %}
+            
+            {% endblock %}
+        </div>
+
+        <div class="col-md-3 col-wrapper scrollable-content" id="right-column">
+            {% block poem_right_content %}
             
             {% endblock %}
         </div>
