@@ -182,8 +182,12 @@ class Book(models.Model):
         self.content += "</ul>\n"
     
     def _extract_content(self):
+        self.set_complete_text()
+        complete_text = self.complete_text.replace( "&nbsp;&nbsp;&nbsp;&nbsp;", "<tab />").\
+                                        replace("&nbsp;","<nbsp />")
+                                
         # Parse the XML string into an ElementTree object
-        root = ET.fromstring(f"<bookroot>{self.text}</bookroot>")
+        root = ET.fromstring(f"{complete_text}")
         
         # Initialize an empty list to store dictionaries of tag info
         tag_info_list = []
