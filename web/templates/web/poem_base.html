@@ -1,5 +1,7 @@
 {% extends "web/base.html" %}
 
+{% load web_tags %}
+
 {% block title %}{{ poem.title|striptags }} - ČEK {% block poem_title %}{% endblock %}{% endblock %}
 
 {% block content %}
@@ -26,10 +28,10 @@
     <div class="row" id="book-content-wrapper">
         <div class="col-md-3 poem-navigation col-wrapper" id="left-column">
             <ul>
-                <li><a href="{% url 'poem_text' id=poem.id %}">Báseň s id={{ poem.id }} - text</a></li>
-                <li><a href="{% url 'poem_in_book' id=poem.id %}">Báseň s id={{ poem.id }} - v knize</a></li>
-                <li><a href="{% url 'poem_versology' id=poem.id %}">Báseň s id={{ poem.id }} - versologie</a></li>
-                <li><a href="{% url 'poem_AI' id=poem.id %}">Báseň s id={{ poem.id }} - AI</a></li>
+                <li class="{% is_active 'poem_text' %}"><a href="{% url 'poem_text' id=poem.id %}">text</a></li>
+                <li class="{% is_active 'poem_in_book' %}"><a href="{% url 'poem_in_book' id=poem.id %}">v knize</a></li>
+                <li class="{% is_active 'poem_versology' %}"><a href="{% url 'poem_versology' id=poem.id %}">versologie</a></li>
+                <li class="{% is_active 'poem_AI' %}"><a href="{% url 'poem_AI' id=poem.id %}">AI</a></li>
             </ul>
         </div>
         
