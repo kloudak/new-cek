@@ -3,7 +3,12 @@
 {% block title %}Výsledky hledání{% endblock %}
 
 {% block content %}
-<h1>Výsledky hledání '<i>{{ query|default:'' }}</i>'</h1>
+<h1 class="page-title">Výsledky hledání '<i>{{ query|default:'' }}</i>'</h1>
+<div>
+    <form method="get" action="{% url 'search' %}">
+        <input type="search" class="form-control" name="q" placeholder="Vyhledávání" value="{{ query|default:'' }}"/>
+    </form>
+</div>
 {% if authors|length > 0 %}
     <h2>Nalezení autoři 
         {% if authors|length <= max_results %}
@@ -36,6 +41,22 @@
     {% for p in poems %}
         {% if forloop.counter <= max_results %}
             <li><a href="{% url 'poem_text' id=p.id %}">{{ p|safe }}</a></li>
+        {% endif %}
+    {% endfor %}
+    </ol>
+{% endif %}
+{% if books|length > 0 %}
+    <h2>Nalezené knihy
+        {% if books|length <= max_results %}
+            ({{ books|length}})
+        {% else %}
+            (prvních {{ max_results}} výsledků)
+        {% endif %}
+    </h2>
+    <ol>
+    {% for b in books %}
+        {% if forloop.counter <= max_results %}
+            <li><a href="{% url 'book_detail' id=b.id %}">{{ b|striptags|safe }}</a></li>
         {% endif %}
     {% endfor %}
     </ol>

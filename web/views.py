@@ -149,6 +149,18 @@ def search(request):
     authors = Person.objects.filter(
         models.Q(firstname__icontains=query) | models.Q(surname__icontains=query)
     )
+    # search in book titles
+    books_title = Book.objects.filter(title__icontains=query)
+    books_fulltext = []
+    if books_title.count() < max_results:
+        limit = max_results - books_title.count()
+        books_fulltext = Book.objects.exclude(id__in=books_title.values('id')).\
+            filter(text_search_vector=query).\
+            annotate(
+                rank=SearchRank('text_search_vector', query)
+            ).\
+            order_by("-rank")[:limit]
+    books = list(books_title) + list(books_fulltext)
     # search in poems titles
     poems_title = Poem.objects.filter(title__icontains=query)
     poems_fulltext = []
@@ -165,6 +177,7 @@ def search(request):
         "query": query,
         "authors" : authors,
         "poems" : poems,
+        "books" : books,
         "max_results" : max_results,
     })
 
