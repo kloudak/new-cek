@@ -168,6 +168,10 @@ def search(request):
         "max_results" : max_results,
     })
 
+# ADVANCED SEARCH
+def advanced_search(request):
+    return render(request, "web/advanced_search.html")
+
 # STATIC PAGES
 def about_project(request):
     return render(request, "web/about_project.html")
