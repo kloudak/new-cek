@@ -256,8 +256,12 @@ class Poem(models.Model):
         null=True, editable=False
     )  # 'text without tags'
     author = models.ForeignKey(
-        Person, on_delete=models.PROTECT, null=True, blank=True
+        Person, on_delete=models.PROTECT, null=True, blank=True, related_name="poems"
     )  # author is taken from the book if this is null and the book has axactly one author
+    next_issue_of = models.ForeignKey(
+        'self', on_delete=models.PROTECT, null=True, blank=True,  related_name='previous_issues'
+    )
+
 
     def __str__(self):
         return remove_html_tags(self.title) if self.title is not None else f"Báseň bez názvu #{self.id}"
