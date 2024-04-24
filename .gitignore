@@ -176,3 +176,4 @@ new-cek.code-workspace
 # XML files withtexts
 web/data/poems/*.xml
 web/data/books/*.xml
+web/data/poem_files/*.txt
