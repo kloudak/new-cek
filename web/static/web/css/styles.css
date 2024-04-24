@@ -300,7 +300,9 @@ div#middle-column {
 
 div#middle-column div.book-text, 
 div#middle-column div#poem-text-container,
-div#middle-column div#poem-text-container div.poem-text {
+div#middle-column div#poem-text-container div.poem-text,
+div#middle-column div#poem-text-only-container,
+div#middle-column div#poem-text-only-container div.poem-text {
     height: 100%;
     overflow-y: auto;
 }
