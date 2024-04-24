@@ -35,7 +35,7 @@ def remove_html_tags(xml_string):
     html_tag_pattern = re.compile(r'<.*?>')
     
     # Replace HTML tags with an empty string
-    no_xml_string = re.sub(html_tag_pattern, ' ', xml_string).replace('  ', ' ')
+    no_xml_string = re.sub(html_tag_pattern, '', xml_string).replace('  ', ' ')
     
     return no_xml_string
 
