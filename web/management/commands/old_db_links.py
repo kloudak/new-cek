@@ -204,7 +204,7 @@ class Command(BaseCommand):
             df = pd.read_csv(csvfile)
         if True:
             df_output = pd.read_csv('./web/data/web_ccv_template.csv')
-            for book in Book.objects.filter(id__range=(0,1700)).all().order_by('id'):
+            for book in Book.objects.filter(id__range=(1,1700)).all().order_by('id'):
                 print(f"================= Book id: {book.id} ================")
                 poems = book.poems.all().order_by('order_in_book')
                 df_poems = df[(df['book_id']==book.id) & ((df.part_order <= 1.0) | (df.part_order.isnull()))]
@@ -259,7 +259,6 @@ class Command(BaseCommand):
                         print(f"{ccv_id}: not found") 
                     elif len(ids) > 1:
                         all_good = False
-                        print(f"{ccv_id}: {ids} fits found")
                         self.stdout.write(self.style.ERROR(f"{ccv_id}: {ids} fits found")) 
                     else:
                         cek_id = ids[0]
