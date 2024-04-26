@@ -177,3 +177,5 @@ new-cek.code-workspace
 web/data/poems/*.xml
 web/data/books/*.xml
 web/data/poem_files/*.txt
+web/data/ccv/*.json
+web/data/ccv_syllables/*.json
