@@ -285,7 +285,30 @@ class Poem(models.Model):
         self.html_text = ET.tostring(root, encoding='unicode', method='xml')
         self.html_text = self.html_text.replace("<nbsp />","&nbsp;").\
                                 replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;")
-        
+
+
+class PoemInCCV(models.Model):
+    poem_in_cek = models.ForeignKey(
+        Poem, on_delete=models.PROTECT, related_name='poems_in_ccv', blank=True, null=True
+    )
+    book_in_cek = models.ForeignKey(
+        Book, on_delete=models.PROTECT, related_name='poems_in_ccv'
+    )
+    ccv_id = models.CharField(max_length=24)
+    ccv_title = models.TextField(null=True)
+    ccv_author = models.CharField(max_length=225, null=True)
+    ccv_year = models.IntegerField(blank=True, null=True)
+    ccv_part_of = models.IntegerField(blank=True, null=True)
+    ccv_part_order = models.IntegerField(blank=True, null=True)
+    ccv_next_issue_of = models.IntegerField(blank=True, null=True)
+    ccv_part_of = models.ForeignKey(
+        Poem, on_delete=models.PROTECT, related_name='parts_in_ccv', blank=True, null=True
+    )
+    ccv_next_issue_of = models.ForeignKey(
+        Poem, on_delete=models.PROTECT, related_name='next_issues_in_ccv', blank=True, null=True
+    )
+
+    
 
 class PoemOfTheDay(models.Model):
     html_text = ""
