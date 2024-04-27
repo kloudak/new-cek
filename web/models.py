@@ -294,6 +294,7 @@ class PoemInCCV(models.Model):
     book_in_cek = models.ForeignKey(
         Book, on_delete=models.PROTECT, related_name='poems_in_ccv'
     )
+    cluster_id = models.IntegerField(unique=True, default=0)
     ccv_id = models.CharField(max_length=24)
     ccv_title = models.TextField(null=True)
     ccv_author = models.CharField(max_length=225, null=True)
@@ -301,10 +302,10 @@ class PoemInCCV(models.Model):
     ccv_part_of = models.IntegerField(blank=True, null=True)
     ccv_part_order = models.IntegerField(blank=True, null=True)
     ccv_next_issue_of = models.IntegerField(blank=True, null=True)
-    ccv_part_of = models.ForeignKey(
+    cek_part_of = models.ForeignKey(
         Poem, on_delete=models.PROTECT, related_name='parts_in_ccv', blank=True, null=True
     )
-    ccv_next_issue_of = models.ForeignKey(
+    cek_next_issue_of = models.ForeignKey(
         Poem, on_delete=models.PROTECT, related_name='next_issues_in_ccv', blank=True, null=True
     )
 
