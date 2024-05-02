@@ -261,6 +261,8 @@ class Poem(models.Model):
     next_issue_of = models.ForeignKey(
         'self', on_delete=models.PROTECT, null=True, blank=True,  related_name='previous_issues'
     )
+    versology_text = models.TextField(blank=True, null=True)
+    versology_stats = models.TextField(blank=True, null=True)
 
 
     def __str__(self):
