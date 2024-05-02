@@ -4,7 +4,7 @@
 
 {% block content %}
 <div id="page-title-wrapper">
-<h1 class="page-title">{{ book.title|safe }}</h1>
+<h1 class="page-title">{{ book.title|safe }}{% if book.year %} ({{ book.year }}){% endif %}</h1>
 {% if book.subtitle %}
 <h2 class="page-subtitle">{{ book.subtitle }}</h2>
 {% endif %}
@@ -44,7 +44,6 @@
         <p>
             <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
             <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
-            <b>Rok vydání:</b> {{ book.year|default:'<i>neuveden</i>'}}<br/>
             <b>Vydání:</b> {{ book.edition|default:'<i>neuvedena</i>'}}<br/>
             <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
             <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
