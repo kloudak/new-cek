@@ -14,7 +14,7 @@
         <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
         <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
     </div>
-    Básně v knize <a href="{%url 'book_detail' id=poem.book.id %}">{{ poem.book.title }}</a>:
+    Básně v knize <a href="{%url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a>:
     <ol>
         {% for p in poems_in_book %}
         {% if p.id == poem.id %}
