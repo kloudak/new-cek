@@ -49,9 +49,10 @@
             <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
             <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
             <b>Zdroj. signatura:</b> {{ book.source_signature|default:'<i>neuvedeno</i>'}}<br/>
+            <b>Věnování:</b> {{ book.dedication|default:'<i>neuvedeno</i>'}}<br/>
             <b>Autor motta:</b> {{ book.author_of_motto|safe|default:'<i>neuveden</i>'}}<br/>
         </p>
-        <h5>Moto</h5>
+        <h5>Motto</h5>
         <p>
             {{ book.motto|default:'<i>neuvedeno</i>'|safe}}<br/>
         </p>
