@@ -6,7 +6,7 @@
 <div id="page-title-wrapper">
 <h1 class="page-title">{{ book.title|safe }}{% if book.year %} ({{ book.year }}){% endif %}</h1>
 {% if book.subtitle %}
-<h2 class="page-subtitle">{{ book.subtitle }}</h2>
+<h2 class="page-subtitle">{{ book.subtitle|safe }}</h2>
 {% endif %}
 <h4>
     {% for a in book.authorships.all %}
