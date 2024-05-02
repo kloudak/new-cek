@@ -43,10 +43,20 @@
 {% block extra_js %}
 <script>
 $(document).ready( function () {
+    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+        "czech-asc": function(a, b) {
+            return a.localeCompare(b, 'cs', {sensitivity: 'case'});
+        },
+        "czech-desc": function(a, b) {
+            return b.localeCompare(a, 'cs', {sensitivity: 'case'});
+        }
+    });
+
     $('#authorsTable').DataTable({
         order : [[1, 'asc'], [2, 'asc']],
         pageLength: 25,
         columnDefs: [
+            { type: 'czech', targets: '_all' },
             { "orderable": false, "targets": -1 },
             /*
             {            
