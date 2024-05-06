@@ -7,7 +7,7 @@
 {% block poem_content %}
     <div id="poem-versology-container">
         <div class="poem-text">
-            {% if poem.versology_text is not None %}
+            {% if poem.versology_text  %}
                 {{ poem.versology_text|safe }}
             {% else %}
                 <i>versologické údajé k této básni nejsou k dispozci </i>
@@ -17,7 +17,7 @@
 {% endblock%}
 
 {% block poem_right_content%}
-    {% if poem.versology_text is not None %}
+    {% if poem.versology_text %}
         <h5>Vysvětlivky</h5>
         <p>
             <span id="strong-position" class="versology-buttons"><i class="bi bi-eye"></i></span> 
