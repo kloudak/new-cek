@@ -88,3 +88,52 @@ def remove_elements_after(root, tag):
             parent.remove(elem)
     
     return root
+
+def xsampa_to_czech_word(xsampa, orig):
+    mapping = {
+        # Vowels
+        'r\\': 'ř',
+        'l\\': 'ľ',
+        'm\\': 'ĺ',
+        'n\\': 'ň',
+        's\\': 'ś',
+        'S\\': 'š',
+        'z\\': 'ź',
+        'Z\\': 'ž',
+        'P\\': 'ř',
+        ':': '',
+        '=': '',
+        '"': '',
+        'j\\': 'y',
+        't_ś': 'č',
+        't_S': 'č',
+        'rJE' : 'rně',
+        'jé': 'ě',
+        'JE': 'ně',
+        'Je': 'ě',
+        'jE': 'ě',
+        'o_u': 'ou',
+        'a_u': 'au',
+        't_s' : 'c',
+        'J\\E': 'dě',
+        'h\\i:': 'hý',
+        'J\\' : 'ď',
+        'h\\JE': 'hně',
+        'h\\' : 'h',
+        'x': 'ch',
+        'mJE': 'mě'
+    }
+    # Attempt to replace based on longest matches first
+    for xsampa_symbol in sorted(mapping.keys(), key=len, reverse=True):
+        if xsampa_symbol == 'x':
+            if 'ch' in orig:
+                xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
+        elif xsampa_symbol == 'jE':
+            if 'ě' in orig or 'ie' in orig:
+                xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
+        elif xsampa_symbol == 'je':
+            if 'ě' in orig or 'ie' in orig:
+                xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
+        else:
+            xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
+    return xsampa
