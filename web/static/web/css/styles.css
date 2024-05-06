@@ -302,7 +302,9 @@ div#middle-column div.book-text,
 div#middle-column div#poem-text-container,
 div#middle-column div#poem-text-container div.poem-text,
 div#middle-column div#poem-text-only-container,
-div#middle-column div#poem-text-only-container div.poem-text {
+div#middle-column div#poem-text-only-container div.poem-text,
+div#middle-column div#poem-versology-container,
+div#middle-column div#poem-versology-container div.poem-text {
     height: 100%;
     overflow-y: auto;
 }
@@ -374,15 +376,58 @@ div.book-text,
 #poem-text-container div.poem-text, 
 #poem-text-only-container div.poem-text 
 {
-    padding: 20px;
-    background-color: #fdf6e3;
-    color: #333;
-    font-family: "Times New Roman", Times, serif;
-    font-size: 18px;
-    line-height: 1.6;
-    border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
     border-radius: 4px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 20px;
+    height: 100%;
+}
+
+div#middle-column div#poem-versology-container div.poem-text {
+    box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 20px;
+    height: 100%;
+}
+
+syl.S {
+    background-color: rgba(210,210,210,0.35);
+}
+
+syl.stress {
+    text-decoration: underline;
+}
+
+div#poem-versology-container div.poem-text v {
+    position: relative;
+    display: block;
+    margin-left: 10px;
+}
+
+div#poem-versology-container div.poem-text v span.v-text:hover {
+    border-bottom: 1px dotted rgb(211,90,1);
+}
+
+div#poem-versology-container div.poem-text v span.verse-number {
+    text-align: right;
+    display: block;
+    width: 50px;;
+    position: absolute;
+    left: -45px;
+    top: 2px;
+}
+
+div#poem-versology-container div.poem-text v span.metre-info {
+    padding-left: 10px;
+    font-size: 80%;
+    opacity: 0.6;
+    color: rgb(211,90,1);
+}
+
+span.versology-buttons {
+    color: rgb(211,90,1);
+    cursor: pointer;
 }
 
 /* tags for parts, poems and sections */
@@ -490,7 +535,7 @@ komentar {
 }
 
 .verse-number {
-    color: #007bff;
+    color:rgba(211,90,1,0.9);
     opacity: 50%; 
     margin-right: 5px;
     font-family: sans-serif;

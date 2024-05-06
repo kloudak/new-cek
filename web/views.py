@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay
 from .utils import years_difference
-import datetime
+import datetime, json
 
 def index(request):
     n_books = Book.objects.count()
@@ -122,9 +122,26 @@ def poem_versology(request, id):
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
+    metre = {
+        "A" : "Amfibrach",
+        "D" : "Daktyl",
+        "J" : "Jamb",
+        "N" : "Neurčeno",
+        "T" : "Trochej",
+        "X" : "Daktylotrochej",
+        "Y" : "Daktylotrochej s předrážkou",
+        "H" : "Hexametr",
+    }
+    try: 
+        versology_stats = json.loads(poem.versology_stats)
+    except:
+        versology_stats = None
+    print(versology_stats, poem.versology_stats)
     return render(request, "web/poem_versology.html", {
         "poem" : poem,
-        "show_text" : show_text
+        "show_text" : show_text,
+        "versology_stats" : versology_stats,
+        "metre": metre
     })
 
 def poem_AI(request, id):

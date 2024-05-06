@@ -1,15 +1,70 @@
 {% extends "web/poem_base.html" %}
 
+{% load web_tags %}
+
 {% block poem_title %} - versologické údaje{% endblock %}
 
 {% block poem_content %}
-    <div id="poem-text-only-container">
-        {{ poem.html_text|safe }}
+    <div id="poem-versology-container">
+        <div class="poem-text">
+            {% if poem.versology_text is not None %}
+                {{ poem.versology_text|safe }}
+            {% else %}
+                <i>versologické údajé k této básni nejsou k dispozci </i>
+            {% endif %}
+        </div>
     </div>
 {% endblock%}
 
 {% block poem_right_content%}
-
+    {% if poem.versology_text is not None %}
+        <h5>Vysvětlivky</h5>
+        <p>
+            <span id="strong-position" class="versology-buttons"><i class="bi bi-eye"></i></span> 
+            <syl class="S">takto</syl> podbarvené pozice jsou silné<br>
+            
+            <span id="stressed-position" class="versology-buttons"><i class="bi bi-eye"></i></span> 
+            <syl class="stress">takto</syl> podtržené pozice jsou s přízvukem
+        </p>
+        <p>
+            <i>S</i> = silná pozice<br> 
+            <i>W</i> = slabá pozice<br>
+            <i>V</i> = ??? pozice<br>
+            <i>X</i> = neurčená pozice<br>
+        </p>
+        <p>
+            <i>J</i> = Jamb (WS)<br>
+            <i>T</i> = Trochej (SW)<br>
+            <i>D</i> = Daktyl (SWW)<br>
+            <i>A</i> = Ambfibrach (WSW)<br>
+            <i>X</i> = Daktylotrochej (SWWSW)<br>
+            <i>Y</i> = Daktylotrochej s předrážkou (WSWWSW)<br>
+            <i>H</i> = Hexameer (???)<br>
+            <i>N</i> = Neurčeno<br>
+        </p>
+        <h5>Statistiky</h5>
+        <table class="table table-sm">
+            <tbody>
+                <tr>
+                    <td class="text-end">Počet slok: </td>
+                    <td>{{ versology_stats.n_strophe }}</td>
+                </tr>
+                <tr>
+                    <td class="text-end">Celkem veršů: </td>
+                    <td>{{ versology_stats.n_verse }}</td>
+                </tr>
+                {% for key, value in versology_stats.metre.items %}
+                    <tr>
+                        <td class="text-end">{{ metre|get_item:key }}:</td>
+                        <td>
+                            {{ value }} 
+                            ({% widthratio value versology_stats.n_verse 100 %} %)
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
@@ -21,13 +76,60 @@
                         +  44; 
         $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
 
-        var komentars = document.querySelectorAll('komentar');
-        komentars.forEach(function(komentar) {
-            var dataText = komentar.getAttribute('data-text');
-            komentar.setAttribute('title', dataText);
+        $('span.v-text').tooltip()
+
+        $('#strong-position').click(function() {
+            // Toggle the icon in the <i> element
+            $(this).find('i').toggleClass('bi-eye bi-eye-slash');
+
+            // Toggle background color for elements
+            $('div.poem-text syl.S').each(function() {
+                if ($(this).css('background-color') == 'rgba(0, 0, 0, 0)') { 
+                    // Reset to original background-color if specific value is known, or use a stored value
+                    $(this).css('background-color', ''); // Reset to default if original specific color is not stored
+                } else {
+                    // Change background color to 'none'
+                    $(this).css('background-color', 'rgba(0, 0, 0, 0)');
+                }
+            });
         });
-        
-        $('komentar').tooltip()
+
+        $('#stressed-position').click(function() {
+            // Toggle the icon in the <i> element
+            $(this).find('i').toggleClass('bi-eye bi-eye-slash');
+
+            $('div.poem-text syl.stress').each(function() {
+                if ($(this).css('text-decoration') == 'none') { 
+                    // Reset to original text-decoration if specific value is known, or use a stored value
+                    $(this).css('text-decoration', '');
+                } else {
+                    $(this).css('text-decoration', 'none');
+                }
+            });
+        });
+
+        // verse numbers
+        const container = document.querySelector('#poem-versology-container');
+        // Get all strofa elements within the container
+        const strofas = container.querySelectorAll('strofa');
+
+        // Iterate over each strofa
+        strofas.forEach(function(strofa, strofaIndex) {
+            // Get all verse (<v>) elements within the current strofa
+            const verses = strofa.querySelectorAll('v');
+
+            // Iterate over each verse
+            verses.forEach(function(verse, verseIndex) {
+                // Create a span element for the verse number
+                const verseNumberSpan = document.createElement('span');
+                verseNumberSpan.classList.add('verse-number');
+                // Set the text of the span to match the format {strofaIndex + 1}-{verseIndex + 1}
+                verseNumberSpan.textContent = `${strofaIndex + 1}-${verseIndex + 1}`;
+
+                // Insert the verse number span before the verse text
+                verse.insertBefore(verseNumberSpan, verse.firstChild);
+            });
+        });
     });
 </script>
 {% endblock %}

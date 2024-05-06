@@ -12,3 +12,7 @@ def is_active(context, *url_names):
 def replace_spaces(value):
     """Replace all spaces in the string with &nbsp;."""
     return value.replace(' ', '&nbsp;')
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)
