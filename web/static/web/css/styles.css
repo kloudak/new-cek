@@ -501,12 +501,12 @@ vpravo {
 }
 
 verze[typ="puvodni"] {
-    color: red;
+    color: blue;
     display: None;
 }
 
 verze[typ="editorska"] {
-    color: blue;
+    color: red;
     display: inline;
 }
 
