@@ -90,12 +90,7 @@ def process_strophe(s, stats):
     html += "</strofa>\n\n"
     return html, stats
 
-def read_poem_in_ccv(book_id, poem_id):
-    stats = {
-            "n_strophe" : None,
-            "n_verse" : None,
-            "metre" : {}
-        }
+def read_poem_in_ccv(book_id, poem_id, stats):
     versology_html = ""
     book_id = str(book_id)
     book_id = "0000"[:-len(book_id)] + book_id
@@ -108,8 +103,6 @@ def read_poem_in_ccv(book_id, poem_id):
             poem = p
     if poem is None:
         return None
-    stats["n_strophe"] = 0
-    stats["n_verse"] = 0
     for s in poem["body"]:
         html, stats = process_strophe(s, stats)
         versology_html += html
@@ -127,10 +120,15 @@ class Command(BaseCommand):
             prev_book = book_id
             ccv_poems = poem.poems_in_ccv.all()
             content = ""
+            stats = {
+                "n_strophe" : 0,
+                "n_verse" : 0,
+                "metre" : {}
+            }
             for ccv_poem in ccv_poems:
-                versology_html, versology_stats = read_poem_in_ccv(book_id, ccv_poem.ccv_id)
+                versology_html, stats = read_poem_in_ccv(book_id, ccv_poem.ccv_id, stats)
                 content += versology_html
             poem.versology_text = content
-            poem.versology_stats = json.dumps(versology_stats)
+            poem.versology_stats = json.dumps(stats)
             poem.save()
             
