@@ -6,7 +6,7 @@
 
 {% block content %}
     <div id="page-title-wrapper">
-        <h1 class="page-title">{{ poem.title|striptags|safe }}</h1>
+        <h1 class="page-title">{{ poem|striptags|safe }}</h1>
         <h4>
             {% for a in poem.book.authorships.all %}
                 {% if a.person.pseudonym_for %}
