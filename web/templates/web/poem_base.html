@@ -2,7 +2,7 @@
 
 {% load web_tags %}
 
-{% block title %}{{ poem.title|striptags }} - ČEK {% block poem_title %}{% endblock %}{% endblock %}
+{% block title %}{{ poem|striptags }} - ČEK {% block poem_title %}{% endblock %}{% endblock %}
 
 {% block content %}
     <div id="page-title-wrapper">
