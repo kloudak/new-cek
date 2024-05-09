@@ -110,10 +110,26 @@ def read_poem_in_ccv(book_id, poem_id, stats):
 
 class Command(BaseCommand):
     help = 'Goes through all poems in the database and upsert the versology fields.'
+
+    def add_arguments(self, parser):
+        parser.add_argument('--from', dest='from_book_id', type=str, help='Start book_id')
+        parser.add_argument('--to', dest='to_book_id', type=str, help='End book_id')
     
     def handle(self, *args, **kwargs):
+        from_book_id = kwargs['from_book_id']
+        to_book_id = kwargs['to_book_id']
+        
+        # Validate and parse the date strings
+        try:
+            from_book_id = int(from_book_id)
+            to_book_id = int(to_book_id)
+            if from_book_id > to_book_id:
+                raise ValueError
+        except ValueError:
+            raise CommandError('--from and --to must be integers and --from cannot be greater that --to')
+        
         prev_book = 0
-        for poem in Poem.objects.all().order_by('id'):
+        for poem in Poem.objects.filter(book_id__gte=from_book_id, book_id__lte=to_book_id).order_by('id'):
             book_id = poem.book.id
             if book_id != prev_book:
                 self.stdout.write(self.style.SUCCESS(f'Processing book id = {book_id}.'))
