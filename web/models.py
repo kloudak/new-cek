@@ -378,3 +378,29 @@ class PoemOfTheDay(models.Model):
         self.html_text = self.html_text.replace("<nbsp />","&nbsp;").\
                                 replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;").\
                                 replace("<br />", "")
+        
+# CLUSTERING
+
+class Clustering(models.Model):
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Cluster(models.Model):
+    clustering = models.ForeignKey(Clustering, on_delete=models.CASCADE, related_name='clusters')
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    number_of_documents = models.IntegerField()
+
+    def __str__(self):
+        return self.name
+
+class PoemInCluster(models.Model):
+    poem = models.OneToOneField(Poem, on_delete=models.CASCADE, related_name='cluster_membership')
+    cluster = models.ForeignKey(Cluster, on_delete=models.CASCADE, related_name='poems')
+    score = models.FloatField(null=True, blank=True, help_text="Score of the poem in the cluster")
+
+    def __str__(self):
+        return f"{self.poem.title} in {self.cluster.name}"

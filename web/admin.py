@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Person, Authorship, Book, Poem, PoemOfTheDay
+from .models import Person, Authorship, Book, Poem, PoemOfTheDay, Clustering, Cluster
 from .forms import PoemOfTheDayAdminForm
 
 class PersonAdmin(admin.ModelAdmin):
@@ -38,7 +38,19 @@ class PoemOfTheDayAdmin(admin.ModelAdmin):
     search_fields = ('day', 'description', 'poem')
     ordering = ('day',)
 
+class ClusteringAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name',)
+
+class ClusterAdmin(admin.ModelAdmin):
+    list_display = ('id','name', 'clustering', 'description', 'number_of_documents')
+    list_display_links = ('id','name', 'description')
+    search_fields = ('name', 'clustering__name')
+    list_filter = ('clustering__name',)
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Poem, PoemAdmin)
 admin.site.register(PoemOfTheDay, PoemOfTheDayAdmin)
+admin.site.register(Clustering, ClusteringAdmin)
+admin.site.register(Cluster, ClusterAdmin)

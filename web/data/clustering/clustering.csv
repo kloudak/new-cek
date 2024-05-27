@@ -1,0 +1,5 @@
+id,name,description
+1,T2V_168,"top2vec model, 168 clusters"
+2,T2V_30,"top2vec model, 168 clusters reduced to 30"
+3,T2V_2_106,"top2vec model, deduplicated data, 106 clusters"
+4,T2V_2_30,"top2vec model, deduplicated data, 106 clusters reduces to 30"
