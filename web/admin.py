@@ -26,6 +26,7 @@ class BookAdmin(admin.ModelAdmin):
     ordering = ('id','title','year', 'public_domain_year','author_xml')
 
 class PoemAdmin(admin.ModelAdmin):
+    raw_id_fields = ('next_issue_of',)
     list_display = ('id','title', 'book')
     list_display_links = ('id','title',)
     search_fields = ('id','title')
