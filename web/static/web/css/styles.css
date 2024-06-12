@@ -399,6 +399,14 @@ syl.stress {
     text-decoration: underline;
 }
 
+div.poem-AI syl.S {
+    background-color: transparent;
+}
+
+div.poem-AI syl.stress {
+    text-decoration: none;
+}
+
 div#poem-versology-container div.poem-text v {
     position: relative;
     display: block;
@@ -407,6 +415,10 @@ div#poem-versology-container div.poem-text v {
 
 div#poem-versology-container div.poem-text v span.v-text:hover {
     border-bottom: 1px dotted rgb(211,90,1);
+}
+
+div#poem-versology-container div.poem-AI v span.v-text:hover {
+    border: none;
 }
 
 div#poem-versology-container div.poem-text v span.verse-number {
@@ -423,6 +435,10 @@ div#poem-versology-container div.poem-text v span.metre-info {
     font-size: 80%;
     opacity: 0.6;
     color: rgb(211,90,1);
+}
+
+div#poem-versology-container div.poem-AI v span.metre-info {
+    display: none;
 }
 
 span.versology-buttons {
@@ -542,4 +558,32 @@ komentar {
     font-size: 70%;
     display: inline-block;
     padding: 2px;
+}
+
+.progress-bar-container {
+    position: relative;
+    width: 100%;
+    height: 30px;
+    background-color: transparent;
+    border: 1px solid rgba(211,90,1,0.4);
+    z-index: 2;
+    text-align: center;
+    padding-top: 2px;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0px;
+    height: 28px;
+    background-color: rgba(211,90,1,0.9);
+    opacity: 0.3;
+    z-index: 1;
+}
+
+.tooltip-custom {
+    max-width: 300px;
+    text-align: left;
+  }
+.tooltip-inner {
+    max-width: 300px;
 }

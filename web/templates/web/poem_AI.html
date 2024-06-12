@@ -3,13 +3,31 @@
 {% block poem_title %} - AI{% endblock %}
 
 {% block poem_content %}
-    <div id="poem-text-only-container">
-        {{ poem.html_text|safe }}
+    <div id="poem-versology-container">
+        <div class="poem-text poem-AI">
+            {% if poem.versology_text  %}
+                {{ poem.versology_text|safe }}
+            {% else %}
+                <i>tato báseň nebyla zpracována nástroji umělé inteligence</i>
+            {% endif %}
+        </div>
     </div>
 {% endblock%}
 
 {% block poem_right_content%}
-
+    {% if poem_in_cluster %}
+        <h4>Patří do <a href="">shluku</a></h4>
+        <p>
+            <i>{{ poem_in_cluster.cluster.description }}</i>
+        </p>
+        <div class="progress-bar-container" data-bs-html="true" data-bs-custom-class="tooltip-custom" title="Tento shluk obsahuje {{poem_count}} básní.<br> 
+            Tato báseň je {{ poem_in_cluster.rank }}. podle míry příslušnosti.<br> 
+            Tato míra je číslo mezi 0 (=&nbsp;nejnižší) a 1.<br> 
+            Pro tuto báseň má hodnotu {{ poem_in_cluster.score }}.">
+            <div class="progress-bar" style='width: calc((1 - (({{ poem_in_cluster.rank }})/{{ poem_count}})) * 100%);'></div>
+            {{ poem_in_cluster.rank }}. báseň z celkových {{ poem_count }}
+        </div>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}
@@ -21,13 +39,30 @@
                         +  44; 
         $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
 
-        var komentars = document.querySelectorAll('komentar');
-        komentars.forEach(function(komentar) {
-            var dataText = komentar.getAttribute('data-text');
-            komentar.setAttribute('title', dataText);
+        $('.progress-bar-container').tooltip()
+
+        // verse numbers
+        const container = document.querySelector('#poem-versology-container');
+        // Get all strofa elements within the container
+        const strofas = container.querySelectorAll('strofa');
+
+        // Iterate over each strofa
+        strofas.forEach(function(strofa, strofaIndex) {
+            // Get all verse (<v>) elements within the current strofa
+            const verses = strofa.querySelectorAll('v');
+
+            // Iterate over each verse
+            verses.forEach(function(verse, verseIndex) {
+                // Create a span element for the verse number
+                const verseNumberSpan = document.createElement('span');
+                verseNumberSpan.classList.add('verse-number');
+                // Set the text of the span to match the format {strofaIndex + 1}-{verseIndex + 1}
+                verseNumberSpan.textContent = `${strofaIndex + 1}-${verseIndex + 1}`;
+
+                // Insert the verse number span before the verse text
+                verse.insertBefore(verseNumberSpan, verse.firstChild);
+            });
         });
-        
-        $('komentar').tooltip()
     });
 </script>
 {% endblock %}

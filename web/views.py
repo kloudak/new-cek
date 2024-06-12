@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from .models import Person, Book, Authorship, Poem, PoemOfTheDay
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster
 from .utils import years_difference
 import datetime, json
 
@@ -136,7 +136,6 @@ def poem_versology(request, id):
         versology_stats = json.loads(poem.versology_stats)
     except:
         versology_stats = None
-    print(versology_stats, poem.versology_stats)
     return render(request, "web/poem_versology.html", {
         "poem" : poem,
         "show_text" : show_text,
@@ -150,9 +149,29 @@ def poem_AI(request, id):
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
+    try:
+        poem_in_cluster = PoemInCluster.objects.get(poem_id=poem.id)
+        
+        ranked_poems = PoemInCluster.objects.filter(cluster=poem_in_cluster.cluster).order_by("-score")
+        k = 1
+        for p in ranked_poems:
+            if p.poem.id == poem_in_cluster.poem.id:
+                poem_in_cluster.rank = k
+                break
+            k += 1
+        
+        # TODO: I failed to use DB to get the order of the poem
+    except:
+        poem_in_cluster = None
+    poem_count = None
+    if poem_in_cluster:
+        poem_count = PoemInCluster.objects.filter(cluster=poem_in_cluster.cluster).count()
+
     return render(request, "web/poem_AI.html", {
         "poem" : poem,
-        "show_text" : show_text
+        "show_text" : show_text,
+        "poem_in_cluster" : poem_in_cluster,
+        "poem_count" : poem_count
     })
 # SEARCH
 def search(request):
