@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV
 from .utils import years_difference
 import datetime, json
 
@@ -95,11 +95,20 @@ def book_detail(request, id):
 def poem_text(request, id):
     poem = get_object_or_404(Poem, id=id)
     poem.set_html_text()
+    next_issues = None
+    issue_of = None
+    poemsCCV = PoemInCCV.objects.filter(poem_in_cek_id=poem.id).filter(ccv_part_of=models.F('cluster_id')).all()
+    if len(poemsCCV) > 0:
+        poemCCV = poemsCCV[0]
+        next_issues = list(set([p.cek_part_of for p in PoemInCCV.objects\
+                                .filter(cek_next_issue_of=poemCCV.cek_next_issue_of).all()]))    
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
     return render(request, "web/poem_text.html", {
         "poem" : poem,
+        "next_issues" : next_issues,
+        "issue_of" : issue_of,
         "show_text" : show_text
     })
 

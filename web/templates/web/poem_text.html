@@ -17,7 +17,9 @@
         <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
     </div>
     <p>
-        Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a><br>
+        Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a>
+        {% if poem.book.year %} ({{ poem.book.year }}){% endif %}
+        <br>
         Autor 
         {% if poem.author %}
             {% if poem.author.pseudonym_for %}
@@ -25,16 +27,21 @@
             {% else %}
                 <a href="{% url 'author_detail' id=poem.author.id %}">{{ poem.author }}</a>
             {% endif %}
-        {% elif poem.book.authorships.all|length == 1 %}
-            {% for a in poem.book.authorships.all %}
-                {% if a.person.pseudonym_for %}
-                    <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person.pseudonym_for }}</a>
-                {% else %}
-                    <a href="{% url 'author_detail' id=a.person.id %}">{{ a.person }}</a>
+        {% endif%}
+        {% if next_issues|length > 0 %}
+            <h4>Další vydání</h4>
+            {% for ni in next_issues %}
+                {% if ni.id != poem.id %}
+                    <p>
+                        <a href="{% url 'poem_text' id=ni.id %}">{{ poem|striptags|safe }}</a> 
+                        v knize <a href="{% url 'book_detail' id=ni.book.id %}">
+                            {{ ni.book }}
+                            </a>
+                            {% if ni.book.year %} ({{ ni.book.year }}){% endif %}
+                    </p>
                 {% endif %}
             {% endfor %}
-        {% endif%}
-
+        {% endif %}
     </p>
 {% endblock %}
 
