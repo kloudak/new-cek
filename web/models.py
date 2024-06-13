@@ -244,7 +244,7 @@ class Authorship(models.Model):
 class Poem(models.Model):
     html_text = None
 
-    title = models.TextField(null=True)  # 'titul'
+    title = models.TextField(null=True, blank=True)  # 'titul'
     original_id = models.PositiveIntegerField(null=True)  # id in the original XML
     order_in_book = models.PositiveIntegerField(null=False, blank=False)  # order in the book
     book = models.ForeignKey(
