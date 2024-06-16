@@ -17,6 +17,8 @@ urlpatterns = [
     path("basen/<int:id>/AI", views.poem_AI, name="poem_AI"),
     # search
     path("hledani", views.search, name="search"),
+    # clustering
+    path("shlukovani", views.clustering, name="clustering"),
     # advanced_search
     path("badatelske-nastroje", views.advanced_search, name="advanced_search"),
     # static pages

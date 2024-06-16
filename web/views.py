@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
-from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
 import datetime, json
 
@@ -224,6 +224,15 @@ def search(request):
         "poems" : poems,
         "books" : books,
         "max_results" : max_results,
+    })
+
+# CLUSTERING
+def clustering(request):
+    clustering = Clustering.objects.get(id=3)    
+    clusters = Cluster.objects.filter(clustering=clustering).annotate(num_poems=models.Count('poems'))
+
+    return render(request, "web/clustering.html", {
+        "clusters" : clusters
     })
 
 # ADVANCED SEARCH
