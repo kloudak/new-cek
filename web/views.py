@@ -235,6 +235,32 @@ def clustering(request):
         "clusters" : clusters
     })
 
+def cluster_detail(request, id):
+    cluster = get_object_or_404(Cluster, id=id)
+    poems_in_cluster = PoemInCluster.objects.filter(cluster_id=id).order_by('-score')
+    total_poems = poems_in_cluster.count()
+    authors_with_counts = poems_in_cluster.values(author=models.F('poem__author')).annotate(
+        poem_count=models.Count('poem__author'),
+        percentage=models.ExpressionWrapper(
+            (models.Count('poem__author') * 100.0 / total_poems),
+            output_field=models.FloatField()
+        )
+    ).order_by('-poem_count')
+    authors_in_cluster = []
+    for author_with_count in authors_with_counts:
+        author = Person.objects.get(id=author_with_count['author'])
+        authors_in_cluster.append({
+            'author': author,
+            'poem_count': author_with_count['poem_count'],
+            'percentage': author_with_count['percentage']
+        })
+    return render(request, "web/cluster_detail.html", {
+        "cluster" : cluster,
+        "poems_in_cluster" : poems_in_cluster[:100],
+        "total_poems" : total_poems,
+        "authors_in_cluster" : authors_in_cluster[:10]
+    })
+
 # ADVANCED SEARCH
 def advanced_search(request):
     return render(request, "web/advanced_search.html")

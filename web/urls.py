@@ -19,6 +19,7 @@ urlpatterns = [
     path("hledani", views.search, name="search"),
     # clustering
     path("shlukovani", views.clustering, name="clustering"),
+    path("shlukovani/<int:id>", views.cluster_detail, name="cluster_detail"),
     # advanced_search
     path("badatelske-nastroje", views.advanced_search, name="advanced_search"),
     # static pages

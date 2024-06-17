@@ -5,6 +5,12 @@
 
 {% block content %}
 <h1 class="page-title">Shluky</h1>
+<ul>
+    <li>Shluky (clustery) vznikly automaticky pomocí modelu <a href="https://top2vec.readthedocs.io/en/latest/Top2Vec.html">Top2Vec</a>.</li>
+    <li>Tento model přiřazuje každé básni ale i jednotlivým slovům bod (vektor, <i>n</i>tici čísel) v mnohadimenzionálním prostoru.</li>
+    <li>Následně hledá básně a slova, která jsou <i>blízko</i> sebe a vytváří tak shluk básní, které považuje za podobné.</li>
+    <li>Následně shluk popíše <b>charakteristickými slovy</b>, tedy slovy která odpovídají bodům blízkým danému shluku.</li>
+</ul>
 <div class="content-table-wrapper">
     <table id="clusteringTable" class="table table-striped table-bordered">
         <thead>
@@ -19,7 +25,7 @@
             <tr>
                 <td>{{ c.description }}</td>
                 <td>{{ c.num_poems }}</td>
-                <td><a href="{% url 'book_detail' id=0 %}">detail</a></td>
+                <td><a href="{% url 'cluster_detail' id=c.id %}">detail</a></td>
             </tr>
             {% endfor %}
         </tbody>
