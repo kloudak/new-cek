@@ -4,17 +4,17 @@
 
 {% block poem_content %}
     <div id="poem-text-only-container">
+        <div id="text-versions">
+            <div>
+                <a href="#" class="verze-toggle" id="puvodni">Původní verze</a>
+                <a href="#" class="verze-toggle active" id="editorska">Editorská verze</a>
+            </div>
+        </div>
         {{ poem.html_text|safe }}
     </div>
 {% endblock%}
 
 {% block poem_right_content%}
-    <div id="text-versions">
-        <div>
-            <a href="#" class="verze-toggle" id="puvodni">Původní verze</a>
-            <a href="#" class="verze-toggle active" id="editorska">Editorská verze</a>
-        </div>
-    </div>
     <p>
         Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a>
         {% if poem.book.year %} ({{ poem.book.year }}){% endif %}
@@ -65,11 +65,16 @@
             document.querySelector('#text-versions').style.display = 'none';
         }
         
-        // Listen to change event on radio buttons
-        document.querySelectorAll('input[name="verze"]').forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                // Display Původní verze content
-                if (document.getElementById('puvodni').checked) {
+        document.querySelectorAll('a.verze-toggle').forEach(function (click) {
+            click.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.querySelectorAll('a.verze-toggle').forEach(function (toggle) {
+                    toggle.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Display Původní verze content if the 'puvodni' link is clicked
+                if (this.id === 'puvodni') {
                     document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
                         verze.style.display = 'inline';
                     });
@@ -77,10 +82,11 @@
                         verze.style.display = 'none';
                     });
                 }
-                // Display Editorská verze content
-                else {
+                // Display Editorská verze content if the 'editorska' link is clicked
+                else if (this.id === 'editorska') {
                     document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
                         verze.style.display = 'none';
+                        
                     });
                     document.querySelectorAll('verze[typ="editorska"]').forEach(function(verze) {
                         verze.style.display = 'inline';
