@@ -16,7 +16,7 @@
 
 {% block poem_right_content%}
     {% if poem_in_cluster %}
-        <h4>Patří do <a href="">shluku</a></h4>
+        <h4>Patří do <a href="{% url 'cluster_detail' id=poem_in_cluster.cluster.id %}">shluku</a></h4>
         <p>
             <i>{{ poem_in_cluster.cluster.description }}</i>
         </p>
