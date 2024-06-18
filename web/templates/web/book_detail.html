@@ -31,36 +31,57 @@
         {{ book.content|safe }}
     </div>
     <div class="col-6 scrollable-content" id="middle-column">
+        <div id="text-versions">
+            <div>
+                <a href="#" class="verze-toggle" id="puvodni">Původní verze</a>
+                <a href="#" class="verze-toggle active" id="editorska">Editorská verze</a>
+            </div>
+        </div>
         {{ book.complete_text|safe }}
     </div>
     <div class="col-3 col-wrapper scrollable-content" id="right-column">
-        <div class="btn-group" data-toggle="buttons">
-            <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
-            <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
-            
-            <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
-            <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
+        <div class="book-info">
+        {% if book.publisher %}
+            <p><i>Nakladatel</i>: {{ book.publisher|safe }}</p>
+        {% endif %}
+        {% if book.place_of_publication %}
+            <p><i>Místo</i>: {{ book.place_of_publication|safe }}</p>
+        {% endif %}
+        {% if book.edition %}
+            <p><i>Vydání</i>: {{ book.edition|safe }}</p>
+        {% endif %}
+        {% if book.pages %}
+            <p><i>Počet stran</i>: {{ book.pages|safe }}</p>
+        {% endif %}
+        {% if book.format %}
+            <p><i>Formát</i>: {{ book.format|safe }}</p>
+        {% endif %}
+        {% if book.source_signature %}
+            <p><i>Zdroj. signatura</i>: {{ book.source_signature|safe }}</p>
+        {% endif %}
+        {% if book.dedication %}
+            <p><i>Věnování</i>: {{ book.dedication|safe }}</p>
+        {% endif %}
+        {% if book.author_of_motto %}
+            <p><i>Autor motta</i>: {{ book.author_of_motto|safe }}</p>
+        {% endif %}
+        {% if book.author_of_motto %}
+            <p><i>Motto</i>: {{ book.author_of_motto|safe }}</p>
+        {% endif %}
+        <div id="book-desc-ed">
+            {% if book.description %}
+                <!-- Button trigger modal -->
+                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#bookDescriptionModal">
+                    popis knihy
+                </button>{% endif %}
+            {% if book.editorial_note %}
+                <!-- Button trigger modal -->
+                <button type="button" class="" data-bs-toggle="modal" data-bs-target="#bookEditorialNoteModal">
+                    ediční poznámka
+                </button>
+            {% endif %}
         </div>
-        <p>
-            <b>Místo:</b> {{ book.place_of_publication|default:'<i>neuvedeno</i>'}}<br/>
-            <b>Nakladatel:</b> {{ book.publisher|safe|default:'<i>neuveden</i>'}}<br/>
-            <b>Vydání:</b> {{ book.edition|default:'<i>neuvedena</i>'}}<br/>
-            <b>Počet stran:</b> {{ book.pages|default:'<i>neuvedeno</i>'}}<br/>
-            <b>Formát:</b> {{ book.format|default:'<i>neuvedeno</i>'}}<br/>
-            <b>Zdroj. signatura:</b> {{ book.source_signature|default:'<i>neuvedeno</i>'}}<br/>
-            <b>Věnování:</b> {{ book.dedication|default:'<i>neuvedeno</i>'}}<br/>
-            <b>Autor motta:</b> {{ book.author_of_motto|safe|default:'<i>neuveden</i>'}}<br/>
-        </p>
-        <h5>Motto</h5>
-        <p>
-            {{ book.motto|default:'<i>neuvedeno</i>'|safe}}<br/>
-        </p>
         {% if book.description %}
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookDescriptionModal">
-                popis knihy
-            </button>
-            
             <!-- Modal -->
             <div class="modal fade" id="bookDescriptionModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookDescriptionModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -80,12 +101,6 @@
             </div>
         {% endif %}
         {% if book.editorial_note %}
-            <br><br>
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookEditorialNoteModal">
-                ediční poznámka
-            </button>
-            
             <!-- Modal -->
             <div class="modal fade" id="bookEditorialNoteModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookEditorialNoteModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
@@ -124,12 +139,21 @@
         });
 
         $('komentar').tooltip()
+
+        if(!document.querySelector('#middle-column').querySelector('verze')) {
+            document.querySelector('#text-versions').style.display = 'none';
+        }
         
-        // Listen to change event on radio buttons
-        document.querySelectorAll('input[name="verze"]').forEach(function (radio) {
-            radio.addEventListener('change', function () {
-                // Display Původní verze content
-                if (document.getElementById('puvodni').checked) {
+        document.querySelectorAll('a.verze-toggle').forEach(function (click) {
+            click.addEventListener('click', function (event) {
+                event.preventDefault();
+                document.querySelectorAll('a.verze-toggle').forEach(function (toggle) {
+                    toggle.classList.remove('active');
+                });
+                this.classList.add('active');
+                
+                // Display Původní verze content if the 'puvodni' link is clicked
+                if (this.id === 'puvodni') {
                     document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
                         verze.style.display = 'inline';
                     });
@@ -137,10 +161,11 @@
                         verze.style.display = 'none';
                     });
                 }
-                // Display Editorská verze content
-                else {
+                // Display Editorská verze content if the 'editorska' link is clicked
+                else if (this.id === 'editorska') {
                     document.querySelectorAll('verze[typ="puvodni"]').forEach(function(verze) {
                         verze.style.display = 'none';
+                        
                     });
                     document.querySelectorAll('verze[typ="editorska"]').forEach(function(verze) {
                         verze.style.display = 'inline';

@@ -9,12 +9,11 @@
 {% endblock%}
 
 {% block poem_right_content%}
-    <div class="btn-group" data-toggle="buttons" id="versions-selector">
-        <input type="radio" class="btn-check" name="verze" id="puvodni" autocomplete="off">
-        <label class="btn btn-outline-primary" for="puvodni">Původní verze</label>
-        
-        <input type="radio" class="btn-check" name="verze" id="editorska" autocomplete="off" checked>
-        <label class="btn btn-outline-primary" for="editorska">Editorská verze</label>
+    <div id="text-versions">
+        <div>
+            <a href="#" class="verze-toggle" id="puvodni">Původní verze</a>
+            <a href="#" class="verze-toggle active" id="editorska">Editorská verze</a>
+        </div>
     </div>
     <p>
         Kniha <a href="{% url 'book_detail' id=poem.book.id %}">{{ poem.book.title|safe }}</a>
@@ -63,7 +62,7 @@
         $('komentar').tooltip()
 
         if(!document.querySelector('#poem-text-only-container').querySelector('verze')) {
-            document.querySelector('#versions-selector').style.display = 'none';
+            document.querySelector('#text-versions').style.display = 'none';
         }
         
         // Listen to change event on radio buttons

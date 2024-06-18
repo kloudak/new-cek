@@ -213,14 +213,14 @@ div#homepage-head input {
     }
     
     li.nav-item a.active::after, li.nav-item a:hover::after {
-        content: ''; /* Required for pseudo-elements */
+        content: ''; 
         display: block;
-        width: 50%; /* Sets the line width to half the width of the link */
-        height: 1px; /* The thickness of the underline */
-        background-color: rgb(211,90,1); /* Color of the underline */
+        width: 50%; 
+        height: 1px;
+        background-color: rgb(211,90,1);
         position: absolute;
-        left: 25%; /* Centers the line (50% width - 25% left offset) */
-        bottom: 8px; /* Adjusts vertical position of the line */
+        left: 25%;
+        bottom: 8px;
     }
     
     nav.navbar {
@@ -293,9 +293,88 @@ div#book-content-wrapper {
 }
 
 div#middle-column {
+    position: relative;
     height: 100%;
+    margin: 0;
+    padding-left: 1px;
+    padding-right: 1px;
+/*    
     padding-left: 20px;
     padding-right: 20px;
+*/
+}
+
+div#right-column {
+    position: relative;
+}
+
+div#text-versions {
+    position: absolute;
+    right: 15px;
+    top: 0px;
+    background-color: rgba(255, 255, 255, 1);
+    opacity: 0.9;
+    padding-top: 5px;
+    z-index: 1000;
+}
+
+div#text-versions div {
+    display: flex;
+    flex-direction: row;
+    
+}
+
+div#text-versions a {
+    position: relative;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    font-size: 100%;
+}
+
+div#text-versions a:first-of-type {
+    margin: 0 25px;
+}
+
+div#text-versions a:hover::after, div#text-versions a.active::after {
+    content: ''; 
+    display: block;
+    width: 50%; 
+    height: 1px;
+    background-color: rgb(211,90,1);
+    position: absolute;
+    left: 25%;
+    bottom: 0px;
+}
+
+div#right-column .book-info p {
+    font-size: 95%;
+    margin-bottom: 10px;
+}
+
+div#book-desc-ed {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+div#book-desc-ed button {
+    border: 1px solid rgb(211,90,1);
+    background-color: transparent;
+    color: rgb(211,90,1);
+    margin: 0;
+    font-size: 90%;
+}
+
+div#book-desc-ed button:first-of-type {
+    position: relative;
+    left: 1px;
+}
+
+div#book-desc-ed button:hover {
+    background-color: rgb(211,90,1);
+    color: white;
 }
 
 div#middle-column div.book-text, 
@@ -379,7 +458,7 @@ div.book-text,
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 1);
-    padding: 20px;
+    padding: 40px 20px 20px 20px;
     height: 100%;
 }
 
