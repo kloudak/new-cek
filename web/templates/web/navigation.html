@@ -31,6 +31,13 @@
                     <a class="nav-link {% is_active 'clustering' %}" href="{% url 'clustering' %}">Shluková analýza</a>
                 </li>
             </ul>
+            <!-- Search form -->
+            <form class="d-flex search-form ms-auto" action="{% url 'search' %}" method="get">
+                <input class="form-control me-2 search-input" type="search" placeholder="hledat" aria-label="hledat" name="q">
+                <button class="btn search-icon" type="submit">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
         </div>
     </div>
 </nav>

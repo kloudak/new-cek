@@ -230,7 +230,7 @@ div#homepage-head input {
     }
 
     nav.navbar li.nav-item {
-        padding-left: 45px;
+        padding-left: 30px;
     }
 
     div#homepage-head input {
@@ -685,4 +685,39 @@ div#search-form {
 div#search-form input {
     margin: auto;
     max-width: 650px;
+}
+
+/*
+ * SEARCH FIELD IN NAV
+ */
+ .search-form {
+    position: relative;
+}
+
+.search-input {
+    width: 0;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: width 0.4s ease-in-out;
+    opacity: 0;
+}
+
+.search-icon {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.search-icon:hover .search-input {
+    width: 150px;
+    opacity: 1;
+    margin-left: -210px; /* Adjust as needed to align with the icon */
+}
+
+.search-form:hover .search-input {
+    width: 150px;
+    opacity: 1;
 }
