@@ -9,11 +9,16 @@
     <b>Charakteristická slova shluku</b>: {{ cluster.description }}
 </p>
 <div class="content-table-wrapper">
-    <h2>Autoři v shluku</h2>
+    <h2>
+        Autoři v shluku
+        {% if total_authors > 10 %}
+            (nejzastoupenějších 10 z celkových {{ total_authors }})
+        {% endif %}
+    </h2>
     <table class="table table-striped table-bordered">
         <thead>
             <th>Autor</th>
-            <th>Básní v hluku</th>
+            <th>Básní v shluku</th>
             <th>%</th>
         </thead>
         <tbody>

@@ -254,11 +254,13 @@ def cluster_detail(request, id):
             'poem_count': author_with_count['poem_count'],
             'percentage': author_with_count['percentage']
         })
+    total_authors = len(authors_in_cluster)
     return render(request, "web/cluster_detail.html", {
         "cluster" : cluster,
         "poems_in_cluster" : poems_in_cluster[:100],
         "total_poems" : total_poems,
-        "authors_in_cluster" : authors_in_cluster[:10]
+        "authors_in_cluster" : authors_in_cluster[:10],
+        "total_authors" : total_authors
     })
 
 # ADVANCED SEARCH
