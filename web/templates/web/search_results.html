@@ -46,6 +46,7 @@
                 v knize <a href="{% url 'book_detail' id=p.book.id %}">{{ p.book|safe }}</a>
                 {% if p.book.year %} ({{ p.book.year }}) {% endif %}
                 {% if p.author %} 
+                    od autora
                     <a href="{% url 'author_detail' id=p.author.id %}">{{ p.author }} </a>{% endif %}
             </li>
         {% endif %}
