@@ -1,4 +1,5 @@
 {% extends 'web/base.html' %}
+{% load web_tags %}
 
 {% block title %}Seznam autorů a autorek{% endblock %}
 
@@ -10,10 +11,9 @@
             <tr>
                 <th>Příjmení</th>
                 <th>Jméno</th>
-                <!-- <th>Narození</th> -->
-                <!-- <th>Úmrtí</th> -->
                 <th>Další jména</th>
                 <th>Knih</th>
+                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -22,8 +22,6 @@
             <tr>
                 <td>{{ p.person.surname }}</td>
                 <td>{{ p.person.firstname }}</td>
-                <!-- <td>{{ p.person.date_of_birth|date:"Y-m-d" }}</td> -->
-                <!-- <td>{{ p.person.date_of_death|date:"Y-m-d" }}</td> -->
                 <td>
                     {% for pseudonym in p.pseudonyms %}
                         {{ pseudonym.surname  }} {{ pseudonym.firstname  }}{% if forloop.counter < p.pseudonyms|length %},{% endif %}
@@ -31,6 +29,13 @@
                 </td>
                 <td>{{ p.books_count }}</td>
                 <td><a href="{% url 'author_detail' id=p.person.id %}">detail</a></td>
+                <td>{{ p.person.surname|remove_diacritics }}
+                    {{ p.person.firstname|remove_diacritics }}
+                    {% for pseudonym in p.pseudonyms %}
+                        {{ pseudonym.surname|remove_diacritics  }} 
+                        {{ pseudonym.firstname|remove_diacritics  }}
+                    {% endfor%}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
@@ -50,30 +55,18 @@ $(document).ready( function () {
         }
     });
 
-    $('#authorsTable').DataTable({
+    var table = $('#authorsTable').DataTable({
         order : [[0, 'asc'], [1, 'asc']],
         pageLength: 25,
         columnDefs: [
+            { targets: [-1], visible: false, searchable: true },
             { type: 'czech', targets: '_all' },
-            { "orderable": false, "targets": -1 },
-            /*
-            {            
-                targets: [3,4],
-                render: function (data, type, row) {
-                    if (type === 'display' || type === 'filter') {
-                        if(data == '') {
-                            return '';
-                        }
-                        var dateSplit = data.split('-'); // Split the date by '-'
-                        return dateSplit[2] + '.&nbsp;' + dateSplit[1] + '.&nbsp;' + dateSplit[0]; // Reformat to DD.MM.YYYY
-                    }
-                    return data; // Return unmodified data for other data types
-                }
-            },
-            */
+            { "orderable": false, "targets": -2 },
         ],
         language: dataTableCS,
     });
+    
+    
 } );
 </script>
 {% endblock %}

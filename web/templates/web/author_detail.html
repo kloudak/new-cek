@@ -37,6 +37,7 @@
                         <th>Rok</th>
                         <th>Jméno autora</th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -66,6 +67,24 @@
                             {% endif %}
                         </td>
                         <td><a href="{% url 'book_detail' id=book.id %}">detail</a></td>
+                        <td>
+                            {{ book.title|safe|remove_diacritics }}
+                            {% if book.authorships.all|length > 2%}
+                                {% for as in book.authorships.all %}
+                                    {% if as.person.id == author.id or as.person.pseudonym_for.id == author.id %}
+                                        {{ as.person.surname|remove_diacritics }}
+                                        {{ as.person.firstname|replace_spaces|safe|remove_diacritics }}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else%}
+                                {% for as in book.authorships.all %}
+                                    {{ as.person.surname|remove_diacritics }}
+                                    {{ as.person.firstname|replace_spaces|safe|remove_diacritics }}
+                                {% empty %}
+                                    neznamy autor
+                                {% endfor %}
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -101,8 +120,9 @@ $(document).ready( function () {
         order : [[0, 'asc'], [1, 'asc']],
         pageLength: 25,
         columnDefs: [
+            { targets: [-1], visible: false, searchable: true },
             { type: 'czech', targets: '_all' },
-            { "orderable": false, "targets": -1 },
+            { "orderable": false, "targets": -2 },
         ],
         language: dataTableCS,
     });

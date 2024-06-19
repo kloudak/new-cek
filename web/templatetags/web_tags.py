@@ -1,3 +1,4 @@
+import unicodedata
 from django import template
 
 register = template.Library()
@@ -16,3 +17,12 @@ def replace_spaces(value):
 @register.filter
 def get_item(dictionary, key):
     return dictionary.get(key)
+
+@register.filter
+def remove_diacritics(value):
+    """
+    Remove diacritics from a string.
+    """
+    normalized = unicodedata.normalize('NFD', value)
+    without_diacritics = ''.join([c for c in normalized if unicodedata.category(c) != 'Mn'])
+    return without_diacritics.lower()
