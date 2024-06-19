@@ -266,7 +266,7 @@ class Poem(models.Model):
 
 
     def __str__(self):
-        return remove_html_tags(self.title) if self.title is not None else f"báseň bez názvu"
+        return remove_html_tags(self.title) if self.title is not None else f"<i>báseň bez názvu</i>"
 
     def save(self, *args, **kwargs):
         # Modify the text_search field before saving
