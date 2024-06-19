@@ -33,8 +33,8 @@
     <div class="col-6 scrollable-content" id="middle-column">
         <div id="text-versions">
             <div>
-                <a href="#" class="verze-toggle" id="puvodni">Původní verze</a>
-                <a href="#" class="verze-toggle active" id="editorska">Editorská verze</a>
+                <a href="#" class="verze-toggle" id="puvodni">Diplomatická verze</a>
+                <a href="#" class="verze-toggle active" id="editorska">Ediční verze</a>
             </div>
         </div>
         {{ book.complete_text|safe }}
@@ -52,12 +52,6 @@
         {% endif %}
         {% if book.pages %}
             <p><i>Počet stran</i>: {{ book.pages|safe }}</p>
-        {% endif %}
-        {% if book.format %}
-            <p><i>Formát</i>: {{ book.format|safe }}</p>
-        {% endif %}
-        {% if book.source_signature %}
-            <p><i>Zdroj. signatura</i>: {{ book.source_signature|safe }}</p>
         {% endif %}
         {% if book.dedication %}
             <p><i>Věnování</i>: {{ book.dedication|safe }}</p>
@@ -87,11 +81,20 @@
                 <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
                 <div class="modal-content">
                     <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="bookDescriptionModalLabel">Popis knihy</h1>
+                    <h1 class="modal-title fs-5" id="bookDescriptionModalLabel">Popis knihy {{ book|safe }}</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                     {{ book.description|safe }}
+                    <br><br>
+                    {% if book.format %}
+                        <p><i>Formát</i>: {{ book.format|safe }}</p>
+                    {% endif %}
+                    {% if book.source_signature %}
+                        <p>
+                            <i>Zdroj. signatura</i>: {{ book.source_signature|safe }}
+                        </p>
+                    {% endif %}
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">zavřít</button>
