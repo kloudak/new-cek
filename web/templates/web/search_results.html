@@ -4,11 +4,10 @@
 
 {% block content %}
 <h1 class="page-title">Výsledky hledání '<i>{{ query|default:'' }}</i>'</h1>
-<div>
+<div id="search-form">
     <form method="get" action="{% url 'search' %}">
         <input type="search" class="form-control" name="q" placeholder="Vyhledávání" value="{{ query|default:'' }}"/>
     </form>
-    <br>
 </div>
 {% if authors|length > 0 %}
     <h2>Nalezení autoři 
@@ -32,12 +31,18 @@
 {% endif %}
 {% if poems|length > 0 %}
     <h2>Nalezené básně
-        {% if poems|length <= max_results %}
+        {% if poems|length < max_results %}
             ({{ poems|length}})
         {% else %}
             (prvních {{ max_results}} výsledků)
         {% endif %}
     </h2>
+    {% if poems|length >= max_results %}
+        <div class="alert alert-secondary" role="alert">
+            Výsledků vyhladávání řetězce '<i>{{ query|default:'' }}</i>' je přáliš mnoho.
+            Pro podrobnější definice hledání použijte <a href="{% url 'advanced_search' %}">pokročilé vyhledávání</a>.
+        </div>
+    {% endif %}
     <ol>
     {% for p in poems %}
         {% if forloop.counter <= max_results %}

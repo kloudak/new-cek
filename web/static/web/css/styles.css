@@ -675,3 +675,14 @@ komentar {
     --bs-pagination-hover-color: rgba(211,90,1,0.9);
     --bs-pagination-color: rgba(211,90,1,0.9);
 }
+
+/*
+ * SEARCH RESULTS
+ */
+div#search-form {
+    margin-bottom: 20px;;
+}
+div#search-form input {
+    margin: auto;
+    max-width: 650px;
+}
