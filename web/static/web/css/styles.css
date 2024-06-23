@@ -725,13 +725,15 @@ div#search-form input {
 /*
  * ADVANCED SEARCH
  */
-div#book-filter-form select {
+ div#book-filter-form select {
     display: inline-block;
     width: 80px;
     font-size: 90%;
 }
 
-div#book-filter-form .filter-form-buttons button {
+div#book-filter-form .filter-form-buttons button,
+div#book-selected-intro .filter-form-buttons button
+{
     border: 1px solid rgba(211,90,1,0.9);
     background-color: rgba(255, 255, 255, 1);
     color: rgba(211,90,1,0.9);
@@ -748,6 +750,7 @@ div#book-filter-form .filter-form-buttons button.active {
 div#book-filter-list {
     overflow-y: auto;
     background-color: rgba(255, 255, 255, 1);
+    padding: 5px 0;
 }
 
 div#book-filter-list .book-item {
@@ -755,6 +758,7 @@ div#book-filter-list .book-item {
     padding: 0 5px;
     font-size: 85%;
     border-left: 1px solid rgba(255, 255, 255, 1);
+    cursor: pointer;
 }
 
 div#book-filter-list .book-item:hover {
@@ -783,6 +787,52 @@ div#book-filter-list .filtered {
 
 div#book-filter-list .unfiltered {
     display: none;
+}
+
+#select-all-filter,
+#unselect-all 
+{
+    width: 100%;
+    text-align: center;
+}
+
+div#book-selected-intro ul {
+    margin-bottom: 0;
+    font-size: 90%;
+}
+
+div#book-selected-list {
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 5px 0;
+}
+
+div#book-selected-list .book-item {
+    display: none;
+    padding: 0 5px;
+    font-size: 85%;
+    border-left: 1px solid rgba(255, 255, 255, 1);
+    cursor: pointer;
+}
+
+div#book-selected-list .selected {
+    display: block;
+}
+
+div#book-selected-list .book-item:hover {
+    border-left: 1px solid rgba(211,90,1,0.9);
+}
+
+div#book-selected-list .book-item span.title {
+    color: black;    
+}
+
+div#book-selected-list .book-item span.year {
+    opacity: 0.8;
+}
+
+div#book-selected-list .book-item span.author {
+    opacity: 0.8;
 }
 
 /*

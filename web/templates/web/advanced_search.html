@@ -63,7 +63,7 @@
                 </div>
             </form>
             <hr>
-            <div class="row g-0 mb-3">
+            <div class="row g-0">
                 <div class="col-sm-5 d-flex justify-content-end">
                     Řadit podle:
                 </div>
@@ -73,10 +73,18 @@
                     <button id="sort-author" class="">autora</button>
                 </div>
             </div>
+            <div class="row mt-3">
+                <div class="col-sm-12 filter-form-buttons">
+                    <button id="select-all-filter">
+                        vybrat všechny knihy níže (celkem <span id="filtered-book-count">{{ books|length }}</span>)
+                        <i class="bi bi-chevron-double-right"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         <div id="book-filter-list">
             {% for book in books %}
-                <span class="book-item" data-title="{{ book.title }}" data-year="{{ book.year|default:0 }}" data-author="{{ book.display_authors }}" data-book-id="{{ book.id }}">
+                <span class="book-item filtered" data-title="{{ book.title }}" data-year="{{ book.year|default:0 }}" data-author="{{ book.display_authors }}" data-book-id="{{ book.id }}" onclick='selectBook({{ book.id }});'>
                     <span class="title">{{ book.title|safe }}</span>
                     (<span class="year">{{ book.year|default:"rok neuveden" }}</span>)
                     <span class="author">{{ book.display_authors }}</span>
@@ -85,7 +93,30 @@
         </div>
     </div>
     <div class="col-4">
-        seznam vybraných knih
+        <div id="book-selected-intro">
+            <h4>Vybrané knihy</h4>
+            <ul>
+                <li>Pouze v těchto knihách se bude vyhledávat pomocí formuláře vpravo.</li>
+                <li>Do seznamu můžete přidávat další knihy pomocí seznamu vlevo.</li>
+            </ul>
+            <div class="row mt-3">
+                <div class="col-sm-12 filter-form-buttons">
+                    <button id="unselect-all">
+                        smazat všechny vybrané knihy
+                        <i class="bi bi-trash3"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="book-selected-list">
+            {% for book in books %}
+                <span class="book-item" data-book-id="{{ book.id }}" onclick='unselectBook({{ book.id }});'>
+                    <span class="title">{{ book.title|safe }}</span>
+                    (<span class="year">{{ book.year|default:"rok neuveden" }}</span>)
+                    <span class="author">{{ book.display_authors }}</span>
+                </span>
+            {% endfor %}
+        </div>
     </div>
     <div class="col-4">
         fulltext a clustery + seznam výsledků
@@ -111,6 +142,21 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+
+        document.getElementById('select-all-filter').addEventListener('click', function() {
+            const filteredItems = document.querySelectorAll('#book-filter-list span.filtered');
+            const bookIds = Array.from(filteredItems).map(item => item.getAttribute('data-book-id'));
+            bookIds.forEach(bookId => {
+                $(`#book-selected-list .book-item[data-book-id='${bookId}']`).addClass('selected');
+            });
+            console.log(bookIds);
+        });
+
+        document.getElementById('unselect-all').addEventListener('click', function() {
+            $('#book-selected-list .selected').each(function(index, element) {
+                $(element).removeClass('selected');
+            });
+        });
     });
 </script>
 <script>
@@ -131,19 +177,40 @@
         });
     }
 
+    function selectBook(id_book) {
+        // Find the element with the given data-book-id
+        const bookItem = document.querySelector(`#book-selected-list .book-item[data-book-id='${id_book}']`);
+
+        // If the element exists, add the 'selected' class
+        if (bookItem) {
+            bookItem.classList.add('selected');
+        }
+    }
+
+    function unselectBook(id_book) {
+        // Find the element with the given data-book-id
+        const bookItem = document.querySelector(`#book-selected-list .book-item[data-book-id='${id_book}']`);
+
+        // If the element exists, add the 'selected' class
+        if (bookItem) {
+            bookItem.classList.remove('selected');
+        }
+    }
+
 
     $(document).ready( function () {
         var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
                         + getElementHeightWithMargin(document.querySelector('footer'))
                         +  44; 
         $('#content-wrapper').height(document.documentElement.clientHeight - headingHeight);
-        $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height()+0);
+        $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height() + 14);
+        $('#book-selected-list').height($('#content-wrapper').height() - $('#book-selected-intro').height()+0);
 
         // ResizeObserver
         const bookFilterForm = document.getElementById('book-filter-form');
         const resizeObserver = new ResizeObserver(entries => {
             for (let entry of entries) {
-                $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height());
+                $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height() + 14);
             }
         });
         resizeObserver.observe(bookFilterForm);
@@ -162,7 +229,7 @@
             var authors = $('#authors').val();
 
             // Get all book items
-            var bookItems = document.querySelectorAll('.book-item');
+            var bookItems = document.querySelectorAll('#book-filter-list .book-item');
             var matchingBookIds = Array.from(bookItems).map(function(item) {
                 return item.getAttribute('data-book-id');
             });
@@ -201,19 +268,10 @@
                 console.log(matchingBookIds);
                 matchingBookIds = getIntersection(matchingBookIds, Array.from(authorsBooks));
             }
-            console.log(matchingBookIds);
-        
+            
             updateBookItemClasses(matchingBookIds);
 
-            // Log the values to the console (for demonstration purposes)
-            var filterData = {
-                searchInTitle: searchInTitle,
-                yearFrom: yearFrom,
-                yearTo: yearTo,
-                authors: authors,
-                withoutYearCheckbox: withoutYearCheckbox
-            };
-            console.log(filterData);
+            $('span#filtered-book-count').text(matchingBookIds.length)
         });
         /*
          * List of books - sorting
