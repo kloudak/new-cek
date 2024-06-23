@@ -743,7 +743,7 @@ div#search-poems-intro .filter-form-buttons button
     margin: 0;
 }
 
-div#book-filter-form .filter-form-buttons button {
+div#book-filter-form button.sort-button {
     margin-left: 5px;
 }
 
