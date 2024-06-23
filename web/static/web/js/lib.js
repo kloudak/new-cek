@@ -13,6 +13,12 @@ function getElementHeightWithMargin(elem) {
     return height + marginTop + marginBottom;
 }
 
+function getIntersection(list1, list2) {
+    const set2 = new Set(list2);
+    return list1.filter(item => set2.has(item));
+}
+
+
 
 dataTableCS = {
     "emptyTable": "Tabulka neobsahuje žádná data",

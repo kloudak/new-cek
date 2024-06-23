@@ -5,7 +5,7 @@ from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
-import datetime, json
+import datetime, json, pickle, os
 
 def index(request):
     n_books = Book.objects.count()
@@ -265,7 +265,41 @@ def cluster_detail(request, id):
 
 # ADVANCED SEARCH
 def advanced_search(request):
-    return render(request, "web/advanced_search.html")
+    # authors
+    authors = Person.objects.annotate(num_books=models.Count('authorships')).filter(num_books__gt=0)
+    # books
+    cache_file = 'web/__mycache__/books_list.pkl'
+    books = None
+    try:
+        with open(cache_file, 'rb') as file:
+            books = pickle.load(file)
+    except (FileNotFoundError, EOFError, pickle.UnpicklingError):
+        books = Book.objects.annotate(num_authors=models.Count('authors')).order_by('title')
+        for book in books:
+            authors_count = book.num_authors
+            if authors_count == 1:
+                author = book.authors.first()
+                book.display_authors = f"{author.surname} {author.firstname}"
+            else:
+                book.display_authors = f"{authors_count} autorů"
+        
+        # Ensure the cache directory exists
+        os.makedirs(os.path.dirname(cache_file), exist_ok=True)
+        
+        # Save the data to the cache file
+        with open(cache_file, 'wb') as file:
+            pickle.dump(books, file)
+    # years
+    years_asc = Book.objects.values('year').annotate(num_books=models.Count('id')).filter(year__isnull=False).order_by('year')
+    years_desc = Book.objects.values('year').annotate(num_books=models.Count('id')).filter(year__isnull=False).order_by('-year')
+    
+
+    return render(request, "web/advanced_search.html", {
+        "authors" : authors,
+        "years_asc" : years_asc,
+        "years_desc" : years_desc,
+        "books": books,
+    })
 
 # STATIC PAGES
 def about_project(request):

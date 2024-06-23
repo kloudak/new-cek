@@ -1,10 +1,264 @@
 {% extends 'web/base.html' %}
+{% load static %}
 
 {% block title %}Badatelské nástroje{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Badatelské nástroje</h1>
-<p>
-    <i>TBA</i>
-</p>
+<div class="row" id="content-wrapper">
+    <div class="col-4">
+        <div id="book-filter-form">
+            <form method="get" class="form">
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-4 justify-content-end">
+                        <label for="search-in-title" class="form-label">Název knihy:</label> 
+                    </div>
+                    <div class="col-sm-8 justify-content-end">
+                        <input class="form-control form-control-sm" type="text" id="search-in-title" name="search-in-title" value="" placeholder="název knihy obsahuje ...">
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-9">
+                        Rok od 
+                        <select class="form-select form-select-sm" name="year-from" id="year-from">
+                            <option value="">----</option>
+                            {% for year in years_asc %}
+                                <option value="{{ year.year }}">
+                                    {{ year.year }} ({{ year.num_books}})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        do
+                        <select class="form-select form-select-sm" name="year-to"  id="year-to">
+                            <option value="">----</option>
+                            {% for year in years_desc %}
+                                <option value="{{ year.year }}">
+                                    {{ year.year }} ({{ year.num_books}})
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-sm-3 justify-content-end">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="without-year" name="without-year" value="1" checked>
+                            <label class="form-check-label text-decoration-line-through" for="without-year" data-bs-toggle="tooltip" data-bs-placement="top" title="zahrnout knihy mez uvedeného roku vydání">rok</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-2 justify-content-end">
+                        <label for="authors" class="form-label">Autoři:</label> 
+                    </div>
+                    <div class="col-sm-10 justify-content-end">
+                        <select class="form-control" name="authors" id="authors" multiple>
+                            {% for author in authors %}
+                                <option value="{{ author.id }}">{{ author.surname }}, {{ author.firstname }} ({{ author.num_books }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 d-flex justify-content-end filter-form-buttons">
+                        <button id="filter-button">fitrovat</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+            <div class="row g-0 mb-3">
+                <div class="col-sm-5 d-flex justify-content-end">
+                    Řadit podle:
+                </div>
+                <div class="col-sm-7 d-flex justify-content-end filter-form-buttons" id="ordering-buttons">
+                    <button id="sort-title" class="active">názvu</button>
+                    <button id="sort-year" class="">roku</button>
+                    <button id="sort-author" class="">autora</button>
+                </div>
+            </div>
+        </div>
+        <div id="book-filter-list">
+            {% for book in books %}
+                <span class="book-item" data-title="{{ book.title }}" data-year="{{ book.year|default:0 }}" data-author="{{ book.display_authors }}" data-book-id="{{ book.id }}">
+                    <span class="title">{{ book.title|safe }}</span>
+                    (<span class="year">{{ book.year|default:"rok neuveden" }}</span>)
+                    <span class="author">{{ book.display_authors }}</span>
+                </span>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="col-4">
+        seznam vybraných knih
+    </div>
+    <div class="col-4">
+        fulltext a clustery + seznam výsledků
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" charset="utf8" src="{% static 'web/js/search-data.js'%}"></script>
+<script type="text/javascript" charset="utf8" src="{% static 'web/js/choices.min.js'%}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var element = document.getElementById('authors');
+        var choices = new Choices(element, {
+            removeItemButton: true,
+            searchResultLimit: 10,
+            renderSelectedChoices: 'always',
+            itemSelectText: 'vybrat',
+            allowHTML: true,
+        });
+
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    });
+</script>
+<script>
+    function updateBookItemClasses(matchingBookIds) {
+        const bookItems = document.querySelectorAll('span.book-item');
+        const matchingBookIdSet = new Set(matchingBookIds);
+
+        bookItems.forEach(item => {
+            const bookId = item.getAttribute('data-book-id');
+            
+            if (matchingBookIdSet.has(bookId)) {
+                item.classList.add('filtered');
+                item.classList.remove('unfiltered');
+            } else {
+                item.classList.add('unfiltered');
+                item.classList.remove('filtered');
+            }
+        });
+    }
+
+
+    $(document).ready( function () {
+        var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
+                        + getElementHeightWithMargin(document.querySelector('footer'))
+                        +  44; 
+        $('#content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+        $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height()+0);
+
+        // ResizeObserver
+        const bookFilterForm = document.getElementById('book-filter-form');
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height());
+            }
+        });
+        resizeObserver.observe(bookFilterForm);
+       
+        /*
+         *List of books - filtering
+         */
+         $('#filter-button').click(function(event) {
+            event.preventDefault();
+
+            // Read values from the form inputs
+            var searchInTitle = $('#search-in-title').val().toLowerCase();
+            var yearFrom = $('#year-from').val();
+            var yearTo = $('#year-to').val();
+            var withoutYearCheckbox = document.getElementById('without-year').checked;
+            var authors = $('#authors').val();
+
+            // Get all book items
+            var bookItems = document.querySelectorAll('.book-item');
+            var matchingBookIds = Array.from(bookItems).map(function(item) {
+                return item.getAttribute('data-book-id');
+            });
+            // filter by title search
+            var matchingBookIdsTitleYear = Array.from(bookItems).filter(function(item) {
+                var title = item.getAttribute('data-title').toLowerCase();
+                var year = parseInt(item.getAttribute('data-year'), 10);
+                yearFromBool = true;
+                if(yearFrom > 0 && year > 0) {
+                    yearFromBool = (year >= yearFrom);
+                }
+                yearToBool = true;
+                if(yearTo > 0 && year > 0) {
+                    yearToBool = (year <= yearTo);
+                }
+                withoutYearBool = true
+                if(year != 0 && withoutYearCheckbox) {
+                    withoutYearBool = (yearFromBool && yearToBool)
+                } else if(year == 0 && !withoutYearCheckbox) {
+                    withoutYearBool = false
+                } else if(year == 0 && withoutYearCheckbox) {
+                    withoutYearBool = true
+                }
+                return title.includes(searchInTitle) && (yearFromBool && yearToBool) && withoutYearBool;
+            }).map(function(item) {
+                return item.getAttribute('data-book-id');
+            });
+            matchingBookIds = getIntersection(matchingBookIds, matchingBookIdsTitleYear);
+
+            if(authors.length > 0) {
+                let authorsBooks = new Set();
+                for(let i = 0; i < authors.length; i++) {
+                    author_book[authors[i]].forEach(aid => authorsBooks.add("" + aid))
+                }
+                console.log(Array.from(authorsBooks))
+                console.log(matchingBookIds);
+                matchingBookIds = getIntersection(matchingBookIds, Array.from(authorsBooks));
+            }
+            console.log(matchingBookIds);
+        
+            updateBookItemClasses(matchingBookIds);
+
+            // Log the values to the console (for demonstration purposes)
+            var filterData = {
+                searchInTitle: searchInTitle,
+                yearFrom: yearFrom,
+                yearTo: yearTo,
+                authors: authors,
+                withoutYearCheckbox: withoutYearCheckbox
+            };
+            console.log(filterData);
+        });
+        /*
+         * List of books - sorting
+         */
+        var sortOrder = {
+                title: 'asc',
+                year: 'asc',
+                author: 'asc'
+        };
+
+        function sortBooks(attribute, order) {
+            var items = $('#book-filter-list .book-item');
+            items.sort(function(a, b) {
+                var aValue = $(a).data(attribute);
+                var bValue = $(b).data(attribute);
+
+                if (order === 'asc') {
+                    return aValue > bValue ? 1 : (aValue < bValue ? -1 : 0);
+                } else {
+                    return aValue < bValue ? 1 : (aValue > bValue ? -1 : 0);
+                }
+            });
+            $('#book-filter-list').html(items);
+        }
+
+        $('#sort-title').click(function() {
+            $("#ordering-buttons button").removeClass('active');
+            $(this).addClass('active');
+            sortBooks('title', sortOrder.title);
+            sortOrder.title = (sortOrder.title === 'asc') ? 'desc' : 'asc';
+        });
+
+        $('#sort-year').click(function() {
+            $("#ordering-buttons button").removeClass('active');
+            $(this).addClass('active');
+            sortBooks('year', sortOrder.year);
+            sortOrder.year = (sortOrder.year === 'asc') ? 'desc' : 'asc';
+        });
+
+        $('#sort-author').click(function() {
+            $("#ordering-buttons button").removeClass('active');
+            $(this).addClass('active');
+            sortBooks('author', sortOrder.author);
+            sortOrder.author = (sortOrder.author === 'asc') ? 'desc' : 'asc';
+        });
+    });
+</script>
 {% endblock %}
