@@ -732,14 +732,19 @@ div#search-form input {
 }
 
 div#book-filter-form .filter-form-buttons button,
-div#book-selected-intro .filter-form-buttons button
+div#book-selected-intro .filter-form-buttons button,
+div#search-poems-intro .filter-form-buttons button
 {
     border: 1px solid rgba(211,90,1,0.9);
     background-color: rgba(255, 255, 255, 1);
     color: rgba(211,90,1,0.9);
     font-size: 90%;
     padding: 2px 5px;
-    margin: 0 5px 0 0;
+    margin: 0;
+}
+
+div#book-filter-form .filter-form-buttons button {
+    margin-left: 5px;
 }
 
 div#book-filter-form .filter-form-buttons button.active {
@@ -833,6 +838,12 @@ div#book-selected-list .book-item span.year {
 
 div#book-selected-list .book-item span.author {
     opacity: 0.8;
+}
+
+div#search-poems-list {
+    overflow-y: auto;
+    background-color: rgba(255, 255, 255, 1);
+    padding: 5px 0;
 }
 
 /*
