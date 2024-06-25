@@ -1,11 +1,13 @@
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, JsonResponse
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
+from django.views.decorators.csrf import csrf_protect
+from django.urls import reverse
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
-import datetime, json, pickle, os
+import datetime, json, pickle, os, re
 
 def index(request):
     n_books = Book.objects.count()
@@ -300,6 +302,101 @@ def advanced_search(request):
         "years_desc" : years_desc,
         "books": books,
     })
+
+@csrf_protect
+def advanced_search_results(request):
+    if request.method == 'POST':
+        max_results = 200 # TODO: config
+        min_books_fulltext_first = 500 # TODO: config
+
+        selected_books = request.POST.get('selected-books', '').strip()
+        poem_fulltext = request.POST.get('poem-fulltext', '').strip()
+
+        # Validate selected-books
+        if selected_books == "":
+            return JsonResponse({"code": 1, "num_poems": 0, "poems": []})
+        
+        if not re.match(r'^\d+(,\d+)*$', selected_books):
+            return JsonResponse({"code": -1, "num_poems": 0, "poems": []})
+        
+        # Convert selected_books to a list of integers
+        book_ids = [int(id) for id in selected_books.split(',') if id.isdigit() and int(id) >= 0]
+
+        combined_results = []
+        seen_poem_ids = set()
+
+        # Further filter poems by poem_fulltext if provided
+        if len(book_ids) > min_books_fulltext_first and poem_fulltext:
+            title_matches = Poem.objects.filter(title__icontains=poem_fulltext)
+            for poem in title_matches:
+                if poem.book.id in book_ids and poem.id not in seen_poem_ids:
+                    combined_results.append(poem)
+                    seen_poem_ids.add(poem.id)
+
+            # Filter text search vector matches
+            text_search_vector_matches = (Poem.objects
+                        .filter(text_search_vector=poem_fulltext)
+                        .annotate(
+                            rank=SearchRank('text_search_vector', poem_fulltext)
+                        )
+                        .order_by("-rank"))
+            print(len(text_search_vector_matches))
+            for poem in text_search_vector_matches:
+                if poem.book.id in book_ids and poem.id not in seen_poem_ids:
+                    combined_results.append(poem)
+                    seen_poem_ids.add(poem.id)
+            # Limit the results to the first max_results entries
+            num_poems = len(combined_results)
+            combined_results = combined_results[:max_results]
+        elif poem_fulltext:
+            # Filter poems by book_ids
+            poems = Poem.objects.filter(book__id__in=book_ids)
+            # Search in title
+            title_matches = poems.filter(title__icontains=poem_fulltext)
+            for poem in title_matches:
+                if poem.id not in seen_poem_ids:
+                    combined_results.append(poem)
+                    seen_poem_ids.add(poem.id)
+
+            # Filter text search vector matches
+            search_query = SearchQuery(poem_fulltext)
+            text_search_vector_matches = (poems
+                .filter(text_search_vector=poem_fulltext)
+                .annotate(
+                    rank=SearchRank('text_search_vector', poem_fulltext)
+                )
+                .order_by("-rank"))
+            for poem in text_search_vector_matches:
+                if poem.id not in seen_poem_ids:
+                    combined_results.append(poem)
+                    seen_poem_ids.add(poem.id)
+
+            # Limit the results to the first max_results entries
+            num_poems = len(combined_results)
+            combined_results = combined_results[:max_results]
+        else:
+            poems = Poem.objects.filter(book__id__in=book_ids)
+            num_poems = len(poems)
+            combined_results = list(poems[:max_results])
+
+        # Prepare the response data
+        response_data = {
+            "code": 1,
+            "num_poems": num_poems,
+            "max_results" : max_results,
+            "poems": [
+                {
+                    "title": poem.title,
+                    "book_title": f"{poem.book}",
+                    "author": f"{poem.book.authorships.first().person.firstname} {poem.book.authorships.first().person.surname}" if poem.book and poem.book.authorships.exists() else "",
+                    "link":  reverse('poem_text', kwargs={'id': poem.id})
+                }
+                for poem in combined_results
+            ]
+        }
+        return JsonResponse(response_data)
+    else:
+        return JsonResponse({"code": -1}, status=400)
 
 # STATIC PAGES
 def about_project(request):

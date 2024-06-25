@@ -121,7 +121,9 @@
     <div class="col-4">
         <div id="search-poems-intro">
             <h4>Vyhledat básně</h4>
-            <form method="get" class="form">
+            <form method="post" class="form" id="poem-search-form">
+                {% csrf_token %}
+                <input type="hidden" value="" name="selected-books" id="selected-books">
                 <div class="row g-3 mb-3">
                     <div class="col-sm-3">
                         <label for="poem-fulltext" class="form-label">Fulltext:</label> 
@@ -132,7 +134,7 @@
                 </div>
                 <div class="row mb-3">
                     <div class="col-sm-12 d-flex justify-content-end filter-form-buttons">
-                        <button id="poem-search-button">hledat</button>
+                        <span id="search-results-msg"></span><button id="poem-search-button">hledat</button>
                     </div>
                 </div>
             </form>
@@ -169,7 +171,7 @@
             bookIds.forEach(bookId => {
                 $(`#book-selected-list .book-item[data-book-id='${bookId}']`).addClass('selected');
             });
-            console.log(bookIds);
+            updateBookIdsInHidden();
         });
 
         document.getElementById('unselect-all').addEventListener('click', function() {
@@ -205,6 +207,8 @@
         if (bookItem) {
             bookItem.classList.add('selected');
         }
+
+        updateBookIdsInHidden();
     }
 
     function unselectBook(id_book) {
@@ -215,6 +219,35 @@
         if (bookItem) {
             bookItem.classList.remove('selected');
         }
+
+        updateBookIdsInHidden();
+    }
+
+
+    function updateBookIdsInHidden() {
+        const selectedElements = document.querySelectorAll('.book-item.selected');
+        const selectedBookIds = Array.from(selectedElements).map(element => element.getAttribute('data-book-id'));
+            
+        const input = document.getElementById('selected-books');
+        input.value = '';
+
+        input.value = selectedBookIds.join(',');
+    }
+
+    // Function to get the CSRF token from the cookie
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
     }
 
 
@@ -285,8 +318,6 @@
                 for(let i = 0; i < authors.length; i++) {
                     author_book[authors[i]].forEach(aid => authorsBooks.add("" + aid))
                 }
-                console.log(Array.from(authorsBooks))
-                console.log(matchingBookIds);
                 matchingBookIds = getIntersection(matchingBookIds, Array.from(authorsBooks));
             }
             
@@ -337,6 +368,77 @@
             $(this).addClass('active');
             sortBooks('author', sortOrder.author);
             sortOrder.author = (sortOrder.author === 'asc') ? 'desc' : 'asc';
+        });
+
+        /*
+         * SUBMITTING SEARCH FORM
+         */
+         $('#poem-search-button').click(function(event) {
+            event.preventDefault();
+            const url = window.location.href + '-vysledky';
+
+            // Get CSRF token
+            const csrftoken = getCookie('csrftoken');
+
+            // Serialize the form data
+            const formData = $('#poem-search-form').serialize();
+
+            $('#search-poems-list').html(`
+                <div class="text-center my-3">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `);
+
+            $('#search-results-msg').text('')
+
+
+            // Perform the AJAX request
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: formData,
+                dataType: 'json',
+                beforeSend: function(xhr, settings) {
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                },
+                success: function(response) {
+                    // Handle the response
+                    if (response.code === 1) {
+                        let resultMsq = `Nalezeno básní: ${response.num_poems}.`;
+                        if(response.num_poems > response.max_results) {
+                            resultMsq += ` Zobrazeno prvních ${response.max_results}.`
+                        } else {
+                            resultMsq += ''
+                        }
+                        $('#search-results-msg').text(resultMsq)
+                        let resultHtml = '';
+                        response.poems.forEach(poem => {
+                            let title = poem.title.replace(/<\/?[^>]+(>|$)/g, "")
+                            if(poem.title.trim() == "") {
+                                title = '<i>báseň bez názvu</i>'
+                            }
+                            let author_text = ""
+                            if(poem.author.trim() != "") {
+                                author_text = `, <span class="author">${poem.author}</span>`
+                            }
+                            resultHtml += `
+                                <span class="book-item">
+                                    <span class="title"><a href="${poem.link}" target="_blank">${title}</a></span>,  
+                                    <span class="book">${poem.book_title}</span>${author_text}
+                                </span>`;
+                        });
+                        $('#search-poems-list').html(resultHtml);
+                    } else {
+                        $('#search-poems-list').html('<p>Při hledání se něco pokazilo. Zkuste prosím znovu načíst stránku, když problémy přetrvají, konatktujte administrátora.</p>');
+                    }
+                },
+                error: function() {
+                    // Handle errors
+                    $('#search-poems-list').html('<p>Při hledání se něco pokazilo. Zkuste prosím znovu načíst stránku, když problémy přetrvají, konatktujte administrátora.</p>');
+                }
+            });
         });
     });
 </script>

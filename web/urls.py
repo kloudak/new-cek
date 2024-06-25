@@ -22,6 +22,7 @@ urlpatterns = [
     path("shlukovani/<int:id>", views.cluster_detail, name="cluster_detail"),
     # advanced_search
     path("badatelske-nastroje", views.advanced_search, name="advanced_search"),
+    path("badatelske-nastroje-vysledky", views.advanced_search_results, name="advanced_search_results"),
     # static pages
     path("o-projektu", views.about_project, name="about_project"),
     path("pro-skoly", views.for_schools, name="for_schools"),

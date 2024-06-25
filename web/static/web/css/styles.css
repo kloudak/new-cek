@@ -770,15 +770,11 @@ div#book-filter-list .book-item:hover {
     border-left: 1px solid rgba(211,90,1,0.9);
 }
 
-div#book-filter-list .book-item span.title {
+.book-item span.title {
     color: black;    
 }
 
-div#book-filter-list .book-item span.year {
-    opacity: 0.8;
-}
-
-div#book-filter-list .book-item span.author {
+.book-item span.year, .book-item span.author, .book-item span.book {
     opacity: 0.8;
 }
 
@@ -828,18 +824,6 @@ div#book-selected-list .book-item:hover {
     border-left: 1px solid rgba(211,90,1,0.9);
 }
 
-div#book-selected-list .book-item span.title {
-    color: black;    
-}
-
-div#book-selected-list .book-item span.year {
-    opacity: 0.8;
-}
-
-div#book-selected-list .book-item span.author {
-    opacity: 0.8;
-}
-
 div#search-poems-list {
     overflow-y: auto;
     background-color: rgba(255, 255, 255, 1);
@@ -872,4 +856,21 @@ div#search-poems-list {
 .form-check-input:checked {
     background-color: rgba(211,90,1,0.9);
     border-color: rgba(211,90,1,0.9);
+}
+
+#search-results-msg {
+    display: block;
+    width: 100%;
+    font-size: 80%;
+}
+
+div#search-poems-list .book-item {
+    display: block;
+    padding: 0 5px;
+    font-size: 85%;
+    border-left: 1px solid rgba(255, 255, 255, 1);
+}
+
+div#search-poems-list .book-item:hover {
+    border-left: 1px solid rgba(211,90,1,0.9);
 }
