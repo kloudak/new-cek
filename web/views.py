@@ -191,7 +191,7 @@ def search(request):
     if 'q' in request.GET and len(request.GET['q'].strip()) > 0:
         query = request.GET['q'].strip()
     if query is None:
-        redirect('index')
+        return redirect('index')
     # search in authors name
     authors = Person.objects.filter(
         models.Q(firstname__icontains=query) | models.Q(surname__icontains=query)
