@@ -27,4 +27,6 @@ urlpatterns = [
     path("o-projektu", views.about_project, name="about_project"),
     path("pro-skoly", views.for_schools, name="for_schools"),
     path("osobni-udaje", views.personal_data, name="personal_data"),
+    path("editori", views.editors, name="editors"),
+    path("edicni-poznamka", views.editorial_note, name="editorial_note"),
 ]

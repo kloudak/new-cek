@@ -874,3 +874,18 @@ div#search-poems-list .book-item {
 div#search-poems-list .book-item:hover {
     border-left: 1px solid rgba(211,90,1,0.9);
 }
+
+/*
+ * STATIC PAGES
+ */
+div.long-text {
+    padding: 50px 20px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 4px;
+}
+
+div.long-text div {
+    margin: 0 auto;
+    text-align: justify;
+    max-width: 600px;
+}

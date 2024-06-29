@@ -407,3 +407,9 @@ def personal_data(request):
 
 def for_schools(request):
     return render(request, "web/for_schools.html")
+
+def editors(request):
+    return render(request, "web/editors.html")
+
+def editorial_note(request):
+    return render(request, "web/editorial_note.html")
