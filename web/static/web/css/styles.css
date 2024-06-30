@@ -442,13 +442,49 @@ ul#book-content li[data-level="5"] {
 
 /* book and poem text */
 
-.poem-navigation ul {
+#poem-tabs {
+    padding-right: 0;
+}
+
+#poem-tabs ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+#poem-tabs ul {
     list-style: none;
 }
 
-li.active a {
-    color: rgba(6,7,7,0.87);
+#poem-tabs ul li {
+    padding: 10px 20px;
+    font-size: 110%;
+    display: block;
+    width: 100%;
+}
+
+#poem-tabs ul li a {
     cursor: default;
+    color: rgba(6,7,7,0.87);
+}
+
+#poem-tabs ul li.active {
+    cursor: default;
+    border-right: 2px solid rgb(211,90,1);
+}
+
+#poem-tabs ul li.active a {
+    cursor: default;
+    color: rgb(211,90,1);
+}
+
+#poem-tabs a:hover {
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#poem-tabs li:hover {
+    border-right: 2px solid rgb(211,90,1);
 }
 
 div.book-text, 

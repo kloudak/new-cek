@@ -26,18 +26,18 @@
         {% endif %}
     </div>
     <div class="row" id="book-content-wrapper">
-        <div class="col-md-3 poem-navigation col-wrapper" id="left-column">
+        <div class="col-md-2 poem-navigation col-wrapper"  id="poem-tabs">
             <ul>
-                <li class="{% is_active 'poem_text' %}"><a href="{% url 'poem_text' id=poem.id %}">text</a></li>
-                <li class="{% is_active 'poem_in_book' %}"><a href="{% url 'poem_in_book' id=poem.id %}">v knize</a></li>
+                <li class="{% is_active 'poem_text' %}"><a href="{% url 'poem_text' id=poem.id %}">Text</a></li>
+                <li class="{% is_active 'poem_in_book' %}"><a href="{% url 'poem_in_book' id=poem.id %}">V knize</a></li>
                 {% if poem.versology_text %}
-                <li class="{% is_active 'poem_versology' %}"><a href="{% url 'poem_versology' id=poem.id %}">versologie</a></li>
-                <li class="{% is_active 'poem_AI' %}"><a href="{% url 'poem_AI' id=poem.id %}">AI</a></li>
+                <li class="{% is_active 'poem_versology' %}"><a href="{% url 'poem_versology' id=poem.id %}">Versologie</a></li>
+                <li class="{% is_active 'poem_AI' %}"><a href="{% url 'poem_AI' id=poem.id %}">Výstupy AI</a></li>
                 {% endif %}
             </ul>
         </div>
         
-        <div class="col-md-6 poem-content scrollable-content" id="middle-column">
+        <div class="col-md-7 poem-content scrollable-content" id="middle-column">
             {% block poem_content %}
             
             {% endblock %}
