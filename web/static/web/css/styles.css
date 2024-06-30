@@ -887,5 +887,39 @@ div.long-text {
 div.long-text div {
     margin: 0 auto;
     text-align: justify;
-    max-width: 600px;
+    max-width: 650px;
+}
+
+/* 
+ * FOR SCHOOLS
+ */
+
+ .video-link {
+    display: block;
+    text-align: left;
+    padding: 5px 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #343a40; 
+    font-size: 1em;
+    transition: background-color 0.3s, box-shadow 0.3s; 
+}
+
+.video-link:hover {
+    background-color: #e2e6ea; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+}
+
+.video-link i {
+    margin-right: 10px; 
+    vertical-align: middle; 
+    font-size: 150%;
+}
+
+.video-link:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
 }

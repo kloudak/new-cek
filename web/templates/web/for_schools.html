@@ -4,7 +4,65 @@
 
 {% block content %}
 <h1 class="page-title">Pro školy</h1>
-<p>
-    <i>TBA</i>
-</p>
+<div class="long-text"><div>
+    <p>
+        <a href="#" class="video-link"><i class="bi bi-play-btn"></i> kde jste a co tu najdete </a>
+    </p>
+    <ul>
+        <li>pro potřeby <b>studujících a vyučujících</b> připravený výběr básnických knih z dějin
+            české poezie 19. a počátku 20. století</li>
+        <li>o každém autorovi či autorce i knize z tohoto výběru se dozvíte <b>více v připojených
+            materiálech</b></li>
+        <li>odkazujeme jen na <b>spolehlivé a prověřené zdroje</b> – všechny odkazované příručky
+            vznikly prací Ústavu pro českou literaturu AV ČR (<i>Lexikon české literatury</i>,
+            slovník <i>Čeští spisovatelé 19. a počátku 20. století, Slovník básnických knih</i>)</li>
+        <li><b>videa</b> na stránce vám pomohou při zacházení s nástroji databáze a ukážou škálu
+            jejich možného využití</li>
+    </ul>
+    <div class="row">
+        <div class="col-md-7">
+            <h5>Studujete? Bude se vám hodit</h5>
+            <ul>
+                <li><a href="{% url 'book_detail' id=1476 %}">Almanach na rok 1914</a></li>
+                <li><a href="{% url 'book_detail' id=741 %}">Lada Nióla</a></li>
+                <li><a href="{% url 'book_detail' id=742 %}">Máj 1858</a></li>
+                <li><a href="{% url 'book_detail' id=745 %}">Ruch 1868</a></li>
+                <li><a href="{% url 'book_detail' id=874 %}">Rukopis královédvorský</a></li>
+                <li><a href="{% url 'book_detail' id=875 %}">Rukopis zelenohorský</a></li>
+                <li><a href="{% url 'author_detail' id=35 %}">Bezruč, Petr</a>
+                    <ul>
+                        <li><a href="{% url 'book_detail' id=1655 %}">Slezské písně</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'author_detail' id=60 %}">Březina, Otokar</a>
+                    <ul>
+                    <li><a href="{% url 'book_detail' id=51 %}">Ruce, 1901</a></li>
+                    <li><a href="{% url 'book_detail' id=52 %}">Stavitelé chrámů, 1899</a></li>
+                    <li><a href="{% url 'book_detail' id=53 %}">Svítání na západě, 1896</a></li>
+                    <li><a href="{% url 'book_detail' id=54 %}">Tajemné dálky, 1895</a></li>
+                    <li><a href="{% url 'book_detail' id=55 %}">Větry od pólů, 1897</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'author_detail' id=130%}">Dyk, Viktor</a>
+                    <ul>
+                    <li><a href="{% url 'book_detail' id=123 %}">Milá sedmi loupežníků, 1906</a></li>
+                    <li><a href="{% url 'book_detail' id=110 %}">Anebo, 1918</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-5">
+            <h5>Návody a inspirace k využití databáze</h5>
+            <p>
+                <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak hledat konkrétní motiv?</a>
+            </p>
+            <p>
+                <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak používat motivické klastry?</a>
+            </p>
+            <p>
+                <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak kombinovat kritéria při třídění sbírek?</a>
+            </p>
+        </div>
+    </div>
+</div></div>
 {% endblock %}
