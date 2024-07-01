@@ -8,7 +8,10 @@ from django.urls import reverse
 from django.template import loader
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
-import datetime, json, pickle, os, re
+import datetime, json, pickle, os, re, logging
+
+# Get the logger
+search_logger = logging.getLogger('search_logger')
 
 def index(request):
     n_books = Book.objects.count()
@@ -191,6 +194,7 @@ def search(request):
     max_results = 50 # SETTING
     if 'q' in request.GET and len(request.GET['q'].strip()) > 0:
         query = request.GET['q'].strip()
+        search_logger.info(f"[F] {query}")
     if query is None:
         return redirect('index')
     # search in authors name
