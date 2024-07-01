@@ -330,6 +330,10 @@ def advanced_search_results(request):
         combined_results = []
         seen_poem_ids = set()
 
+        # log query
+        if poem_fulltext:
+            search_logger.info(f"[A] {poem_fulltext}")
+
         # Further filter poems by poem_fulltext if provided
         if len(book_ids) > min_books_fulltext_first and poem_fulltext:
             title_matches = Poem.objects.filter(title__icontains=poem_fulltext)
