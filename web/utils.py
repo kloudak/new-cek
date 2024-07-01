@@ -161,5 +161,5 @@ def log_search_to_file(query, advanced=False, log_file='web/__mylog__/search_log
         log_entry = f"{current_time} - {form} - {query}\n"
         with open(log_file, 'a') as file:
             file.write(log_entry)
-    except:
-        return False
+    except Exception as e:
+        print(f"Failed to log search query: {e}")
