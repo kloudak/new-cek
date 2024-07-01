@@ -4,12 +4,14 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.views.decorators.csrf import csrf_protect
+from django.views.decorators.cache import cache_page
 from django.urls import reverse
 from django.template import loader
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
 import datetime, json, pickle, os, re, logging
 
+cache_exp = 30 * 24 * 60 * 60
 # Get the logger
 search_logger = logging.getLogger('search_logger')
 
@@ -25,6 +27,7 @@ def index(request):
     })
 
 # AUTHORS
+@cache_page(cache_exp)
 def author_list(request):
     persons = []
     persons_without_pseudonymes = Person.objects.filter(pseudonym_for__isnull=True).annotate(
@@ -80,6 +83,7 @@ def author_detail(request, id):
     })
 
 # BOOKS
+@cache_page(cache_exp)
 def book_list(request):
     books = Book.objects.prefetch_related('authorships__person').all().order_by('title', 'year')
     return render(request, "web/book_list.html", {
@@ -234,6 +238,7 @@ def search(request):
     })
 
 # CLUSTERING
+@cache_page(cache_exp)
 def clustering(request):
     clustering = Clustering.objects.get(id=3)    
     clusters = Cluster.objects.filter(clustering=clustering).annotate(num_poems=models.Count('poems'))
@@ -242,6 +247,7 @@ def clustering(request):
         "clusters" : clusters
     })
 
+@cache_page(cache_exp)
 def cluster_detail(request, id):
     cluster = get_object_or_404(Cluster, id=id)
     poems_in_cluster = PoemInCluster.objects.filter(cluster_id=id).order_by('-score')
