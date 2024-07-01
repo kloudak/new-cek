@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
 from django.template import loader
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
-from .utils import years_difference
+from .utils import years_difference, log_search_to_file
 import datetime, json, pickle, os, re
 
 def index(request):
@@ -191,6 +191,7 @@ def search(request):
     max_results = 50 # SETTING
     if 'q' in request.GET and len(request.GET['q'].strip()) > 0:
         query = request.GET['q'].strip()
+        log_search_to_file(query)
     if query is None:
         return redirect('index')
     # search in authors name
@@ -312,6 +313,8 @@ def advanced_search_results(request):
 
         selected_books = request.POST.get('selected-books', '').strip()
         poem_fulltext = request.POST.get('poem-fulltext', '').strip()
+        if poem_fulltext:
+            log_search_to_file(poem_fulltext, advanced=True)
 
         # Validate selected-books
         if selected_books == "":
