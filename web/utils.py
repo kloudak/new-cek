@@ -137,29 +137,3 @@ def xsampa_to_czech_word(xsampa, orig):
         else:
             xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
     return xsampa
-
-def log_search_to_file(query, advanced=False, log_file='web/__mylog__/search_log.txt'):
-    """
-    Log the search query to a specified file with a timestamp.
-
-    This function appends the given search query along with the current
-    date-time to a log file. Each log entry is written as a new line
-    in the format "YYYY-MM-DD HH:MM:SS - query".
-
-    Args:
-        query (str): The search query string to be logged.
-        advanced (bool): Is the seach string from advances search form?
-        log_file (str): The path to the log file where the search query
-                        will be appended. Defaults to 'web/__mylog__/search_log.txt'.
-
-    Example:
-        log_search_to_file("example search query")
-    """
-    try:
-        current_time = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        form = 'A' if advanced else 'F'
-        log_entry = f"{current_time} - {form} - {query}\n"
-        with open(log_file, 'a') as file:
-            file.write(log_entry)
-    except Exception as e:
-        print(f"Failed to log search query: {e}")
