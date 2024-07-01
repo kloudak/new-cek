@@ -417,11 +417,11 @@
                         response.poems.forEach(poem => {
                             let title = "";
                             if(poem.title) {
-                                let title = poem.title.replace(/<\/?[^>]+(>|$)/g, "")
-                                if(poem.title.trim() == "") {
-                                    title = '<i>báseň bez názvu</i>'
-                                }
+                                title = poem.title.replace(/<\/?[^>]+(>|$)/g, "")
                             } 
+                            if(title.trim() == "") {
+                                title = '<i>báseň bez názvu</i>'
+                            }
                             let author_text = ""
                             if(poem.author.trim() != "") {
                                 author_text = `, <span class="author">${poem.author}</span>`
