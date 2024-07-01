@@ -14,6 +14,7 @@ class Person(models.Model):
 
     firstname = models.CharField(max_length=100)
     surname = models.CharField(max_length=100)
+    for_schools = models.BooleanField(default=False)
     date_of_birth = models.DateField(null=True, blank=True)
     date_of_death = models.DateField(null=True, blank=True)
     place_of_birth = models.CharField(max_length=100, null=True, blank=True)
@@ -44,6 +45,7 @@ class Book(models.Model):
 
     title = models.TextField(null=True)  # 'titul'
     subtitle = models.TextField(blank=True, null=True)  # 'podtitul'
+    for_schools = models.BooleanField(default=False)
     place_of_publication = models.CharField(
         max_length=255, blank=True, null=True
     )  # 'misto'
