@@ -1,5 +1,11 @@
-User-agent: *
+User-agent: Googlebot
 Disallow:
+
+User-agent: SeznamBot
+Disallow:
+
+User-agent: AhrefsBot 
+​Disallow: /
 
 User-agent: badbot
 Disallow: /
