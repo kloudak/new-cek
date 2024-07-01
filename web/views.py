@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 from django.views.decorators.csrf import csrf_protect
 from django.urls import reverse
+from django.template import loader
 from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
 import datetime, json, pickle, os, re
@@ -413,3 +414,7 @@ def editors(request):
 
 def editorial_note(request):
     return render(request, "web/editorial_note.html")
+
+def robots(request):
+    template = loader.get_template('web/robots.txt')
+    return HttpResponse(template.render(), content_type='text/plain')

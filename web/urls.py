@@ -29,4 +29,5 @@ urlpatterns = [
     path("osobni-udaje", views.personal_data, name="personal_data"),
     path("editori", views.editors, name="editors"),
     path("edicni-poznamka", views.editorial_note, name="editorial_note"),
+    path('robots.txt', views.robots, name='robots'),
 ]
