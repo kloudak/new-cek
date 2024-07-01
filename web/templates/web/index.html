@@ -85,6 +85,7 @@
                 motivické příbuznosti</li>
             <li>nabízí možnost fulltextového i strukturovaného <b>vyhledávání</b> v obsažených textech</li>
             <li>u řady titulů nabízí vedle textu knih i jejich <b>obrazovou podobu</b></li>
+            <li><a href="{% url 'about_project' %}">více o projektu</a></li>
         </ul>
     </div>
     <div class="col-md-6 homapage-video">
@@ -96,7 +97,7 @@
         <h2>Poděkování patří</h2>
         
         <p>
-            Technologické agentuře České republiky TAČR, která umožnila vznik tohoto projektu.
+            Technologické agentuře České republiky, která umožnila vznik tohoto projektu.
         </p>
         
     </div>
@@ -112,17 +113,6 @@
         </p>
     </div> 
 </div>
-<div class="row">
-    <div class="col-md-12 homapage-text">
-        <h2>Tiráž</h2>
-        <p>
-            Česká elektronická knihovna shromažďuje díla českých i zahraničních básníků a básnířek z období 19. a 20. století, kteří ovlivnili nejen literaturu, ale i společenský a kulturní vývoj. Naleznete zde básně od klasiků, jako je Karel Hynek Mácha, Jaroslav Seifert, Vítězslav Nezval, a mnoho dalších.
-        </p>
-        <p>
-            Projekt je zaměřen na digitalizaci těchto děl a má za cíl umožnit široké veřejnosti, studentům, vědcům a milovníkům poezie přístup k těmto výjimečným dílům. Zobrazit <a href="{% url 'about_project' %}">více o projektu</a>.
-        </p>
-    </div> 
-</div>
 <div class="row homepage-logos">
     <div class="col-md-4 text-end">
         <img src="{% static 'web/images/AVCR.png'%}">
@@ -133,5 +123,16 @@
     <div class="col-md-4">
         <img src="{% static 'web/images/UCL.png'%}">
     </div>
+</div>
+<div class="row">
+    <div class="col-md-12 homapage-text">
+        <h2>Kontakt</h2>
+        <address class="address">
+            Ústav pro českou literaturu AV ČR, v. v. i.<br>
+            Na Florenci 1420/3<br>
+            110 00 Praha 1<br>
+            <a href="http://www.ucl.cas.cz" target="_blank">www.ucl.cas.cz</a>
+        </address>
+    </div> 
 </div>
 {% endblock %}
