@@ -30,7 +30,7 @@
         {% if next_issues|length > 0 %}
             <h4>Další vydání</h4>
             {% for ni in next_issues %}
-                {% if ni.id != poem.id %}
+                {% if ni.id != poem.id and ni.id > 0 %}
                     <p>
                         <a href="{% url 'poem_text' id=ni.id %}">{{ poem|striptags|safe }}</a> 
                         v knize <a href="{% url 'book_detail' id=ni.book.id %}">
