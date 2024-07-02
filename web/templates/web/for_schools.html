@@ -23,32 +23,24 @@
         <div class="col-md-7">
             <h5>Studujete? Bude se vám hodit</h5>
             <ul>
-                <li><a href="{% url 'book_detail' id=1476 %}">Almanach na rok 1914</a></li>
-                <li><a href="{% url 'book_detail' id=741 %}">Lada Nióla</a></li>
-                <li><a href="{% url 'book_detail' id=742 %}">Máj 1858</a></li>
-                <li><a href="{% url 'book_detail' id=745 %}">Ruch 1868</a></li>
-                <li><a href="{% url 'book_detail' id=874 %}">Rukopis královédvorský</a></li>
-                <li><a href="{% url 'book_detail' id=875 %}">Rukopis zelenohorský</a></li>
-                <li><a href="{% url 'author_detail' id=35 %}">Bezruč, Petr</a>
-                    <ul>
-                        <li><a href="{% url 'book_detail' id=1655 %}">Slezské písně</a></li>
-                    </ul>
-                </li>
-                <li><a href="{% url 'author_detail' id=60 %}">Březina, Otokar</a>
-                    <ul>
-                    <li><a href="{% url 'book_detail' id=51 %}">Ruce, 1901</a></li>
-                    <li><a href="{% url 'book_detail' id=52 %}">Stavitelé chrámů, 1899</a></li>
-                    <li><a href="{% url 'book_detail' id=53 %}">Svítání na západě, 1896</a></li>
-                    <li><a href="{% url 'book_detail' id=54 %}">Tajemné dálky, 1895</a></li>
-                    <li><a href="{% url 'book_detail' id=55 %}">Větry od pólů, 1897</a></li>
-                    </ul>
-                </li>
-                <li><a href="{% url 'author_detail' id=130%}">Dyk, Viktor</a>
-                    <ul>
-                    <li><a href="{% url 'book_detail' id=123 %}">Milá sedmi loupežníků, 1906</a></li>
-                    <li><a href="{% url 'book_detail' id=110 %}">Anebo, 1918</a></li>
-                    </ul>
-                </li>
+                {% for book in books %}
+                    <li>
+                        <a href="{% url 'book_detail' book.id %}">{{ book|safe }} </a>
+                        {% if book.year %}({{ book.year }}){% endif %}
+                    </li>
+                {% endfor %}
+                {% for author, abooks in authors.items %}
+                    <li><a href="{% url 'author_detail' author.id %}">{{ author.surname }}, {{ author.firstname }}</a>
+                        <ul>
+                            {% for book in abooks %}
+                                <li>
+                                    <a href="{% url 'book_detail' book.id %}">{{ book|safe }}</a>
+                                    {% if book.year %}({{ book.year }}){% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
             </ul>
         </div>
         <div class="col-md-5">
@@ -60,7 +52,8 @@
                 <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak používat motivické klastry?</a>
             </p>
             <p>
-                <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak kombinovat kritéria při třídění sbírek?</a>
+                <a href="#" class="video-link"><i class="bi bi-play-btn"></i> Jak kombinovat kritéria při třídění sbírek?
+                </a>
             </p>
         </div>
     </div>

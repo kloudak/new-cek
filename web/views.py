@@ -413,15 +413,33 @@ def advanced_search_results(request):
     else:
         return JsonResponse({"code": -1}, status=400)
 
+# FOR SCHOOLS
+def for_schools(request):
+    # Get books with "for_schools=True" whose author is NULL or author's "for_schools=False"
+    books = Book.objects.filter(for_schools=True).exclude(
+        authorships__person__for_schools=True
+    ).distinct().order_by('title')
+
+    # Get authors with "for_schools=True"
+    authors_query = Person.objects.filter(for_schools=True).order_by('surname', 'firstname')
+
+    # Create a dictionary to store authors and their books
+    authors = {}
+    for author in authors_query:
+        # Get books for each author with "for_schools=True" ordered by year
+        abooks = Book.objects.filter(authorships__person=author, for_schools=True).order_by('title')
+        authors[author] = abooks
+    return render(request, "web/for_schools.html", {
+        'books': books,
+        'authors': authors,
+    })
+
 # STATIC PAGES
 def about_project(request):
     return render(request, "web/about_project.html")
 
 def personal_data(request):
     return render(request, "web/personal_data.html")
-
-def for_schools(request):
-    return render(request, "web/for_schools.html")
 
 def editors(request):
     return render(request, "web/editors.html")
