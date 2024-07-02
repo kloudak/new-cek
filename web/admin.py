@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django import forms
 
 from .models import Person, Authorship, Book, Poem, PoemOfTheDay, Clustering, Cluster
 from .forms import PoemOfTheDayAdminForm
@@ -9,8 +10,24 @@ class PersonAdmin(admin.ModelAdmin):
     search_fields = ('id','surname', 'firstname', 'date_of_birth', 'date_of_death')
     ordering = ('id','surname', 'firstname', 'date_of_birth', 'date_of_death', 'sex', 'pseudonym_for')
 
+class AuthorshipInlineForm(forms.ModelForm):
+    person = forms.IntegerField(widget=forms.TextInput)
+
+    class Meta:
+        model = Authorship
+        fields = '__all__'
+    
+    def clean_person(self):
+        person_id = self.cleaned_data['person']
+        try:
+            person = Person.objects.get(id=person_id)
+        except Person.DoesNotExist:
+            raise forms.ValidationError("Person with this ID does not exist.")
+        return person
+
 class AuthorshipInline(admin.TabularInline):
     model = Authorship
+    form = AuthorshipInlineForm
     extra = 1
 
 class PoemInline(admin.StackedInline):
