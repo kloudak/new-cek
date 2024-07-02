@@ -11,9 +11,22 @@ from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster,
 from .utils import years_difference
 import datetime, json, pickle, os, re, logging
 
+# template cache
 cache_exp = 30 * 24 * 60 * 60
 # Get the logger
 search_logger = logging.getLogger('search_logger')
+# metres names
+metre = {
+    "A" : "Amfibrach",
+    "D" : "Daktyl",
+    "J" : "Jamb",
+    "N" : "Neurčeno",
+    "T" : "Trochej",
+    "X" : "Daktylotrochej",
+    "Y" : "Daktylotrochej s předrážkou",
+    "H" : "Hexametr",
+    "nodata": "<i>chybí data</i>"
+}
 
 def index(request):
     n_books = Book.objects.count()
@@ -75,11 +88,20 @@ def author_detail(request, id):
     # Extract books from the dictionary and sort them by year
     books = sorted(books_dict.values(), key=lambda book: (book.year if book.year else 0))
 
+    # stats
+    try: 
+        stats = json.loads(author.stats)
+        stats['metre'] = dict(sorted(stats['metre'].items(), key=lambda item: item[1], reverse=True))
+    except:
+        stats = None
+
     return render(request, 'web/author_detail.html', {
         'author': author, 
         'books': books,
         'pseudonyms': pseudonyms,
-        'age': age
+        'age': age,
+        'stats' : stats,
+        'metre' : metre
     })
 
 # BOOKS
@@ -141,16 +163,6 @@ def poem_versology(request, id):
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
-    metre = {
-        "A" : "Amfibrach",
-        "D" : "Daktyl",
-        "J" : "Jamb",
-        "N" : "Neurčeno",
-        "T" : "Trochej",
-        "X" : "Daktylotrochej",
-        "Y" : "Daktylotrochej s předrážkou",
-        "H" : "Hexametr",
-    }
     try: 
         versology_stats = json.loads(poem.versology_stats)
     except:

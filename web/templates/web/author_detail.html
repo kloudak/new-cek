@@ -93,12 +93,52 @@
     </div>
     <div class="col-md-3">
         <div class="content-table-wrapper">
+            {% if author.description %}
             <p>
-                <b>interní poznámka:</b><br/>{{ author.remark|default:'<i>prázdná</i>' }}
+                {{ author.description|safe }}
             </p>
-            <p>
-                <b>popis:</b><br/>{{ author.description|default:'<i>prázdný</i>' }}
-            </p>
+            {% endif %}
+            {% if stats %}
+                <h5>Statistiky</h5>
+                <table class="table table-sm">
+                    <tbody>
+                        <tr>
+                            <td class="text-end">Knih: </td>
+                            <td class="text-end" colspan="2">{{ stats.books }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-end">Básní: </td>
+                            <td class="text-end" colspan="2">{{ stats.poems }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-end">Strof: </td>
+                            <td class="text-end" colspan="2">{{ stats.strophes }}</td>
+                        </tr>
+                        <tr>
+                            <td class="text-end">Veršů: </td>
+                            <td class="text-end" colspan="2">{{ stats.verses }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% if stats.metre|length > 0 %}
+                    <h5>Použitá metra veršů</h5>
+                    <table class="table table-sm">
+                        <tbody>
+                            {% for key, value in stats.metre.items %}
+                                <tr>
+                                    <td class="text-end">{{ metre|get_item:key|safe }}:</td>
+                                    <td>
+                                        {{ value }} 
+                                    </td>
+                                    <td>
+                                        {% widthratio value stats.verses 100 %}&nbsp;%
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>
