@@ -28,6 +28,7 @@ class Person(models.Model):
     remark = models.TextField(null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=("M", "Male"))
+    stats = models.TextField(blank=True, null=True)
     pseudonym_for = models.ForeignKey(
         "self",
         on_delete=models.SET_NULL,
