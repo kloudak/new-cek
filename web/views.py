@@ -320,13 +320,22 @@ def advanced_search(request):
     # years
     years_asc = Book.objects.values('year').annotate(num_books=models.Count('id')).filter(year__isnull=False).order_by('year')
     years_desc = Book.objects.values('year').annotate(num_books=models.Count('id')).filter(year__isnull=False).order_by('-year')
-    
-
+    # clusters
+    clustering = Clustering.objects.get(id=3)    
+    clusters_db = Cluster.objects.filter(clustering=clustering).annotate(num_poems=models.Count('poems')).order_by('-num_poems')
+    clusters = {}
+    for cluster in clusters_db:
+        clusters[cluster.id] = {
+            'description' : cluster.description,
+            'description_short' : ", ".join((cluster.description.split(',')[0:4])),
+            'num_poems' : cluster.num_poems
+        }
     return render(request, "web/advanced_search.html", {
         "authors" : authors,
         "years_asc" : years_asc,
         "years_desc" : years_desc,
         "books": books,
+        "clusters" : clusters,
     })
 
 @csrf_protect
@@ -337,6 +346,7 @@ def advanced_search_results(request):
 
         selected_books = request.POST.get('selected-books', '').strip()
         poem_fulltext = request.POST.get('poem-fulltext', '').strip()
+        poem_clusters = request.POST.getlist('poem-clusters')
 
         # Validate selected-books
         if selected_books == "":
@@ -344,9 +354,17 @@ def advanced_search_results(request):
         
         if not re.match(r'^\d+(,\d+)*$', selected_books):
             return JsonResponse({"code": -1, "num_poems": 0, "poems": []})
+        try:
+            book_ids = [int(id) for id in selected_books.split(',') if id.isdigit() and int(id) >= 0]
+        except ValueError:
+            return JsonResponse({"code": -1, "num_poems": 0, "poems": []})
         
-        # Convert selected_books to a list of integers
-        book_ids = [int(id) for id in selected_books.split(',') if id.isdigit() and int(id) >= 0]
+        # Validate clusters ids
+        try:
+            cluster_ids = [int(c) for c in poem_clusters]
+        except ValueError:
+            return JsonResponse({"code": -1, "num_poems": 0, "poems": []})
+               
 
         combined_results = []
         seen_poem_ids = set()
@@ -357,20 +375,31 @@ def advanced_search_results(request):
 
         # Further filter poems by poem_fulltext if provided
         if len(book_ids) > min_books_fulltext_first and poem_fulltext:
-            title_matches = Poem.objects.filter(title__icontains=poem_fulltext)
+            if cluster_ids:
+                title_matches = Poem.objects.filter(cluster_membership__cluster_id__in=cluster_ids).filter(title__icontains=poem_fulltext)
+            else:
+                title_matches = Poem.objects.filter(title__icontains=poem_fulltext)
             for poem in title_matches:
                 if poem.book.id in book_ids and poem.id not in seen_poem_ids:
                     combined_results.append(poem)
                     seen_poem_ids.add(poem.id)
 
             # Filter text search vector matches
-            text_search_vector_matches = (Poem.objects
+            if cluster_ids:
+                text_search_vector_matches = (Poem.objects
+                        .filter(cluster_membership__cluster_id__in=cluster_ids)
                         .filter(text_search_vector=poem_fulltext)
                         .annotate(
                             rank=SearchRank('text_search_vector', poem_fulltext)
                         )
                         .order_by("-rank"))
-            print(len(text_search_vector_matches))
+            else:
+                text_search_vector_matches = (Poem.objects
+                        .filter(text_search_vector=poem_fulltext)
+                        .annotate(
+                            rank=SearchRank('text_search_vector', poem_fulltext)
+                        )
+                        .order_by("-rank"))
             for poem in text_search_vector_matches:
                 if poem.book.id in book_ids and poem.id not in seen_poem_ids:
                     combined_results.append(poem)
@@ -380,7 +409,10 @@ def advanced_search_results(request):
             combined_results = combined_results[:max_results]
         elif poem_fulltext:
             # Filter poems by book_ids
-            poems = Poem.objects.filter(book__id__in=book_ids)
+            if cluster_ids:
+                poems = Poem.objects.filter(book__id__in=book_ids).filter(cluster_membership__cluster_id__in=cluster_ids)
+            else:
+                poems = Poem.objects.filter(book__id__in=book_ids)
             # Search in title
             title_matches = poems.filter(title__icontains=poem_fulltext)
             for poem in title_matches:
@@ -405,7 +437,10 @@ def advanced_search_results(request):
             num_poems = len(combined_results)
             combined_results = combined_results[:max_results]
         else:
-            poems = Poem.objects.filter(book__id__in=book_ids)
+            if cluster_ids:
+                poems = Poem.objects.filter(book__id__in=book_ids).filter(cluster_membership__cluster_id__in=cluster_ids)
+            else:
+                poems = Poem.objects.filter(book__id__in=book_ids)
             num_poems = len(poems)
             combined_results = list(poems[:max_results])
 

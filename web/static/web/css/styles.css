@@ -918,6 +918,10 @@ div#search-poems-list .book-item:hover {
     border-left: 1px solid rgba(211,90,1,0.9);
 }
 
+#poem-search-form .choices__list--dropdown .choices__item--selectable, .choices__list[aria-expanded] .choices__item--selectable {
+    padding-right: 0;
+}
+
 /*
  * STATIC PAGES
  */
