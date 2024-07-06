@@ -24,7 +24,7 @@
                 {{ pod.description|safe }}
             </p>
             <div id="poem-of-today-text">
-                <span class="title">{{ pod.poem.title|striptags }}</span>
+                <span class="title">{{ pod.poem.title|striptags|safe }}</span>
                 <span class="author-name">
                     {% if pod.poem.author %}
                         {{ pod.poem.author }}
