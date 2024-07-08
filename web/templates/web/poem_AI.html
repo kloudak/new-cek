@@ -28,6 +28,20 @@
             {{ poem_in_cluster.rank }}. báseň z celkových {{ poem_count }}
         </div>
     {% endif %}
+    {% if similar_poems %}
+        <h4>Podobné básně</h4>
+        <p><i>Deset básní ze stejného shluku jejichž vektorová reprezentace je zobrazené básni nejblíže.</i></p>
+        <ol id="similar-poems">
+        {% for spoem in similar_poems %}
+            <li>
+                <a href="{% url 'poem_AI' id=spoem.id %}">{{ spoem.title|striptags|safe }}</a>
+                {% if spoem.author %}
+                    ({{spoem.author }})
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ol>
+    {% endif %}
 {% endblock %}
 
 {% block extra_js %}

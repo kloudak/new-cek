@@ -691,6 +691,7 @@ komentar {
     z-index: 2;
     text-align: center;
     padding-top: 2px;
+    margin-bottom: 20px;
 }
 
 .progress-bar {
@@ -708,6 +709,16 @@ komentar {
   }
 .tooltip-inner {
     max-width: 300px;
+}
+
+#similar-poems {
+    list-style: none;
+    padding-left: 0;
+}
+
+#similar-poems li {
+    margin-bottom: 5px;
+    margin-left: 0;
 }
 
 /* Example: Customize pagination buttons */

@@ -201,11 +201,19 @@ def poem_AI(request, id):
     if poem_in_cluster:
         poem_count = PoemInCluster.objects.filter(cluster=poem_in_cluster.cluster).count()
 
+    # similar poems
+    try:
+        similar_poems_json = json.loads(poem.similar_poems)
+        similar_poems = [Poem.objects.get(id=int(sp['poem_id'])) for sp in similar_poems_json]
+        print(similar_poems)
+    except:
+        similar_poems = None
     return render(request, "web/poem_AI.html", {
         "poem" : poem,
         "show_text" : show_text,
         "poem_in_cluster" : poem_in_cluster,
-        "poem_count" : poem_count
+        "poem_count" : poem_count,
+        "similar_poems" : similar_poems
     })
 # SEARCH
 def search(request):
