@@ -352,7 +352,10 @@ class PoemOfTheDay(models.Model):
         # removing strofa and v tags
         for strofa in root.findall(".//strofa"):
             if sc > max_n_strophes or vc > max_n_verses:
-                root.remove(strofa)
+                try:
+                    root.remove(strofa)
+                except:
+                    pass
                 incomplete = True
                 continue
             else:
