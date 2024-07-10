@@ -355,7 +355,8 @@ class PoemOfTheDay(models.Model):
                 try:
                     root.remove(strofa)
                 except:
-                    pass
+                    for verse in strofa.findall(".//v"):
+                        strofa.remove(verse)
                 incomplete = True
                 continue
             else:
