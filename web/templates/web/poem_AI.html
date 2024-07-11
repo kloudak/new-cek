@@ -47,11 +47,13 @@
 {% block extra_js %}
 <script>
     $(document).ready( function () {
-        var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
-                        +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
-                        + getElementHeightWithMargin(document.querySelector('footer'))
-                        +  44; 
-        $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+        if(window.innerWidth > 768) {
+            var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
+                            +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
+                            + getElementHeightWithMargin(document.querySelector('footer'))
+                            +  44; 
+            $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+        }
 
         $('.progress-bar-container').tooltip()
 

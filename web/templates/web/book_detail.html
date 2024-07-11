@@ -27,10 +27,10 @@
 {% endif %}
 </div>
 <div class="row" id="book-content-wrapper">
-    <div class="col-3 col-wrapper scrollable-content" id="left-column">
+    <div class="col-md-3 col-wrapper scrollable-content" id="left-column">
         {{ book.content|safe }}
     </div>
-    <div class="col-6 scrollable-content" id="middle-column">
+    <div class="col-md-6 scrollable-content" id="middle-column">
         <div id="text-versions">
             <div>
                 <a href="#" class="verze-toggle" id="puvodni">Diplomatická verze</a>
@@ -39,7 +39,7 @@
         </div>
         {{ book.complete_text|safe }}
     </div>
-    <div class="col-3 col-wrapper scrollable-content" id="right-column">
+    <div class="col-md-3 col-wrapper scrollable-content" id="right-column">
         <div class="book-info">
         {% if book.publisher %}
             <p><i>Nakladatel</i>: {{ book.publisher|safe }}</p>
@@ -129,12 +129,13 @@
 {% block extra_js %}
 <script>
     $(document).ready( function () {
-        var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
-                        +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
-                        + getElementHeightWithMargin(document.querySelector('footer'))
-                        +  44; 
-        $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
-
+        if(window.innerWidth > 768) {
+            var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
+                            +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
+                            + getElementHeightWithMargin(document.querySelector('footer'))
+                            +  44; 
+            $('#book-content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+        }
         var komentars = document.querySelectorAll('komentar');
         komentars.forEach(function(komentar) {
             var dataText = komentar.getAttribute('data-text');
