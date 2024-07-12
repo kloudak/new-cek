@@ -184,3 +184,4 @@ web/data/ccv_syllables/*.json
 web/data/embeddings/clusters/*.csv
 web/data/embeddings/embeddings*.csv
 web/data/embeddings/books.csv
+web/static/web/js/search-data.js
