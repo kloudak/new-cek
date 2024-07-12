@@ -930,6 +930,20 @@ div#search-poems-list {
     padding: 5px 0;
 }
 
+div.filter-choices {
+    display: none;
+}
+
+.expandable {
+    cursor: pointer;
+    display: inline-block;
+    color: rgba(211,90,1,0.9);
+}
+.expandable:after {
+    content: ' ▼'; /* Triangle suggesting expand */
+    font-size: 80%;
+}
+
 /*
  * choices style modyfications
  */

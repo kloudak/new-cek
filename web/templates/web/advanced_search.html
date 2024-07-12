@@ -45,14 +45,81 @@
                     </div>
                 </div>
                 <div class="row g-3 mb-3">
-                    <div class="col-sm-2 justify-content-end">
+                    <div class="col-sm-12 toggle-filter expandable" data-toggle-id="filter-authors">
+                        filtrovat podle autorů
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 filter-choices" id="filter-authors">
+                    <div class="col-sm-3 justify-content-end">
                         <label for="authors" class="form-label">Autoři:</label> 
                     </div>
-                    <div class="col-sm-10 justify-content-end">
-                        <select class="form-control" name="authors" id="authors" multiple>
-                            {% for author in authors %}
-                                <option value="{{ author.id }}">{{ author.surname }}, {{ author.firstname }} ({{ author.num_books }})</option>
-                            {% endfor %}
+                    <div class="col-sm-9 justify-content-end">
+                        <div>
+                            <select class="form-control" name="authors" id="authors" multiple>
+                                {% for author in authors %}
+                                    <option value="{{ author.id }}">{{ author.surname }}, {{ author.firstname }} ({{ author.num_books }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-12 toggle-filter expandable" data-toggle-id="filter-place-of-publications">
+                        filtrovat podle místa vydání
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 filter-choices" id="filter-place-of-publications">
+                    <div class="col-sm-3 justify-content-end">
+                        <label for="place_of_publications" class="form-label">Místa vydání:</label> 
+                    </div>
+                    <div class="col-sm-9 justify-content-end">
+                        <select class="form-control" name="place_of_publications" id="place_of_publications" multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-12 toggle-filter expandable" data-toggle-id="filter-editions">
+                        filtrovat podle edic
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 filter-choices" id="filter-editions">
+                    <div class="col-sm-3 justify-content-end">
+                        <label for="editions" class="form-label">Edice:</label> 
+                    </div>
+                    <div class="col-sm-9 justify-content-end">
+                        <select class="form-control" name="editions" id="editions" multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-12 toggle-filter expandable" data-toggle-id="filter-authors-of-motto">
+                        filtrovat podle autorů motta
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 filter-choices" id="filter-authors-of-motto">
+                    <div class="col-sm-3 justify-content-end">
+                        <label for="author_of_mottos" class="form-label">Autoři motta:</label> 
+                    </div>
+                    <div class="col-sm-9 justify-content-end">
+                        <select class="form-control" name="author_of_mottos" id="author_of_mottos" multiple>
+                            
+                        </select>
+                    </div>
+                </div>
+                <div class="row g-3 mb-3">
+                    <div class="col-sm-12 toggle-filter expandable" data-toggle-id="filter-publishers">
+                        filtrovat podle nakladatelů
+                    </div>
+                </div>
+                <div class="row g-3 mb-3 filter-choices" id="filter-publishers">
+                    <div class="col-sm-3 justify-content-end">
+                        <label for="publishers" class="form-label">Nakla-datelé:</label> 
+                    </div>
+                    <div class="col-sm-9 justify-content-end">
+                        <select class="form-control" name="publishers" id="publishers" multiple>
+                            
                         </select>
                     </div>
                 </div>
@@ -160,18 +227,90 @@
 <script type="text/javascript" charset="utf8" src="{% static 'web/js/search-data.js'%}"></script>
 <script type="text/javascript" charset="utf8" src="{% static 'web/js/choices.min.js'%}"></script>
 <script>
+    function populateSelect(idSelect) {
+        var selectElement = document.getElementById(idSelect);  
+        selectElement.innerHTML = '';
+        var fields = {}
+        var field_book = {}
+        if(idSelect === 'publishers') {
+            fields = publishers;
+            field_book = publisher_book;
+        } else if(idSelect === 'place_of_publications') {
+            fields = place_of_publications;
+            field_book = place_of_publication_book;
+        } else if(idSelect === 'editions') {
+            fields = editions;
+            field_book = edition_book;
+        } else if(idSelect === 'author_of_mottos') {
+            fields = author_of_mottos;
+            field_book = author_of_motto_book;
+        }
+        for (var fieldId in fields) {
+            if (fields.hasOwnProperty(fieldId)) {
+                var optionElement = document.createElement('option');
+                optionElement.value = fieldId;
+                optionElement.innerHTML = fields[fieldId] + " (" + field_book[fieldId].length + ")";
+                selectElement.appendChild(optionElement);
+            }
+        }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
         var authorsForm = document.getElementById('authors');
-        var choices = new Choices(authorsForm, {
+        var choicesAuthors = new Choices(authorsForm, {
             removeItemButton: true,
             searchResultLimit: 10,
             renderSelectedChoices: 'always',
-            itemSelectText: 'vybrat',
+            itemSelectText: '',
+            allowHTML: true,
+        });
+
+        // publishers
+        populateSelect('publishers');
+        var publishersForm = document.getElementById('publishers');
+        var choicesPublishers = new Choices(publishersForm, {
+            removeItemButton: true,
+            searchResultLimit: 10,
+            renderSelectedChoices: 'always',
+            itemSelectText: '',
+            allowHTML: true,
+        });
+
+        // place_of_publications
+        populateSelect('place_of_publications');
+        var place_of_publicationsForm = document.getElementById('place_of_publications');
+        var choicesPublishers = new Choices(place_of_publicationsForm, {
+            removeItemButton: true,
+            searchResultLimit: 10,
+            renderSelectedChoices: 'always',
+            itemSelectText: '',
+            allowHTML: true,
+        });
+
+        // editions
+        populateSelect('editions');
+        var editionsForm = document.getElementById('editions');
+        var choicesPublishers = new Choices(editionsForm, {
+            removeItemButton: true,
+            searchResultLimit: 10,
+            renderSelectedChoices: 'always',
+            itemSelectText: '',
+            allowHTML: true,
+        });
+
+        // author_of_mottos
+        populateSelect('author_of_mottos');
+        var author_of_mottosForm = document.getElementById('author_of_mottos');
+        var choicesPublishers = new Choices(author_of_mottosForm, {
+            removeItemButton: true,
+            searchResultLimit: 10,
+            renderSelectedChoices: 'always',
+            itemSelectText: '',
             allowHTML: true,
         });
 
         var clustersForm = document.getElementById('poem-clusters');
-        var choices = new Choices(clustersForm, {
+        var choicesClusters = new Choices(clustersForm, {
             removeItemButton: true,
             searchResultLimit: 10,
             renderSelectedChoices: 'always',
@@ -196,6 +335,19 @@
         document.getElementById('unselect-all').addEventListener('click', function() {
             $('#book-selected-list .selected').each(function(index, element) {
                 $(element).removeClass('selected');
+            });
+        });
+
+        document.querySelectorAll('.toggle-filter').forEach(function(toggleFilter) {
+            toggleFilter.addEventListener('click', function() {
+                toggleFilter.style.display = 'none';
+                
+                var toggleId = toggleFilter.getAttribute('data-toggle-id');
+                var toggleElement = document.getElementById(toggleId);
+                
+                if (toggleElement) {
+                    toggleElement.style.display = 'flex';
+                }
             });
         });
     });
@@ -274,7 +426,8 @@
         var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
                         + getElementHeightWithMargin(document.querySelector('footer'))
                         +  44; 
-        $('#content-wrapper').height(document.documentElement.clientHeight - headingHeight);
+        var contentHeight = Math.max(document.documentElement.clientHeight - headingHeight, 1000);
+        $('#content-wrapper').height(contentHeight);
         $('#book-filter-list').height($('#content-wrapper').height() - $('#book-filter-form').height() + 14);
         $('#book-selected-list').height($('#content-wrapper').height() - $('#book-selected-intro').height()+0);
         $('#search-poems-list').height($('#content-wrapper').height() - $('#search-poems-intro').height()-14);
@@ -308,6 +461,10 @@
             var yearTo = $('#year-to').val();
             var withoutYearCheckbox = document.getElementById('without-year').checked;
             var authors = $('#authors').val();
+            var publishers = $('#publishers').val();
+            var place_of_publications = $('#place_of_publications').val();
+            var editions = $('#editions').val();
+            var author_of_mottos = $('#author_of_mottos').val();
 
             // Get all book items
             var bookItems = document.querySelectorAll('#book-filter-list .book-item');
@@ -347,6 +504,39 @@
                 }
                 matchingBookIds = getIntersection(matchingBookIds, Array.from(authorsBooks));
             }
+
+            if(place_of_publications.length > 0) {
+                let place_of_publicationsBooks = new Set();
+                for(let i = 0; i < place_of_publications.length; i++) {
+                    place_of_publication_book[place_of_publications[i]].forEach(aid => place_of_publicationsBooks.add("" + aid))
+                }
+                matchingBookIds = getIntersection(matchingBookIds, Array.from(place_of_publicationsBooks));
+            }
+
+            if(editions.length > 0) {
+                let editionsBooks = new Set();
+                for(let i = 0; i < editions.length; i++) {
+                    edition_book[editions[i]].forEach(aid => editionsBooks.add("" + aid))
+                }
+                matchingBookIds = getIntersection(matchingBookIds, Array.from(editionsBooks));
+            }
+
+            if(author_of_mottos.length > 0) {
+                let author_of_mottosBooks = new Set();
+                for(let i = 0; i < author_of_mottos.length; i++) {
+                    author_of_motto_book[author_of_mottos[i]].forEach(aid => author_of_mottosBooks.add("" + aid))
+                }
+                matchingBookIds = getIntersection(matchingBookIds, Array.from(author_of_mottosBooks));
+            }
+
+            if(publishers.length > 0) {
+                let publishersBooks = new Set();
+                for(let i = 0; i < publishers.length; i++) {
+                    publisher_book[publishers[i]].forEach(aid => publishersBooks.add("" + aid))
+                }
+                matchingBookIds = getIntersection(matchingBookIds, Array.from(publishersBooks));
+            }
+
             
             updateBookItemClasses(matchingBookIds);
 
