@@ -694,6 +694,10 @@ verze[typ="editorska"] {
     display: inline;
 }
 
+#poem-of-today-text div.poem-text verze {
+    color: inherit;
+}
+
 komentar {
     display: inline;
     position: relative;
@@ -767,7 +771,6 @@ komentar {
     margin-left: 0;
 }
 
-/* Example: Customize pagination buttons */
 .pagination {
     --bs-border-radius: 0;
     --bs-pagination-active-bg: rgba(211,90,1,0.9);
