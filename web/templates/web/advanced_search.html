@@ -7,7 +7,7 @@
 <div class="row" id="content-wrapper">
     <div class="col-4">
         <div id="book-filter-form">
-            <form method="get" class="form">
+            <form method="get" class="form" id="form-filter-book">
                 <div class="row g-3 mb-3">
                     <div class="col-sm-4">
                         <label for="search-in-title" class="form-label">Název knihy:</label> 
@@ -227,6 +227,44 @@
 <script type="text/javascript" charset="utf8" src="{% static 'web/js/search-data.js'%}"></script>
 <script type="text/javascript" charset="utf8" src="{% static 'web/js/choices.min.js'%}"></script>
 <script>
+    const formsState = {
+        state: false, // do not load data from empty state
+        form1: {},
+        form2: {}
+    }
+
+    function getFormsState() {
+        formsState.state = true;
+        // read forms
+        const form1 = document.getElementById('form-filter-book');
+        const form2 = document.getElementById('poem-search-form');
+        let formObject, formData;
+        for(let k = 0; k < 2; k++) {
+            formData = new FormData([form1, form2][k]);
+            formObject = {};
+            formData.forEach((value, key) => {
+                if (key === 'search_terms' || key === 'csrfmiddlewaretoken') { return;}
+                if (formObject.hasOwnProperty(key)) {
+                    if (Array.isArray(formObject[key])) {
+                        formObject[key].push(value);
+                    } else {
+                        formObject[key] = [formObject[key], value];
+                    }
+                } else {
+                    formObject[key] = value;
+                }
+            });
+            if(k === 0) {
+                formsState.form1 = formObject;
+            }
+            if(k === 1) {
+                formsState.form2 = formObject;
+            }
+        }
+        const jsonString = JSON.stringify(formsState);
+        console.log(jsonString);
+    }
+
     function populateSelect(idSelect) {
         var selectElement = document.getElementById(idSelect);  
         selectElement.innerHTML = '';
@@ -256,6 +294,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
+        getFormsState();
+
         var authorsForm = document.getElementById('authors');
         var choicesAuthors = new Choices(authorsForm, {
             removeItemButton: true,
@@ -403,6 +443,7 @@
         input.value = '';
 
         input.value = selectedBookIds.join(',');
+        getFormsState();
     }
 
     // Function to get the CSRF token from the cookie
@@ -465,6 +506,8 @@
             var place_of_publications = $('#place_of_publications').val();
             var editions = $('#editions').val();
             var author_of_mottos = $('#author_of_mottos').val();
+
+            getFormsState();
 
             // Get all book items
             var bookItems = document.querySelectorAll('#book-filter-list .book-item');
@@ -592,6 +635,7 @@
          */
          $('#poem-search-button').click(function(event) {
             event.preventDefault();
+            getFormsState();
             const url = window.location.href + '-vysledky';
 
             // Get CSRF token

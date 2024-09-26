@@ -1,13 +1,17 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}ČEK{% endblock %}</title>
     <!-- FONTS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap" data-tag="font">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+        data-tag="font">
     <!-- Bootstrap CSS & icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/2.0.1/css/dataTables.bootstrap5.css">
@@ -26,30 +30,60 @@
     <meta name="msapplication-config" content="{% static 'web/icons/browserconfig.xml' %}">
     <meta name="theme-color" content="#ffffff">
 </head>
+
 <body>
     <header>
         {% include 'web/navigation.html' %}
     </header>
-    
+
+    <dialog id="modal-video">
+        <iframe id="video-predstaveni" width="560" height="315"
+            src="https://www.youtube.com/embed/uWJVOdJu6xw?si=rWbZGjUeZb9l5glI" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe id="video-historie" width="560" height="315"
+            src="https://www.youtube.com/embed/kb8p7LUQ6qM?si=g2YeQSwsKzWGvs02" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe id="video-shlukovani" width="560" height="315"
+            src="https://www.youtube.com/embed/SKS81IpBiKc?si=ABbskJw3ylxr-YWX" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <iframe id="video-basen-dne" width="560" height="315"
+            src="https://www.youtube.com/embed/Wp3MLwOPHA4?si=KKL_eDusa-NNWc5p" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+        <button class="close-btn" id="close-modal">Zavřít</button>
+    </dialog>
     <main class="container mt-4">
         {% block content %}{% endblock %}
     </main>
-    
+
     <footer class="container mt-4 py-3 border-top">
         <a href="{% url 'about_project' %}" class="text-decoration-none">O projektu</a> |
         administrace: <a href="mailto:karel.kloudak@gmail.com" class="text-decoration-none">karel.kloudak@gmail.com</a>
     </footer>
-    
-    
+
+
     <!-- jQuery and Bootstrap Bundle (includes Popper) -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
     <!-- DataTables JS -->
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.1/js/dataTables.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
+    <script type="text/javascript" charset="utf8"
+        src="https://cdn.datatables.net/2.0.1/js/dataTables.bootstrap5.js"></script>
     <!-- Custom JS -->
     <script type="text/javascript" charset="utf8" src="{% static 'web/js/lib.js'%}"></script>
-    
+
     {% block extra_js %}{% endblock %}
 </body>
+
 </html>

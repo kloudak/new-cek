@@ -6,10 +6,16 @@
 {% block content %}
 <h1 class="page-title">Shluky</h1>
 <ul>
-    <li>Shluky (clustery) vznikly automaticky pomocí modelu <a href="https://top2vec.readthedocs.io/en/latest/Top2Vec.html">Top2Vec</a>.</li>
-    <li>Tento model přiřazuje každé básni, ale i jednotlivým slovům bod (vektor, <i>n</i>tici čísel) v mnohadimenzionálním prostoru.</li>
-    <li>Následně hledá básně a slova, která jsou <i>blízko</i> sebe, a vytváří tak shluk básní, které považuje za podobné.</li>
-    <li>Následně shluk popíše <b>charakteristickými slovy</b>, tedy slovy která odpovídají bodům blízkým danému shluku.</li>
+    <li>Shluky (clustery) vznikly automaticky pomocí modelu <a
+            href="https://top2vec.readthedocs.io/en/latest/Top2Vec.html">Top2Vec</a>.</li>
+    <li>Tento model přiřazuje každé básni, ale i jednotlivým slovům bod (vektor, <i>n</i>tici čísel) v
+        mnohadimenzionálním prostoru.</li>
+    <li>Následně hledá básně a slova, která jsou <i>blízko</i> sebe, a vytváří tak shluk básní, které považuje za
+        podobné.</li>
+    <li>Následně shluk popíše <b>charakteristickými slovy</b>, tedy slovy která odpovídají bodům blízkým danému shluku.
+    </li>
+    <li>Více o shlukové analýze najdete v tomto <a href="#" class="open-modal-video" data-video="video-shlukovani"><i
+                class="bi bi-camera-reels"></i> videu</a>.</li>
 </ul>
 <div class="content-table-wrapper">
     <table id="clusteringTable" class="table table-striped table-bordered">
@@ -35,24 +41,24 @@
 
 {% block extra_js %}
 <script>
-$(document).ready( function () {
-    $.fn.dataTable.ext.type.order['custom-num-asc'] = function(a, b) {
-        return a - b;
-    };
+    $(document).ready(function () {
+        $.fn.dataTable.ext.type.order['custom-num-asc'] = function (a, b) {
+            return a - b;
+        };
 
-    $.fn.dataTable.ext.type.order['custom-num-desc'] = function(a, b) {
-        return b - a;
-    };
-    
-    $('#clusteringTable').DataTable({
-        order : [[1, 'desc']],
-        pageLength: 25,
-        columnDefs: [
-            { "orderable": false, "targets": -1 },
-            { type: 'custom-num', targets: 1 },
-        ],
-        language: dataTableCS,
+        $.fn.dataTable.ext.type.order['custom-num-desc'] = function (a, b) {
+            return b - a;
+        };
+
+        $('#clusteringTable').DataTable({
+            order: [[1, 'desc']],
+            pageLength: 25,
+            columnDefs: [
+                { "orderable": false, "targets": -1 },
+                { type: 'custom-num', targets: 1 },
+            ],
+            language: dataTableCS,
+        });
     });
-} );
 </script>
 {% endblock %}

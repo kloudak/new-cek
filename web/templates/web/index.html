@@ -18,55 +18,63 @@
 
 <div class="row homepage-poem-of-today-container">
     <div class="col-md-6 left-col">
-            <h4>BÁSEŇ DNE {{ pod.day|date:"d. m." }}</h4>
-            <p id="poem-of-today-description">
-                <img src="{% static 'web/images/info-icon.png'%}" alt="info icon">
-                {{ pod.description|safe }}
-            </p>
-            <div id="poem-of-today-text">
-                <span class="title">{{ pod.poem.title|striptags|safe }}</span>
-                <span class="author-name">
-                    {% if pod.poem.author %}
-                        {{ pod.poem.author }}
-                    {% elif pod.poem.book.authorships.all|length == 1 %}
-                        {% if pod.poem.book.authorships.first.person.pseudonym_for %}
-                            {{ pod.poem.book.authorships.first.person.pseudonym_for }}kk
-                        {% else %}
-                            {{ pod.poem.book.authorships.first.person }}
-                        {% endif %}
-                    {% endif%}
-                </span>
-                {{ pod.html_text|safe }}
-                <a class="link-arrow" href="{% url 'poem_text' id=pod.poem.id %}">celá báseň <img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
-            </div>
+        <h4 id="poem-of-today__header">BÁSEŇ DNE {{ pod.day|date:"d. M." }}
+            <a href="#" class="open-modal-video"
+                data-video="video-basen-dne"><i class="bi bi-camera-reels"></i></a>
+        </h4>
+        <p id="poem-of-today-description">
+            <img src="{% static 'web/images/info-icon.png'%}" alt="info icon">
+            {{ pod.description|safe }}
+        </p>
+        <div id="poem-of-today-text">
+            <span class="title">{{ pod.poem.title|striptags|safe }}</span>
+            <span class="author-name">
+                {% if pod.poem.author %}
+                {{ pod.poem.author }}
+                {% elif pod.poem.book.authorships.all|length == 1 %}
+                {% if pod.poem.book.authorships.first.person.pseudonym_for %}
+                {{ pod.poem.book.authorships.first.person.pseudonym_for }}kk
+                {% else %}
+                {{ pod.poem.book.authorships.first.person }}
+                {% endif %}
+                {% endif%}
+            </span>
+            {{ pod.html_text|safe }}
+            <a class="link-arrow" href="{% url 'poem_text' id=pod.poem.id %}">celá báseň <img
+                    src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+        </div>
     </div>
     <div class="col-md-6 right-col-flex-container">
         <div class="mb-3">
             <h4>{{ n_authors }} autorů</h4>
             <p>
-                Seznam autorů a autorek 
-                <a class="link-arrow" href="{% url 'author_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                Seznam autorů a autorek
+                <a class="link-arrow" href="{% url 'author_list'%}"><img src="{% static 'web/images/arrow.svg' %}"
+                        alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>{{ n_books }} sbírek</h4>
             <p>
                 Seznam všech knih
-                <a class="link-arrow" href="{% url 'book_list'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'book_list'%}"><img src="{% static 'web/images/arrow.svg' %}"
+                        alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>Studujete?</h4>
             <p>
                 Bude se vám hodit
-                <a class="link-arrow" href="{% url 'for_schools'%}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'for_schools'%}"><img src="{% static 'web/images/arrow.svg' %}"
+                        alt="link arrow"></span></a>
             </p>
         </div>
         <div class="mb-3">
             <h4>Bádáte?</h4>
             <p>
                 Pokročilé vyhledávání
-                <a class="link-arrow" href="{% url 'advanced_search' %}"><img src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
+                <a class="link-arrow" href="{% url 'advanced_search' %}"><img src="{% static 'web/images/arrow.svg' %}"
+                        alt="link arrow"></span></a>
             </p>
         </div>
     </div>
@@ -75,7 +83,7 @@
 <div class="row">
     <div class="col-md-6 homapage-text">
         <h2>Kde to jste a co tu najdete?</h2>
-        
+
         <ul>
             <li>databáze zpřístupňuje <b>1700</b> básnických knih česky psané poezie 19. a počátku 20. století</li>
             <li>je <b>nejrozsáhlejší fulltextovou databází</b> svého typu na českém internetu</li>
@@ -89,17 +97,20 @@
         </ul>
     </div>
     <div class="col-md-6 homapage-video">
-        <img src="{% static 'web/images/video.png'%}" style="width: 100%;">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/uWJVOdJu6xw?si=heBeHi10AEU4loVe"
+            title="YouTube video player" frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
     </div>
 </div>
 <div class="row">
     <div class="col-md-6 homapage-text">
         <h2>Poděkování patří</h2>
-        
+
         <p>
             Technologické agentuře České republiky, která umožnila vznik tohoto projektu.
         </p>
-        
+
     </div>
     <div class="col-md-6 homapage-text">
         <img src="{% static 'web/images/TACR.png'%}" style="width: 100%;">
@@ -111,14 +122,14 @@
         <p>
             Napište nám na <a href="mailto:literatura@ucl.cas.cz">literatura@ucl.cas.cz</a>.
         </p>
-    </div> 
+    </div>
 </div>
 <div class="row homepage-logos">
     <div class="col-md-4 text-end">
         <img src="{% static 'web/images/AVCR.png'%}">
     </div>
     <div class="col-md-3">
-        
+
     </div>
     <div class="col-md-4">
         <img src="{% static 'web/images/UCL.png'%}">
@@ -133,6 +144,6 @@
             110 00 Praha 1<br>
             <a href="http://www.ucl.cas.cz" target="_blank">www.ucl.cas.cz</a>
         </address>
-    </div> 
+    </div>
 </div>
 {% endblock %}

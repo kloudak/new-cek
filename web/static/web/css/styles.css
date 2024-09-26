@@ -1,8 +1,8 @@
 body {
-    background-color: rgb(245,245,245);
+    background-color: rgb(245, 245, 245);
     font-family: Montserrat, Arial;
     font-weight: 400;
-    color: rgba(6,7,7,0.87);
+    color: rgba(6, 7, 7, 0.87);
 }
 
 div#homepage-head {
@@ -15,7 +15,8 @@ div#homepage-head {
     align-items: center;
     flex-shrink: 0;
     flex-direction: column;
-    color: rgba(6,7,7,0.87);;
+    color: rgba(6, 7, 7, 0.87);
+    ;
 }
 
 @media (max-width:768px) {
@@ -39,6 +40,11 @@ div#homepage-head input {
     border-radius: 10px;
     padding: 12px 16px;
     width: 350px;
+}
+#poem-of-today__header a {
+    float: right;
+    cursor: pointer;
+    font-size: 1rem;
 }
 
 #poem-of-today-text {
@@ -80,11 +86,9 @@ div#homepage-head input {
     left: 0;
     right: 0;
     height: 100%;
-    background: linear-gradient(
-                    rgba(255, 255, 255, 0) 0%, 
-                    rgba(255, 255, 255, 1) 85%,
-                    rgba(255, 255, 255, 1) 100%
-    );
+    background: linear-gradient(rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 1) 85%,
+            rgba(255, 255, 255, 1) 100%);
 }
 
 #poem-of-today-description img {
@@ -110,11 +114,11 @@ div#homepage-head input {
     flex-shrink: 0;
     border-radius: 16px;
     flex-direction: column;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
 }
 
 .homepage-poem-of-today-container div.left-col h4 {
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
     font-size: 24px;
     font-weight: 400;
     opacity: 0.8;
@@ -131,7 +135,7 @@ div#homepage-head input {
     float: right;
 }
 
-.right-col-flex-container > div {
+.right-col-flex-container>div {
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -142,18 +146,18 @@ div#homepage-head input {
     flex-shrink: 0;
     border-radius: 16px;
     flex-direction: column;
-    background-color: rgb(255,255,255);
+    background-color: rgb(255, 255, 255);
     margin-bottom: 0 !important;
 
     font-size: 20px;
 
-    color: rgba(6,7,7,0.87);
+    color: rgba(6, 7, 7, 0.87);
     opacity: 0.8;
 }
 
 .homapage-text {
     padding: 40px 20px 20px 0px;
-    color: rgba(6,7,7,0.87);
+    color: rgba(6, 7, 7, 0.87);
     opacity: 0.8;
 }
 
@@ -173,13 +177,13 @@ div#homepage-head input {
     padding-right: 20px;
 }
 
-.right-col-flex-container > div h4 {
+.right-col-flex-container>div h4 {
     font-size: 34px;
     font-weight: 400;
 
 }
 
-.right-col-flex-container > div p {
+.right-col-flex-container>div p {
     margin-bottom: 0;
 }
 
@@ -197,7 +201,7 @@ div#homepage-head input {
 }
 
 @media (max-width:768px) {
-    .right-col-flex-container{
+    .right-col-flex-container {
         padding: 20px 20px;
     }
 
@@ -229,10 +233,12 @@ div#homepage-head input {
         padding: 12px 16px;
         width: auto;
     }
-    .right-col-flex-container > div {
+
+    .right-col-flex-container>div {
         font-size: 15;
     }
-    .right-col-flex-container > div h4 {
+
+    .right-col-flex-container>div h4 {
         font-size: 24px;
         font-weight: 400;
     }
@@ -243,18 +249,19 @@ div#homepage-head input {
         position: relative;
         text-decoration: none;
     }
-    
-    li.nav-item a.active::after, li.nav-item a:hover::after {
-        content: ''; 
+
+    li.nav-item a.active::after,
+    li.nav-item a:hover::after {
+        content: '';
         display: block;
-        width: 50%; 
+        width: 50%;
         height: 1px;
-        background-color: rgb(211,90,1);
+        background-color: rgb(211, 90, 1);
         position: absolute;
         left: 25%;
         bottom: 8px;
     }
-    
+
     nav.navbar {
         background-color: transparent !important;
         font-size: 18px;
@@ -279,7 +286,7 @@ a.link-arrow:hover img {
 }
 
 a {
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
     text-decoration: none;
 }
 
@@ -348,7 +355,7 @@ div#middle-column {
     margin: 0;
     padding-left: 1px;
     padding-right: 1px;
-/*    
+    /*    
     padding-left: 20px;
     padding-right: 20px;
 */
@@ -371,7 +378,7 @@ div#text-versions {
 div#text-versions div {
     display: flex;
     flex-direction: row;
-    
+
 }
 
 div#text-versions a {
@@ -386,12 +393,13 @@ div#text-versions a:first-of-type {
     margin: 0 25px;
 }
 
-div#text-versions a:hover::after, div#text-versions a.active::after {
-    content: ''; 
+div#text-versions a:hover::after,
+div#text-versions a.active::after {
+    content: '';
     display: block;
-    width: 50%; 
+    width: 50%;
     height: 1px;
-    background-color: rgb(211,90,1);
+    background-color: rgb(211, 90, 1);
     position: absolute;
     left: 25%;
     bottom: 0px;
@@ -410,9 +418,9 @@ div#book-desc-ed {
 }
 
 div#book-desc-ed button {
-    border: 1px solid rgb(211,90,1);
+    border: 1px solid rgb(211, 90, 1);
     background-color: transparent;
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
     margin: 0;
     font-size: 90%;
 }
@@ -423,11 +431,11 @@ div#book-desc-ed button:first-of-type {
 }
 
 div#book-desc-ed button:hover {
-    background-color: rgb(211,90,1);
+    background-color: rgb(211, 90, 1);
     color: white;
 }
 
-div#middle-column div.book-text, 
+div#middle-column div.book-text,
 div#middle-column div#poem-text-container,
 div#middle-column div#poem-text-container div.poem-text,
 div#middle-column div#poem-text-only-container,
@@ -440,13 +448,16 @@ div#middle-column div#poem-versology-container div.poem-text {
 
 /* Custom styles for DataTable */
 .dataTables_wrapper .dataTable {
-    border-collapse: collapse; /* Ensures borders are handled in the most compact way */
+    border-collapse: collapse;
+    /* Ensures borders are handled in the most compact way */
 }
 
 .dataTables_wrapper .dataTable th,
 .dataTables_wrapper .dataTable td {
-    border-right: 0px !important; /* Removes vertical borders */
-    padding: 5px !important; /* Reduces padding to make it more compact */
+    border-right: 0px !important;
+    /* Removes vertical borders */
+    padding: 5px !important;
+    /* Reduces padding to make it more compact */
 }
 
 /* Additional styling to make the table more compact */
@@ -518,17 +529,17 @@ ul#book-content li[data-level="5"] {
     display: inline-block;
     width: 100%;
     cursor: default;
-    color: rgba(6,7,7,0.87);
+    color: rgba(6, 7, 7, 0.87);
 }
 
 #poem-tabs ul li.active {
     cursor: default;
-    border-right: 2px solid rgb(211,90,1);
+    border-right: 2px solid rgb(211, 90, 1);
 }
 
 #poem-tabs ul li.active a {
     cursor: default;
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
 }
 
 #poem-tabs a:hover {
@@ -537,13 +548,12 @@ ul#book-content li[data-level="5"] {
 }
 
 #poem-tabs li:hover {
-    border-right: 2px solid rgb(211,90,1);
+    border-right: 2px solid rgb(211, 90, 1);
 }
 
-div.book-text, 
-#poem-text-container div.poem-text, 
-#poem-text-only-container div.poem-text 
-{
+div.book-text,
+#poem-text-container div.poem-text,
+#poem-text-only-container div.poem-text {
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 1);
@@ -560,7 +570,7 @@ div#middle-column div#poem-versology-container div.poem-text {
 }
 
 syl.S {
-    background-color: rgba(210,210,210,0.35);
+    background-color: rgba(210, 210, 210, 0.35);
 }
 
 syl.stress {
@@ -582,7 +592,7 @@ div#poem-versology-container div.poem-text v {
 }
 
 div#poem-versology-container div.poem-text v span.v-text:hover {
-    border-bottom: 1px dotted rgb(211,90,1);
+    border-bottom: 1px dotted rgb(211, 90, 1);
 }
 
 div#poem-versology-container div.poem-AI v span.v-text:hover {
@@ -592,7 +602,8 @@ div#poem-versology-container div.poem-AI v span.v-text:hover {
 div#poem-versology-container div.poem-text v span.verse-number {
     text-align: right;
     display: block;
-    width: 50px;;
+    width: 50px;
+    ;
     position: absolute;
     left: -45px;
     top: 2px;
@@ -602,7 +613,7 @@ div#poem-versology-container div.poem-text v span.metre-info {
     padding-left: 10px;
     font-size: 80%;
     opacity: 0.6;
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
 }
 
 div#poem-versology-container div.poem-AI v span.metre-info {
@@ -610,12 +621,18 @@ div#poem-versology-container div.poem-AI v span.metre-info {
 }
 
 span.versology-buttons {
-    color: rgb(211,90,1);
+    color: rgb(211, 90, 1);
     cursor: pointer;
 }
 
 /* tags for parts, poems and sections */
-basen, kniha, oddil, oddilbasne, pododdil, sbirka, strofa {
+basen,
+kniha,
+oddil,
+oddilbasne,
+pododdil,
+sbirka,
+strofa {
     display: block;
     position: relative;
 }
@@ -628,12 +645,23 @@ a.poem-link {
 }
 
 /* tags for an ordinary text aligned to the left */
-doprovod, moto-text, obsah, tiraz, venovani, zakladnitext {
+doprovod,
+moto-text,
+obsah,
+tiraz,
+venovani,
+zakladnitext {
     display: block;
 }
 
-nadpis, fales-titulbasen, fales-tituloddil, nadpisvbasni, 
-podtitul, podtitulbasne, podtitulsbirky, poznpodcarou, 
+nadpis,
+fales-titulbasen,
+fales-tituloddil,
+nadpisvbasni,
+podtitul,
+podtitulbasne,
+podtitulsbirky,
+poznpodcarou,
 titulsbirka {
     display: block;
     margin-top: 10px;
@@ -649,7 +677,7 @@ strana {
     color: darkgray;
 }
 
-#poem-text-only-container div.poem-text strana, 
+#poem-text-only-container div.poem-text strana,
 #poem-of-today-text div.poem-text strana {
     display: none;
 }
@@ -658,7 +686,9 @@ prolozeno {
     letter-spacing: 5px;
 }
 
-sifra, spisovatel, moto-autor {
+sifra,
+spisovatel,
+moto-autor {
     display: block;
     font-style: italic;
 }
@@ -669,8 +699,7 @@ v {
 }
 
 #poem-text-only-container div.poem-text v,
-#poem-of-today-text div.poem-text v 
-{
+#poem-of-today-text div.poem-text v {
     padding-left: 0px;
 }
 
@@ -723,8 +752,8 @@ komentar {
 }
 
 .verse-number {
-    color:rgba(211,90,1,0.9);
-    opacity: 50%; 
+    color: rgba(211, 90, 1, 0.9);
+    opacity: 50%;
     margin-right: 5px;
     font-family: sans-serif;
     font-size: 70%;
@@ -737,7 +766,7 @@ komentar {
     width: 100%;
     height: 30px;
     background-color: transparent;
-    border: 1px solid rgba(211,90,1,0.4);
+    border: 1px solid rgba(211, 90, 1, 0.4);
     z-index: 2;
     text-align: center;
     padding-top: 2px;
@@ -748,7 +777,7 @@ komentar {
     position: absolute;
     top: 0px;
     height: 28px;
-    background-color: rgba(211,90,1,0.9);
+    background-color: rgba(211, 90, 1, 0.9);
     opacity: 0.3;
     z-index: 1;
 }
@@ -756,7 +785,8 @@ komentar {
 .tooltip-custom {
     max-width: 300px;
     text-align: left;
-  }
+}
+
 .tooltip-inner {
     max-width: 300px;
 }
@@ -773,18 +803,20 @@ komentar {
 
 .pagination {
     --bs-border-radius: 0;
-    --bs-pagination-active-bg: rgba(211,90,1,0.9);
-    --bs-pagination-active-border-color: rgba(211,90,1,0.9);
-    --bs-pagination-hover-color: rgba(211,90,1,0.9);
-    --bs-pagination-color: rgba(211,90,1,0.9);
+    --bs-pagination-active-bg: rgba(211, 90, 1, 0.9);
+    --bs-pagination-active-border-color: rgba(211, 90, 1, 0.9);
+    --bs-pagination-hover-color: rgba(211, 90, 1, 0.9);
+    --bs-pagination-color: rgba(211, 90, 1, 0.9);
 }
 
 /*
  * SEARCH RESULTS
  */
 div#search-form {
-    margin-bottom: 20px;;
+    margin-bottom: 20px;
+    ;
 }
+
 div#search-form input {
     margin: auto;
     max-width: 650px;
@@ -793,7 +825,7 @@ div#search-form input {
 /*
  * SEARCH FIELD IN NAV
  */
- .search-form {
+.search-form {
     position: relative;
 }
 
@@ -817,7 +849,8 @@ div#search-form input {
 .search-icon:hover .search-input {
     width: 150px;
     opacity: 1;
-    margin-left: -210px; /* Adjust as needed to align with the icon */
+    margin-left: -210px;
+    /* Adjust as needed to align with the icon */
 }
 
 .search-form:hover .search-input {
@@ -828,7 +861,7 @@ div#search-form input {
 /*
  * ADVANCED SEARCH
  */
- div#book-filter-form select {
+div#book-filter-form select {
     display: inline-block;
     width: 80px;
     font-size: 90%;
@@ -836,11 +869,10 @@ div#search-form input {
 
 div#book-filter-form .filter-form-buttons button,
 div#book-selected-intro .filter-form-buttons button,
-div#search-poems-intro .filter-form-buttons button
-{
-    border: 1px solid rgba(211,90,1,0.9);
+div#search-poems-intro .filter-form-buttons button {
+    border: 1px solid rgba(211, 90, 1, 0.9);
     background-color: rgba(255, 255, 255, 1);
-    color: rgba(211,90,1,0.9);
+    color: rgba(211, 90, 1, 0.9);
     font-size: 90%;
     padding: 2px 5px;
     margin: 0;
@@ -852,7 +884,7 @@ div#book-filter-form button.sort-button {
 
 div#book-filter-form .filter-form-buttons button.active {
     color: rgba(255, 255, 255, 1);
-    background-color: rgba(211,90,1,0.9);
+    background-color: rgba(211, 90, 1, 0.9);
 }
 
 div#book-filter-list {
@@ -870,14 +902,16 @@ div#book-filter-list .book-item {
 }
 
 div#book-filter-list .book-item:hover {
-    border-left: 1px solid rgba(211,90,1,0.9);
+    border-left: 1px solid rgba(211, 90, 1, 0.9);
 }
 
 .book-item span.title {
-    color: black;    
+    color: black;
 }
 
-.book-item span.year, .book-item span.author, .book-item span.book {
+.book-item span.year,
+.book-item span.author,
+.book-item span.book {
     opacity: 0.8;
 }
 
@@ -894,8 +928,7 @@ div#book-filter-list .unfiltered {
 }
 
 #select-all-filter,
-#unselect-all 
-{
+#unselect-all {
     width: 100%;
     text-align: center;
 }
@@ -924,7 +957,7 @@ div#book-selected-list .selected {
 }
 
 div#book-selected-list .book-item:hover {
-    border-left: 1px solid rgba(211,90,1,0.9);
+    border-left: 1px solid rgba(211, 90, 1, 0.9);
 }
 
 div#search-poems-list {
@@ -940,10 +973,12 @@ div.filter-choices {
 .expandable {
     cursor: pointer;
     display: inline-block;
-    color: rgba(211,90,1,0.9);
+    color: rgba(211, 90, 1, 0.9);
 }
+
 .expandable:after {
-    content: ' ▼'; /* Triangle suggesting expand */
+    content: ' ▼';
+    /* Triangle suggesting expand */
     font-size: 80%;
 }
 
@@ -959,20 +994,21 @@ div.filter-choices {
     font-weight: 500;
     margin-right: 3.75px;
     margin-bottom: 3.75px;
-    background-color:rgba(211,90,1,0.9);
+    background-color: rgba(211, 90, 1, 0.9);
     color: #fff;
     word-break: break-all;
-    box-sizing:border-box;
+    box-sizing: border-box;
     border: 0px;
 }
 
-.choices[data-type*=select-multiple] .choices__button, .choices[data-type*=text] .choices__button {
+.choices[data-type*=select-multiple] .choices__button,
+.choices[data-type*=text] .choices__button {
     border-left-color: #fff;
 }
 
 .form-check-input:checked {
-    background-color: rgba(211,90,1,0.9);
-    border-color: rgba(211,90,1,0.9);
+    background-color: rgba(211, 90, 1, 0.9);
+    border-color: rgba(211, 90, 1, 0.9);
 }
 
 #search-results-msg {
@@ -989,10 +1025,11 @@ div#search-poems-list .book-item {
 }
 
 div#search-poems-list .book-item:hover {
-    border-left: 1px solid rgba(211,90,1,0.9);
+    border-left: 1px solid rgba(211, 90, 1, 0.9);
 }
 
-#poem-search-form .choices__list--dropdown .choices__item--selectable, .choices__list[aria-expanded] .choices__item--selectable {
+#poem-search-form .choices__list--dropdown .choices__item--selectable,
+.choices__list[aria-expanded] .choices__item--selectable {
     padding-right: 0;
 }
 
@@ -1015,7 +1052,7 @@ div.long-text div {
  * FOR SCHOOLS
  */
 
- .video-link {
+.video-link {
     display: block;
     text-align: left;
     padding: 5px 20px;
@@ -1023,24 +1060,50 @@ div.long-text div {
     border: 1px solid #dee2e6;
     border-radius: 5px;
     text-decoration: none;
-    color: #343a40; 
+    color: #343a40;
     font-size: 1em;
-    transition: background-color 0.3s, box-shadow 0.3s; 
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .video-link:hover {
-    background-color: #e2e6ea; 
+    background-color: #e2e6ea;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-decoration: none;
 }
 
 .video-link i {
-    margin-right: 10px; 
-    vertical-align: middle; 
+    margin-right: 10px;
+    vertical-align: middle;
     font-size: 150%;
 }
 
 .video-link:focus {
     outline: none;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); 
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+/*
+ * modal video
+ */
+
+dialog {
+    padding: 1rem;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+    border: 1px solid rgb(211, 90, 1);
+    background-color: transparent;
+    color: rgb(211, 90, 1);
+    margin: 1rem 0 0 auto;
+    font-size: 90%;
+    cursor: pointer;
+    display: block;
 }
