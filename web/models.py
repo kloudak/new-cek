@@ -27,6 +27,8 @@ class Person(models.Model):
     )
     remark = models.TextField(null=True, blank=True)
     side_note = models.TextField(null=True, blank=True)
+    pdf_file1 = models.FileField(upload_to='pdfs/', blank=True, null=True)
+    pdf_file1_title = models.CharField(max_length=100,null=True, blank=True)
     sex = models.CharField(max_length=1, choices=SEX_CHOICES, default=("M", "Male"))
     stats = models.TextField(blank=True, null=True)
     pseudonym_for = models.ForeignKey(
