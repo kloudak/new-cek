@@ -41,7 +41,7 @@ div#homepage-head input {
     padding: 12px 16px;
     width: 350px;
 }
-#poem-of-today__header a {
+a.camera-icon-in-header {
     float: right;
     cursor: pointer;
     font-size: 1rem;
