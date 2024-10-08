@@ -3,10 +3,11 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
         <a class="navbar-brand" href="{% url 'index' %}">
-            <img src="{% static 'web/images/ucl-logo-nav.png' %}"/>
+            <img src="{% static 'web/images/ucl-logo-nav.png' %}" />
         </a>
         <!-- Toggle button for small screens -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <!-- Navigation items -->
@@ -16,7 +17,8 @@
                     <a class="nav-link {% is_active 'index' %}" href="{% url 'index' %}">Domů</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% is_active 'author_list' 'author_detail' %}" href="{% url 'author_list' %}">Autoři</a>
+                    <a class="nav-link {% is_active 'author_list' 'author_detail' %}"
+                        href="{% url 'author_list' %}">Autoři</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'book_list' 'book_detail' %}" href="{% url 'book_list' %}">Knihy</a>
@@ -25,7 +27,8 @@
                     <a class="nav-link {% is_active 'for_schools' %}" href="{% url 'for_schools' %}">Pro školy</a>
                 </li>
                 <li class="nav-item not-on-small-screens">
-                    <a class="nav-link {% is_active 'advanced_search' %}" href="{% url 'advanced_search' %}">Badatelské nástroje</a>
+                    <a class="nav-link {% is_active 'advanced_search' %}" href="{% url 'advanced_search' %}">Badatelské
+                        nástroje</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'clustering' %}" href="{% url 'clustering' %}">Shluková analýza</a>
@@ -33,7 +36,10 @@
             </ul>
             <!-- Search form -->
             <form class="d-flex search-form ms-auto" action="{% url 'search' %}" method="get">
-                <input class="form-control me-2 search-input" id="search-input" type="search" placeholder="hledat" aria-label="hledat" name="q">
+                <input
+                    class="form-control me-2 search-input{% if request.session.search_query %} something-searched{% endif %}"
+                    id="search-input" type="search" placeholder="hledat" aria-label="hledat" name="q"
+                    value="{{ request.session.search_query|default:'' }}">
                 <button class="btn search-icon" type="submit" onclick="return $('#search-input').val().trim() != '';">
                     <i class="bi bi-search"></i>
                 </button>

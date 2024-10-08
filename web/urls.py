@@ -17,6 +17,7 @@ urlpatterns = [
     path("basen/<int:id>/AI", views.poem_AI, name="poem_AI"),
     # search
     path("hledani", views.search, name="search"),
+    path('cancel-search/', views.cancel_search, name='cancel_search'),
     # clustering
     path("shlukovani", views.clustering, name="clustering"),
     path("shlukovani/<int:id>", views.cluster_detail, name="cluster_detail"),

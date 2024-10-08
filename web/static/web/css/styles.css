@@ -822,6 +822,16 @@ div#search-form input {
     max-width: 650px;
 }
 
+/* to highlight search term in text */
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+}
+
+#text-versions .highlight {
+    background-color: inherit;
+}
+
 /*
  * SEARCH FIELD IN NAV
  */
@@ -857,6 +867,13 @@ div#search-form input {
     width: 150px;
     opacity: 1;
 }
+
+#search-input.something-searched {
+    width: 150px;
+    transition: none;
+    opacity: 1;
+}
+
 
 /*
  * ADVANCED SEARCH

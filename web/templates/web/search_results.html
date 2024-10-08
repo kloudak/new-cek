@@ -89,4 +89,7 @@
     {% endfor %}
     </ol>
 {% endif %}
+{% if books|length == 0 and poems|length == 0 and authors|length == 0 %}
+    <p><i>Nic jsme nenašli :(.</i></p>
+{% endif %}
 {% endblock %}

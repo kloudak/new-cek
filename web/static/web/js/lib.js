@@ -18,6 +18,67 @@ function getIntersection(list1, list2) {
   return list1.filter((item) => set2.has(item));
 }
 
+// Function to highlight searched text
+function highlightText(term, container) {
+  if (container) {
+    let contentHtml = container.innerHTML;
+    let regex = new RegExp("(" + term + ")", "gi");
+    container.innerHTML = contentHtml.replace(
+      regex,
+      '<span class="highlight">$1</span>'
+    );
+  }
+}
+
+// Function to remove all highlights (removes all span.highlight elements)
+function remove_highlight() {
+  // Find all span elements with the class 'highlight'
+  let highlightedSpans = document.querySelectorAll("span.highlight");
+
+  // Loop through each highlighted span and unwrap it (replace with its inner content)
+  highlightedSpans.forEach(function (span) {
+    let parent = span.parentNode;
+    while (span.firstChild) {
+      parent.insertBefore(span.firstChild, span);
+    }
+    parent.removeChild(span);
+  });
+
+  // Send an AJAX request to cancel the search
+  fetch("http://127.0.0.1:8000/cancel-search/", {
+    method: "POST",
+    headers: {
+      "X-CSRFToken": getCSRFToken(),
+      "Content-Type": "application/json",
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        
+      }
+    })
+    .catch((error) => {
+      console.error("Error:", error);
+    });
+}
+
+// Function to get the CSRF token from the cookies (needed for Django POST requests)
+function getCSRFToken() {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== "") {
+    let cookies = document.cookie.split(";");
+    for (let i = 0; i < cookies.length; i++) {
+      let cookie = cookies[i].trim();
+      if (cookie.startsWith("csrftoken=")) {
+        cookieValue = cookie.substring("csrftoken=".length, cookie.length);
+        break;
+      }
+    }
+  }
+  return cookieValue;
+}
+
 dataTableCS = {
   emptyTable: "Tabulka neobsahuje žádná data",
   info: "Zobrazuji _START_ až _END_ z celkem _TOTAL_ záznamů",
@@ -301,4 +362,11 @@ $(document).ready(function () {
       modal.close();
     }
   });
+
+  // Detect when input is cleared
+  document.getElementById('search-input').addEventListener('input', function(event) {
+    if (event.target.value === '') {
+        remove_highlight();
+    }
+});
 });

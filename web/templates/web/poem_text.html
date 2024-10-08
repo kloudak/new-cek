@@ -117,6 +117,12 @@
                 verse.insertBefore(verseNumberSpan, verse.firstChild);
             });
         });
+
+        // Get the search term from the session (from Django context)
+        const searchTerm = "{{ request.session.search_query|default:'' }}";
+        if (searchTerm) {
+            highlightText(searchTerm, document.getElementById('poem-text-only-container'));
+        }
     });
 </script>
 {% endblock %}

@@ -177,6 +177,12 @@
                 }
             });
         });
+
+        // Get the search term from the session (from Django context)
+        const searchTerm = "{{ request.session.search_query|default:'' }}";
+        if (searchTerm) {
+            highlightText(searchTerm, document.getElementById('middle-column'));
+        }
     });
 </script>
 {% endblock %}

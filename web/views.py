@@ -123,7 +123,7 @@ def book_detail(request, id):
         show_text = datetime.datetime.now().year >= book.public_domain_year
     return render(request, "web/book_detail.html", {
         "book" : book,
-        "show_text" : show_text
+        "show_text" : show_text,
     })
 
 # POEMS
@@ -255,6 +255,7 @@ def search(request):
             ).\
             order_by("-rank")[:limit]
     poems = list(poems_title) + list(poems_fulltext)
+    request.session['search_query'] = query
     return render(request, "web/search_results.html", {
         "query": query,
         "authors" : authors,
@@ -262,6 +263,11 @@ def search(request):
         "books" : books,
         "max_results" : max_results,
     })
+
+def cancel_search(request):
+    if 'search_query' in request.session:
+        del request.session['search_query']
+    return JsonResponse({'success': True})
 
 # CLUSTERING
 @cache_page(cache_exp)
@@ -383,6 +389,8 @@ def advanced_search_results(request):
         # log query
         if poem_fulltext:
             search_logger.info(f"[A] {poem_fulltext}")
+        
+        request.session['search_query'] = poem_fulltext
 
         # Further filter poems by poem_fulltext if provided
         if len(book_ids) > min_books_fulltext_first and poem_fulltext:

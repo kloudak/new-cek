@@ -196,7 +196,7 @@
                         <label for="poem-fulltext" class="form-label">Fulltext:</label> 
                     </div>
                     <div class="col-sm-9">
-                        <input class="form-control form-control-sm" type="text" id="poem-fulltext" name="poem-fulltext" value="" placeholder="text básně obsahuje ...">
+                        <input class="form-control form-control-sm" type="text" id="poem-fulltext" name="poem-fulltext" value="{{ request.session.search_query|default:'' }}" placeholder="text básně obsahuje ...">
                     </div>
                     <div class="col-sm-3">
                         <label for="poem-clusters" class="form-label">Patří do shluků:</label> 
