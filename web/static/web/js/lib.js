@@ -44,8 +44,11 @@ function remove_highlight() {
     parent.removeChild(span);
   });
 
+  // Get the current domain (localhost or production)
+  const currentDomain = window.location.origin;
+
   // Send an AJAX request to cancel the search
-  fetch("http://127.0.0.1:8000/cancel-search/", {
+  fetch(`${currentDomain}/cancel-search/`, {
     method: "POST",
     headers: {
       "X-CSRFToken": getCSRFToken(),
