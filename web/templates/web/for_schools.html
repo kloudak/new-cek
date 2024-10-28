@@ -5,9 +5,11 @@
 {% block content %}
 <h1 class="page-title">Pro školy</h1>
 <div class="long-text"><div>
+    <!--
     <p>
         <a href="#" class="video-link"><i class="bi bi-play-btn"></i> kde jste a co tu najdete </a>
     </p>
+    -->
     <ul>
         <li>pro potřeby <b>studujících a vyučujících</b> připravený výběr básnických knih z dějin
             české poezie 19. a počátku 20. století</li>
@@ -16,11 +18,13 @@
         <li>odkazujeme jen na <b>spolehlivé a prověřené zdroje</b> – všechny odkazované příručky
             vznikly prací Ústavu pro českou literaturu AV ČR (<i>Lexikon české literatury</i>,
             slovník <i>Čeští spisovatelé 19. a počátku 20. století, Slovník básnických knih</i>)</li>
+        <!--
         <li><b>videa</b> na stránce vám pomohou při zacházení s nástroji databáze a ukážou škálu
             jejich možného využití</li>
+        -->
     </ul>
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-md-12">
             <h5>Studujete? Bude se vám hodit</h5>
             <ul>
                 {% for book in books %}
@@ -43,6 +47,7 @@
                 {% endfor %}
             </ul>
         </div>
+        <!--
         <div class="col-md-5">
             <h5>Návody a inspirace k využití databáze</h5>
             <p>
@@ -56,6 +61,7 @@
                 </a>
             </p>
         </div>
+        -->
     </div>
 </div></div>
 {% endblock %}
