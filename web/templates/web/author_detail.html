@@ -8,164 +8,211 @@
 <p class="author-dates">
     * {{author.date_of_birth|date:"d. m. Y"|default:'<i>neznámé datum narození</i>'}}
     {% if author.place_of_birth_original_name %}
-        {{author.place_of_birth|default:''}} (pův. {{ author.place_of_birth_original_name }}),
+    {{author.place_of_birth|default:''}} (pův. {{ author.place_of_birth_original_name }}),
     {% else %}
-        {{author.place_of_birth|default:''}},
+    {{author.place_of_birth|default:''}},
     {% endif %}
     † {{author.date_of_death|date:"d. m. Y"|default:'<i>neznámé datum úmrtí</i>'}}
     {% if author.place_of_death_original_name %}
-        {{author.place_of_death|default:''}} (pův. {{ author.place_of_death_original_name }})
+    {{author.place_of_death|default:''}} (pův. {{ author.place_of_death_original_name }})
     {% else %}
-        {{author.place_of_death|default:''}}
+    {{author.place_of_death|default:''}}
     {% endif %}
 </p>
 {% if pseudonyms|length > 0 %}
-<p class="author-dates"><i>další jména</i>: 
+<p class="author-dates"><i>další jména</i>:
     {% for p in pseudonyms %}
-        {{ p }}{% if forloop.counter < pseudonyms|length %},{% endif %}
-    {% endfor%}
-</p>
-{% endif %}
-<div class="row">
-    <div class="col-md-9">
-        <div class="content-table-wrapper">
-            <h2 class="page-subtitle">Knihy autora</h2>
-            <table id="booksTable" class="table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Název</th>
-                        <th>Rok</th>
-                        <th>Jméno autora</th>
-                        <th></th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for book in books %}
-                    <tr>
-                        <td>{{ book.title|safe }}</td>
-                        <td>{{ book.year| default:'<i>neznámý</i>' }}</td>
-                        <td>
-                            {% if book.authorships.all|length > 2%}
-                                {% for as in book.authorships.all %}
+    {{ p }}{% if forloop.counter < pseudonyms|length %},{% endif %} {% endfor%} </p>
+        {% endif %}
+        <div class="row">
+            <div class="col-md-9">
+                <div class="content-table-wrapper">
+                    <h2 class="page-subtitle">Knihy autora</h2>
+                    <table id="booksTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Název</th>
+                                <th>Rok</th>
+                                <th>Jméno autora</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for book in books %}
+                            <tr>
+                                <td>{{ book.title|safe }}</td>
+                                <td>{{ book.year| default:'<i>neznámý</i>' }}</td>
+                                <td>
+                                    {% if book.authorships.all|length > 2%}
+                                    {% for as in book.authorships.all %}
                                     {% if as.person.id == author.id or as.person.pseudonym_for.id == author.id %}
-                                        {{ as.person.surname }}&nbsp;{{ as.person.firstname|replace_spaces|safe }}
+                                    {{ as.person.surname }}&nbsp;{{ as.person.firstname|replace_spaces|safe }}
                                     {% endif %}
-                                {% endfor %}
-                                {% if book.authorships.all|length > 5%}
+                                    {% endfor %}
+                                    {% if book.authorships.all|length > 5%}
                                     <i>(a dalších {{ book.authorships.all|length|add:"-1" }} autorů)</i>
                                     {% elif book.authorships.all|length > 3%}
-                                    <i>(a další {{ book.authorships.all|length|add:"-1"  }} autoři)</i>
+                                    <i>(a další {{ book.authorships.all|length|add:"-1" }} autoři)</i>
                                     {% endif %}
-                            {% else%}
-                                {% for as in book.authorships.all %}
+                                    {% else%}
+                                    {% for as in book.authorships.all %}
                                     {% if forloop.counter > 1 %};{% endif %}
                                     {{ as.person.surname }}&nbsp;{{ as.person.firstname|replace_spaces|safe }}
-                                {% empty %}
+                                    {% empty %}
                                     <i>neznámý autor</i>
-                                {% endfor %}
-                            {% endif %}
-                        </td>
-                        <td><a href="{% url 'book_detail' id=book.id %}">detail</a></td>
-                        <td>
-                            {{ book.title|safe|remove_diacritics }}
-                            {% if book.authorships.all|length > 2%}
-                                {% for as in book.authorships.all %}
-                                    {% if as.person.id == author.id or as.person.pseudonym_for.id == author.id %}
-                                        {{ as.person.surname|remove_diacritics }}
-                                        {{ as.person.firstname|replace_spaces|safe|remove_diacritics }}
+                                    {% endfor %}
                                     {% endif %}
-                                {% endfor %}
-                            {% else%}
-                                {% for as in book.authorships.all %}
+                                </td>
+                                <td><a href="{% url 'book_detail' id=book.id %}">detail</a></td>
+                                <td>
+                                    {{ book.title|safe|remove_diacritics }}
+                                    {% if book.authorships.all|length > 2%}
+                                    {% for as in book.authorships.all %}
+                                    {% if as.person.id == author.id or as.person.pseudonym_for.id == author.id %}
                                     {{ as.person.surname|remove_diacritics }}
                                     {{ as.person.firstname|replace_spaces|safe|remove_diacritics }}
-                                {% empty %}
+                                    {% endif %}
+                                    {% endfor %}
+                                    {% else%}
+                                    {% for as in book.authorships.all %}
+                                    {{ as.person.surname|remove_diacritics }}
+                                    {{ as.person.firstname|replace_spaces|safe|remove_diacritics }}
+                                    {% empty %}
                                     neznamy autor
-                                {% endfor %}
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="content-table-wrapper">
-            {% if author.description %}
-            <p>
-                {{ author.description|safe }}
-            </p>
-            {% endif %}
-            {% if stats %}
-                <h5>Statistiky</h5>
-                <table class="table table-sm">
-                    <tbody>
-                        <tr>
-                            <td class="text-end">Knih: </td>
-                            <td class="text-end" colspan="2">{{ stats.books }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-end">Básní: </td>
-                            <td class="text-end" colspan="2">{{ stats.poems }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-end">Strof: </td>
-                            <td class="text-end" colspan="2">{{ stats.strophes }}</td>
-                        </tr>
-                        <tr>
-                            <td class="text-end">Veršů: </td>
-                            <td class="text-end" colspan="2">{{ stats.verses }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-                {% if stats.metre|length > 0 %}
+                                    {% endfor %}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="content-table-wrapper">
+                    {% if author.side_note or author.pdf_file1 or author.pdf_file2 or author.pdf_file3 or author.pdf_file4 or author.pdf_file5 %}
+                    <h5>Další informace</h5>
+
+                    {% if author.side_note %}
+                    <p>{{ author.side_note }}</p>
+                    {% endif %}
+
+                    <ul class="file-list">
+                        {% if author.pdf_file1 %}
+                        <li>
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <a href="{{ author.pdf_file1.url }}">
+                                {{ author.pdf_file1_title|default:author.pdf_file1.name }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if author.pdf_file2 %}
+                        <li>
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <a href="{{ author.pdf_file2.url }}">
+                                {{ author.pdf_file2_title|default:author.pdf_file2.name }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if author.pdf_file3 %}
+                        <li>
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <a href="{{ author.pdf_file3.url }}">
+                                {{ author.pdf_file3_title|default:author.pdf_file3.name }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if author.pdf_file4 %}
+                        <li>
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <a href="{{ author.pdf_file4.url }}">
+                                {{ author.pdf_file4_title|default:author.pdf_file4.name }}
+                            </a>
+                        </li>
+                        {% endif %}
+
+                        {% if author.pdf_file5 %}
+                        <li>
+                            <i class="bi bi-file-earmark-pdf"></i>
+                            <a href="{{ author.pdf_file5.url }}">
+                                {{ author.pdf_file5_title|default:author.pdf_file5.name }}
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    {% endif %}
+                    {% if stats %}
+                    <h5>Statistiky</h5>
+                    <table class="table table-sm">
+                        <tbody>
+                            <tr>
+                                <td class="text-end">Knih: </td>
+                                <td class="text-end" colspan="2">{{ stats.books }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end">Básní: </td>
+                                <td class="text-end" colspan="2">{{ stats.poems }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end">Strof: </td>
+                                <td class="text-end" colspan="2">{{ stats.strophes }}</td>
+                            </tr>
+                            <tr>
+                                <td class="text-end">Veršů: </td>
+                                <td class="text-end" colspan="2">{{ stats.verses }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% if stats.metre|length > 0 %}
                     <h5>Použitá metra veršů</h5>
                     <table class="table table-sm">
                         <tbody>
                             {% for key, value in stats.metre.items %}
-                                <tr>
-                                    <td class="text-end">{{ metre|get_item:key|safe }}:</td>
-                                    <td>
-                                        {{ value }} 
-                                    </td>
-                                    <td>
-                                        {% widthratio value stats.verses 100 %}&nbsp;%
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="text-end">{{ metre|get_item:key|safe }}:</td>
+                                <td>
+                                    {{ value }}
+                                </td>
+                                <td>
+                                    {% widthratio value stats.verses 100 %}&nbsp;%
+                                </td>
+                            </tr>
                             {% endfor %}
                         </tbody>
                     </table>
-                {% endif %}
-            {% endif %}
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-{% endblock %}
+        {% endblock %}
 
-{% block extra_js %}
-<script>
-$(document).ready( function () {
-    jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-        "czech-asc": function(a, b) {
-            return a.localeCompare(b, 'cs', {sensitivity: 'case'});
-        },
-        "czech-desc": function(a, b) {
-            return b.localeCompare(a, 'cs', {sensitivity: 'case'});
-        }
-    });
+        {% block extra_js %}
+        <script>
+            $(document).ready(function () {
+                jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+                    "czech-asc": function (a, b) {
+                        return a.localeCompare(b, 'cs', { sensitivity: 'case' });
+                    },
+                    "czech-desc": function (a, b) {
+                        return b.localeCompare(a, 'cs', { sensitivity: 'case' });
+                    }
+                });
 
-    $('#booksTable').DataTable({
-        order : [[0, 'asc'], [1, 'asc']],
-        pageLength: 25,
-        columnDefs: [
-            { targets: [-1], visible: false, searchable: true },
-            { type: 'czech', targets: '_all' },
-            { "orderable": false, "targets": -2 },
-        ],
-        language: dataTableCS,
-    });
-} );
-</script>
-{% endblock %}
+                $('#booksTable').DataTable({
+                    order: [[0, 'asc'], [1, 'asc']],
+                    pageLength: 25,
+                    columnDefs: [
+                        { targets: [-1], visible: false, searchable: true },
+                        { type: 'czech', targets: '_all' },
+                        { "orderable": false, "targets": -2 },
+                    ],
+                    language: dataTableCS,
+                });
+            });
+        </script>
+        {% endblock %}

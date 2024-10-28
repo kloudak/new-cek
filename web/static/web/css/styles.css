@@ -318,6 +318,12 @@ div.content-table-wrapper {
     height: 100%;
 }
 
+ul.file-list {
+    list-style: none;
+    margin-left: 0;
+    padding-left: 0;
+}
+
 div.col-wrapper {
     box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.11999999731779099);
     border-radius: 4px;
