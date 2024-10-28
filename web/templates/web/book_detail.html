@@ -5,10 +5,7 @@
 {% block content %}
 <div id="page-title-wrapper">
 <h1 class="page-title">{{ book.title|safe }}{% if book.year %} ({{ book.year }}){% endif %}</h1>
-{% if book.subtitle %}
-<h2 class="page-subtitle">{{ book.subtitle|safe }}</h2>
-{% endif %}
-<h4>
+<h2 class="page-subtitle">{% if book.subtitle %}{{ book.subtitle|safe }},{% endif %}
     {% for a in book.authorships.all %}
         {% if a.person.pseudonym_for %}
             <a href="{% url 'author_detail' id=a.person.pseudonym_for.id %}">{{ a.person }}</a>{% if forloop.counter < book.authorships.all|length  %}, {% endif %}
@@ -18,7 +15,7 @@
     {% empty %}
         <i>autor neznámý</i>
     {% endfor %}
-</h4>
+</h2>
 {% if not show_text %}
     <div class="alert alert-warning" role="alert">
         Tato kniha je chráněna autorskými právy, bude zveřejněna až v roce 
