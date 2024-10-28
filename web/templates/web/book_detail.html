@@ -37,7 +37,62 @@
         {{ book.complete_text|safe }}
     </div>
     <div class="col-md-3 col-wrapper scrollable-content" id="right-column">
+        {% if book.side_note or book.pdf_file1 or book.pdf_file2 or book.pdf_file3 or book.pdf_file4 or book.pdf_file5 %}
+            <h5>Další informace</h5>
+
+            {% if book.side_note %}
+                <p>{{ book.side_note }}</p>
+            {% endif %}
+
+            <ul class="file-list">
+                {% if book.pdf_file1 %}
+                <li>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <a href="{{ book.pdf_file1.url }}">
+                        {{ book.pdf_file1_title|default:book.pdf_file1.name }}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if book.pdf_file2 %}
+                <li>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <a href="{{ book.pdf_file2.url }}">
+                        {{ book.pdf_file2_title|default:book.pdf_file2.name }}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if book.pdf_file3 %}
+                <li>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <a href="{{ book.pdf_file3.url }}">
+                        {{ book.pdf_file3_title|default:book.pdf_file3.name }}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if book.pdf_file4 %}
+                <li>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <a href="{{ book.pdf_file4.url }}">
+                        {{ book.pdf_file4_title|default:book.pdf_file4.name }}
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if book.pdf_file5 %}
+                <li>
+                    <i class="bi bi-file-earmark-pdf"></i>
+                    <a href="{{ book.pdf_file5.url }}">
+                        {{ book.pdf_file5_title|default:book.pdf_file5.name }}
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        {% endif %}
         <div class="book-info">
+            <h5>Bibliografické údaje</h5>
         {% if book.publisher %}
             <p><i>Nakladatel</i>: {{ book.publisher|safe }}</p>
         {% endif %}
