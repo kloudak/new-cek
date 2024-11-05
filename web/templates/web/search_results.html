@@ -39,7 +39,7 @@
     </h2>
     {% if poems|length >= max_results %}
         <div class="alert alert-secondary" role="alert">
-            Výsledků vyhladávání řetězce '<i>{{ query|default:'' }}</i>' je přáliš mnoho.
+            Výsledků vyhledávání řetězce '<i>{{ query|default:'' }}</i>' je přáliš mnoho.
             Pro podrobnější definice hledání použijte <a href="{% url 'advanced_search' %}">pokročilé vyhledávání</a>.
         </div>
     {% endif %}
