@@ -21,12 +21,32 @@ function getIntersection(list1, list2) {
 // Function to highlight searched text
 function highlightText(term, container) {
   if (container) {
-    let contentHtml = container.innerHTML;
     let regex = new RegExp("(" + term + ")", "gi");
-    container.innerHTML = contentHtml.replace(
-      regex,
-      '<span class="highlight">$1</span>'
-    );
+
+    // Function to walk through all text nodes within the container
+    function walkAndHighlight(node) {
+      if (node.nodeType === Node.TEXT_NODE) {
+        let match = regex.exec(node.nodeValue);
+        if (match) {
+          // Split the text node and insert highlight span
+          let highlightSpan = document.createElement("span");
+          highlightSpan.className = "highlight";
+          highlightSpan.textContent = match[0];
+
+          let afterMatch = node.splitText(match.index);
+          afterMatch.nodeValue = afterMatch.nodeValue.substring(match[0].length);
+
+          node.parentNode.insertBefore(highlightSpan, afterMatch);
+        }
+      } else if (node.nodeType === Node.ELEMENT_NODE) {
+        // Recursively call for each child node
+        for (let i = 0; i < node.childNodes.length; i++) {
+          walkAndHighlight(node.childNodes[i]);
+        }
+      }
+    }
+
+    walkAndHighlight(container);
   }
 }
 
