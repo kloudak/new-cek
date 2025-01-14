@@ -40,7 +40,7 @@ class Command(BaseCommand):
             pod = PoemOfTheDay.objects.filter(day=current_date).first()
             html_part = f"""<h4>
                             výročí pro den: 
-                            <a target="blank" href=\"https://new-cek.pythonanywhere.com/admin/web/poemoftheday/{pod.id}/change/\">
+                            <a target="blank" href=\"https://www.ceska-poezie.cz/admin/web/poemoftheday/{pod.id}/change/\">
                                 {current_date}
                             </a>
                             </h4>"""
@@ -56,14 +56,14 @@ class Command(BaseCommand):
                     html_part += f"""
                         <li>
                         {current_date.year - p.date_of_birth.year} let od narození autora
-                        <a target="blank" href="https://new-cek.pythonanywhere.com/autori/{p.id}">{p}</a>.
+                        <a target="blank" href="https://www.ceska-poezie.cz/autori/{p.id}">{p}</a>.
                         </a>
                     """
                 for p in persons_d:
                     html_part += f"""
                         <li>
                         {current_date.year - p.date_of_death.year} let od smrti autora
-                        <a href="https://new-cek.pythonanywhere.com/autori/{p.id}">{p}</a>.
+                        <a href="https://www.ceska-poezie.cz/autori/{p.id}">{p}</a>.
                         </a>
                     """
                 html_part += "\n</ul>"
