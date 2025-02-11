@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_page
 from django.urls import reverse
 from django.template import loader
-from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster, PoemAIText
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
 from .utils import years_difference
 import datetime, json, pickle, os, re, logging
 
@@ -182,18 +182,20 @@ def poem_versology(request, id):
 
 def poem_AI(request, id):
     poem = get_object_or_404(Poem, id=id)
-    # poem.set_html_text()
+    poem.set_html_text()
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
-
+    # Define the file path
+    file_path = "web/data/poem_texts/{poem.id}.html"
     poem_text = None
-    poem_ai_text = PoemAIText.objects.filter(poem=poem).first()
-    
-    if poem_ai_text and poem_ai_text.text:
-        poem_text = f"<div class=\"poem-text-with-entities\">{poem_ai_text.text}</div>"
+
+    # Try to read the file content
+    if os.path.exists(file_path):
+        with open(file_path, "r", encoding="utf-8") as file:
+            poem_text = f"<div class=\"poem-text-with-entities\">{file.read()}</div>"
     else:
-        print(f"PoemAIText for Poem {poem.id} does not exist or is empty")
+        print(f"{file_path} neexistuje")
         
     # info on cluster
     try:
