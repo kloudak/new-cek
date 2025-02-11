@@ -442,3 +442,31 @@ class PoemInCluster(models.Model):
 
     def __str__(self):
         return f"{self.poem.title} in {self.cluster.name}"
+
+# ENTITIES
+class Entity(models.Model):
+    PERSON = 'person'
+    PLACE = 'place'
+    ENTITY_TYPES = [
+        (PERSON, 'Person'),
+        (PLACE, 'Place'),
+    ]
+
+    lemma = models.CharField(max_length=255, blank=True, default='')
+    type = models.CharField(max_length=10, choices=ENTITY_TYPES)
+    wiki_id = models.CharField(max_length=50, blank=True, default='')
+    to_index = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.lemma or f"{self.type} ({self.id})"
+
+
+class EntityOccurrence(models.Model):
+    poem_ai_text = models.ForeignKey(PoemAIText, on_delete=models.CASCADE, related_name="entity_occurrences")
+    entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name="occurrences")
+    word_id = models.CharField(max_length=20)  # Example: "1-12-1-1"
+    length = models.PositiveSmallIntegerField()
+    tokens = models.TextField()
+
+    def __str__(self):
+        return f"{self.entity.lemma or self.entity.type} in PoemAIText {self.poem_ai_text.id} at {self.word_id}"
