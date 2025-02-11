@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 
-from .models import Person, Authorship, Book, Poem, PoemOfTheDay, Clustering, Cluster
+from .models import Person, Authorship, Book, Poem, PoemOfTheDay, Clustering, Cluster, Entity, PoemAIText
 from .forms import PoemOfTheDayAdminForm
 
 class PersonAdmin(admin.ModelAdmin):
@@ -66,9 +66,31 @@ class ClusterAdmin(admin.ModelAdmin):
     search_fields = ('name', 'clustering__name')
     list_filter = ('clustering__name',)
 
+class EntityAdmin(admin.ModelAdmin):
+    list_display = ('lemma', 'type', 'wiki_id', 'to_index')
+    list_filter = ('type', 'to_index')
+    search_fields = ('lemma', 'wiki_id')
+    ordering = ('type', 'lemma')
+    list_editable = ('to_index',)
+    fieldsets = (
+        (None, {'fields': ('lemma', 'type', 'wiki_id', 'to_index')}),
+    )
+
+class PoemAITextAdmin(admin.ModelAdmin):
+    list_display = ('poem_id', 'poem',)  
+    search_fields = ('poem__title',)
+    ordering = ('poem',)
+    list_filter = ('poem__book',)
+    readonly_fields = ('poem',)
+    fieldsets = (
+        (None, {'fields': ('poem', 'text')}),
+    )
+
 admin.site.register(Person, PersonAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Poem, PoemAdmin)
 admin.site.register(PoemOfTheDay, PoemOfTheDayAdmin)
 admin.site.register(Clustering, ClusteringAdmin)
 admin.site.register(Cluster, ClusterAdmin)
+admin.site.register(Entity, EntityAdmin)
+admin.site.register(PoemAIText, PoemAITextAdmin)
