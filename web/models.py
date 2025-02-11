@@ -314,6 +314,15 @@ class Poem(models.Model):
                                 replace("<tab />", "&nbsp;&nbsp;&nbsp;&nbsp;")
 
 
+class PoemAIText(models.Model):
+    poem = models.OneToOneField(
+        Poem, on_delete=models.PROTECT, related_name='ai_text', blank=True, null=True
+    )
+    text = models.TextField(blank=True, default='')
+
+    def __str__(self):
+        return f"Text pro {self.poem if self.poem else '<i>báseň neexistuje</i>'}"
+
 class PoemInCCV(models.Model):
     poem_in_cek = models.ForeignKey(
         Poem, on_delete=models.PROTECT, related_name='poems_in_ccv', blank=True, null=True

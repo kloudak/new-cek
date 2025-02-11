@@ -5,8 +5,8 @@
 {% block poem_content %}
     <div id="poem-versology-container">
         <div class="poem-text poem-AI">
-            {% if poem.versology_text  %}
-                {{ poem.versology_text|safe }}
+            {% if poem_text  %}
+                {{ poem_text|safe }}
             {% else %}
                 <i>tato báseň nebyla zpracována nástroji umělé inteligence</i>
             {% endif %}
@@ -47,6 +47,23 @@
 {% block extra_js %}
 <script>
     $(document).ready( function () {
+        function markGeoEntityOccurences() {
+            const geoEntites = document.querySelectorAll('div.poem-text w[d-geo="1"]');
+            geoEntites.forEach((geoTag) => {
+                geoTag.classList.add("entity-present");
+                geoTag.classList.add("geo-entity-present");
+                geoTag.id = null;
+                const wikiId = geoTag.getAttribute("d-geo-wiki");
+                if(wikiId && wikiId.trim() !== "") {
+                const wikiLink = document.createElement("a");
+                wikiLink.href = `https://www.wikidata.org/wiki/${wikiId}`;
+                wikiLink.target = "_blank";
+                wikiLink.innerText = `${wikiId}`;
+                geoTag.appendChild(wikiLink);
+                }
+            });
+        }
+
         if(window.innerWidth > 768) {
             var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
                             +  getElementHeightWithMargin(document.querySelector('#page-title-wrapper'))
@@ -60,12 +77,12 @@
         // verse numbers
         const container = document.querySelector('#poem-versology-container');
         // Get all strofa elements within the container
-        const strofas = container.querySelectorAll('strofa');
+        const strofas = container.querySelectorAll('strophe');
 
         // Iterate over each strofa
         strofas.forEach(function(strofa, strofaIndex) {
             // Get all verse (<v>) elements within the current strofa
-            const verses = strofa.querySelectorAll('v');
+            const verses = strofa.querySelectorAll('verse');
 
             // Iterate over each verse
             verses.forEach(function(verse, verseIndex) {
@@ -79,6 +96,8 @@
                 verse.insertBefore(verseNumberSpan, verse.firstChild);
             });
         });
+
+        markGeoEntityOccurences();
     });
 </script>
 {% endblock %}

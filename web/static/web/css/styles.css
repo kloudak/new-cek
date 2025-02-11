@@ -700,7 +700,7 @@ moto-autor {
     font-style: italic;
 }
 
-v {
+v, verse {
     display: block;
     padding-left: 10px;
 }
@@ -711,7 +711,7 @@ v {
 }
 
 
-strofa {
+strofa, strophe {
     display: block;
     margin-bottom: 20px;
 }
@@ -1136,4 +1136,37 @@ dialog::backdrop {
     font-size: 90%;
     cursor: pointer;
     display: block;
+}
+
+/*
+ * entities
+ */
+
+ w.entity-present {
+	display: inline-block;
+	position: relative;
+}
+
+.geo-entity-present {
+	display: inline-block;
+	position: relative;
+	background-color: rgb(157, 198, 152);
+	cursor: default;
+}
+
+.geo-entity-present a {
+	display: none;
+	background-color: rgba(157, 198, 152, 0.9);
+	height: 1.5rem;
+	position: absolute;
+	font-size: 80%;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+	top: -1.5rem;
+	left: -1px;
+	border-radius: 5px 5px 5px 0px;
+}
+
+.geo-entity-present:hover a {
+	display: inline-block;	
 }

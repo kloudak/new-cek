@@ -7,7 +7,7 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.cache import cache_page
 from django.urls import reverse
 from django.template import loader
-from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster
+from .models import Person, Book, Authorship, Poem, PoemOfTheDay, PoemInCluster, PoemInCCV, Clustering, Cluster, PoemAIText
 from .utils import years_difference
 import datetime, json, pickle, os, re, logging
 
@@ -182,10 +182,20 @@ def poem_versology(request, id):
 
 def poem_AI(request, id):
     poem = get_object_or_404(Poem, id=id)
-    poem.set_html_text()
+    # poem.set_html_text()
     show_text = False
     if poem.book.public_domain_year is not None:
         show_text = datetime.datetime.now().year >= poem.book.public_domain_year
+
+    poem_text = None
+    poem_ai_text = PoemAIText.objects.filter(poem=poem).first()
+    
+    if poem_ai_text and poem_ai_text.text:
+        poem_text = f"<div class=\"poem-text-with-entities\">{poem_ai_text.text}</div>"
+    else:
+        print(f"PoemAIText for Poem {poem.id} does not exist or is empty")
+        
+    # info on cluster
     try:
         poem_in_cluster = PoemInCluster.objects.get(poem_id=poem.id)
         
@@ -208,16 +218,17 @@ def poem_AI(request, id):
     try:
         similar_poems_json = json.loads(poem.similar_poems)
         similar_poems = [Poem.objects.get(id=int(sp['poem_id'])) for sp in similar_poems_json]
-        print(similar_poems)
     except:
         similar_poems = None
     return render(request, "web/poem_AI.html", {
         "poem" : poem,
-        "show_text" : show_text,
+        "poem_text" : poem_text,
         "poem_in_cluster" : poem_in_cluster,
         "poem_count" : poem_count,
-        "similar_poems" : similar_poems
+        "similar_poems" : similar_poems,
+        "show_text" : show_text,
     })
+    
 # SEARCH
 def search(request):
     query = None
