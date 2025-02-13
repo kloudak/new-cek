@@ -452,10 +452,16 @@ class Entity(models.Model):
         (PLACE, 'Place'),
     ]
 
-    lemma = models.CharField(max_length=255, blank=True, default='')
+    lemma = models.CharField(max_length=255, blank=True, null=True, default='')
+    lemma_en = models.CharField(max_length=255, blank=True, null=True, default='')
     type = models.CharField(max_length=10, choices=ENTITY_TYPES)
-    wiki_id = models.CharField(max_length=50, blank=True, default='')
+    wiki_id = models.CharField(max_length=50, blank=True, null=True, default='')
+    wiki_link = models.URLField(max_length=500, blank=True, null=True, default='')
+    wiki_link_en = models.URLField(max_length=500, blank=True, null=True, default='')
+    summary = models.TextField(blank=True, null=True, default='')
+    summary_en = models.TextField(blank=True, null=True, default='')
     to_index = models.BooleanField(default=True)
+
 
     def __str__(self):
         return self.lemma or f"{self.type} ({self.id})"
@@ -464,7 +470,7 @@ class Entity(models.Model):
 class EntityOccurrence(models.Model):
     poem_ai_text = models.ForeignKey(PoemAIText, on_delete=models.CASCADE, related_name="entity_occurrences")
     entity = models.ForeignKey(Entity, on_delete=models.CASCADE, related_name="occurrences")
-    word_id = models.CharField(max_length=20)  # Example: "1-12-1-1"
+    word_id = models.CharField(max_length=20)
     length = models.PositiveSmallIntegerField()
     tokens = models.TextField()
 

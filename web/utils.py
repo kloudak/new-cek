@@ -1,5 +1,5 @@
 from datetime import datetime
-import re, os
+import re, os, requests
 
 def years_difference(date1, date2):
     """
@@ -137,3 +137,106 @@ def xsampa_to_czech_word(xsampa, orig):
         else:
             xsampa = xsampa.replace(xsampa_symbol, mapping[xsampa_symbol])
     return xsampa
+
+
+def get_wikipedia_info(wiki_id):
+    """
+    Fetch Wikipedia titles, links, and summaries in Czech and English for a given Wikidata ID.
+
+    This function performs two main tasks:
+    1. Queries the Wikidata API to obtain the Wikipedia page titles (if available) for the given entity.
+    2. Fetches the first paragraph summary and the Wikipedia page URL from the Wikipedia REST API.
+
+    Parameters:
+    ----------
+    wiki_id : str
+        The Wikidata entity ID (e.g., "Q11991502").
+
+    Returns:
+    -------
+    dict
+        A dictionary containing Wikipedia information in both Czech ('cs') and English ('en').
+        Each language entry includes:
+        - 'title': The Wikipedia page title in the respective language (if available).
+        - 'url': The full URL to the Wikipedia page (if available).
+        - 'summary': The first paragraph of the Wikipedia page (if available).
+
+        Example output:
+        {
+            "wiki_id": "Q11991502",
+            "cs": {
+                "title": "Nějaké město",
+                "url": "https://cs.wikipedia.org/wiki/N%C4%9Bjak%C3%A9_m%C4%9Bsto",
+                "summary": "Nějaké město je významné místo v České republice..."
+            },
+            "en": {
+                "title": "Some City",
+                "url": "https://en.wikipedia.org/wiki/Some_City",
+                "summary": "Some City is a historic place located in..."
+            }
+        }
+
+    Notes:
+    ------
+    - If a Wikipedia page is not available for a given language, the corresponding fields ('title', 'url', 'summary') will be `None`.
+    - The Wikipedia REST API is used to retrieve summaries, which may vary in length.
+    - No caching is implemented, so repeated calls may slow performance.
+
+    """
+    wikidata_url = f"https://www.wikidata.org/w/api.php?action=wbgetentities&ids={wiki_id}&props=sitelinks&format=json"
+
+    # Fetch Wikipedia page titles from Wikidata
+    response = requests.get(wikidata_url)
+    data = response.json()
+
+    cs_title = data["entities"].get(wiki_id, {}).get("sitelinks", {}).get("cswiki", {}).get("title")
+    en_title = data["entities"].get(wiki_id, {}).get("sitelinks", {}).get("enwiki", {}).get("title")
+
+    result = {
+        "wiki_id": wiki_id,
+        "cs": {"title": cs_title, "url": None, "summary": None},
+        "en": {"title": en_title, "url": None, "summary": None}
+    }
+
+    def get_wikipedia_summary(lang, title):
+        """
+        Retrieve the first paragraph summary and URL of a Wikipedia page.
+
+        Parameters:
+        ----------
+        lang : str
+            The language code for Wikipedia (e.g., 'cs' for Czech, 'en' for English).
+        title : str
+            The Wikipedia page title.
+
+        Returns:
+        -------
+        dict or None
+            Dictionary with 'url' and 'summary' keys if successful, otherwise None.
+        """
+        if not title:
+            return None
+        summary_url = f"https://{lang}.wikipedia.org/api/rest_v1/page/summary/{title}"
+        res = requests.get(summary_url)
+        if res.status_code == 200:
+            summary_data = res.json()
+            return {
+                "url": summary_data.get("content_urls", {}).get("desktop", {}).get("page"),
+                "summary": summary_data.get("extract")
+            }
+        return None
+
+    # Get Wikipedia summaries for Czech and English
+    if cs_title:
+        cs_data = get_wikipedia_summary("cs", cs_title)
+        if cs_data:
+            result["cs"]["url"] = cs_data["url"]
+            result["cs"]["summary"] = cs_data["summary"]
+
+    if en_title:
+        en_data = get_wikipedia_summary("en", en_title)
+        if en_data:
+            result["en"]["url"] = en_data["url"]
+            result["en"]["summary"] = en_data["summary"]
+
+    return result

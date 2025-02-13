@@ -72,9 +72,9 @@ class EntityAdmin(admin.ModelAdmin):
     search_fields = ('lemma', 'wiki_id')
     ordering = ('type', 'lemma')
     list_editable = ('to_index',)
-    fieldsets = (
-        (None, {'fields': ('lemma', 'type', 'wiki_id', 'to_index')}),
-    )
+    #fieldsets = (
+    #    (None, {'fields': ('lemma', 'type', 'wiki_id', 'to_index')}),
+    #)
 
 class PoemAITextAdmin(admin.ModelAdmin):
     list_display = ('poem_id', 'poem',)  
