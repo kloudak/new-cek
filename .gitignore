@@ -188,6 +188,7 @@ web/data/embeddings/clusters/*.csv
 web/data/embeddings/embeddings*.csv
 web/data/embeddings/books.csv
 web/static/web/js/search-data.js
+web/data/entities.json
 
 # video files
 __video_files
