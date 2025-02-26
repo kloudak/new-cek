@@ -17,6 +17,9 @@ urlpatterns = [
     path("basen/<int:id>/v-knize", views.poem_in_book, name="poem_in_book"),
     path("basen/<int:id>/versologie", views.poem_versology, name="poem_versology"),
     path("basen/<int:id>/AI", views.poem_AI, name="poem_AI"),
+    # rejstrik
+    path("rejstrik/mist", views.geo_rejstrik, name="geo_rejstrik"),
+    path("rejstrik/<int:id>", views.entity_detail, name="entity_detail"),
     # search
     path("hledani", views.search, name="search"),
     path('cancel-search/', views.cancel_search, name='cancel_search'),

@@ -15,6 +15,26 @@
 {% endblock%}
 
 {% block poem_right_content%}
+    <h4>Místa a osoby</h4>
+    <p>
+        V textu básně jsme se pokusili najít slova, která označují konkrétní místa (města, státy atp.) a osoby.
+        Zdrojem dat pro místa je projekt <a href="https://versologie.cz/poetree/">PoeTree</a> a pro osoby ruční anotace básní pracovníků UČL.
+    <p>
+        {% if places|length > 0 %}
+            <span class="versology-buttons"><i class="bi bi-eye toggle-geo-entities"></i></span> 
+            v básni jsme nalezli {{ places|length }} 
+            {% if places|length == 1 %}
+                místo,
+            {% elif places|length < 5 %}
+                místa,
+            {% else %}
+                míst,
+            {% endif %}
+            v básni jsou označena <span class="geo-entity-present">takto</span><br>
+        {% else %}
+            <i class="bi bi-eye disabled"></i></span> V této básni jsme nenašli žádná místa<br>
+        {% endif %}
+    </p>
     {% if poem_in_cluster %}
         <h4>Patří do <a href="{% url 'cluster_detail' id=poem_in_cluster.cluster.id %}">shluku</a></h4>
         <p>
@@ -34,7 +54,7 @@
         <ol id="similar-poems">
         {% for spoem in similar_poems %}
             <li>
-                <a href="{% url 'poem_AI' id=spoem.id %}">{{ spoem.title|striptags|safe }}</a>
+                <a href="{% url 'poem_AI' id=spoem.id %}">{{ spoem|striptags|safe }}</a>
                 {% if spoem.author %}
                     ({{spoem.author }})
                 {% endif %}
@@ -47,22 +67,93 @@
 {% block extra_js %}
 <script>
     $(document).ready( function () {
-        function markGeoEntityOccurences() {
-            const geoEntites = document.querySelectorAll('div.poem-text w[d-geo="1"]');
-            geoEntites.forEach((geoTag) => {
+
+        var placesData = {
+            {% for place in places %}
+            "{{ place.wiki_id }}": {
+                "lemma": "{{ place.lemma|escapejs }}",
+                "summary": "{{ place.summary|escapejs }}",
+                "wiki_link": "{{ place.wiki_link|escapejs }}"
+            }{% if not forloop.last %},{% endif %}
+            {% endfor %}
+        };
+
+        function markGeoEntityOccurrences() {
+            const geoEntities = document.querySelectorAll('div.poem-text w[d-geo="1"]');
+
+            geoEntities.forEach((geoTag) => {
                 geoTag.classList.add("entity-present");
                 geoTag.classList.add("geo-entity-present");
                 geoTag.id = null;
+                
                 const wikiId = geoTag.getAttribute("d-geo-wiki");
-                if(wikiId && wikiId.trim() !== "") {
-                const wikiLink = document.createElement("a");
-                wikiLink.href = `https://www.wikidata.org/wiki/${wikiId}`;
-                wikiLink.target = "_blank";
-                wikiLink.innerText = `${wikiId}`;
-                geoTag.appendChild(wikiLink);
+
+                if (wikiId && wikiId.trim() !== "" && placesData[wikiId]) {
+                    const placeData = placesData[wikiId];
+
+                    // Create tooltip container
+                    const tooltip = document.createElement("div");
+                    tooltip.classList.add("geo-tooltip");
+
+                    // Lemma
+                    const lemmaDiv = document.createElement("div");
+                    lemmaDiv.classList.add("geo-tooltip-lemma");
+                    lemmaDiv.innerText = placeData.lemma;
+                    tooltip.appendChild(lemmaDiv);
+
+                    // Summary
+                    const summaryDiv = document.createElement("div");
+                    summaryDiv.classList.add("geo-tooltip-summary");
+                    summaryDiv.innerText = placeData.summary || "No description available.";
+                    tooltip.appendChild(summaryDiv);
+
+                    // Links container
+                    const linksContainer = document.createElement("div");
+                    linksContainer.classList.add("geo-tooltip-links");
+
+                    // Wikipedia link (if available)
+                    if (placeData.wiki_link) {
+                        const wikiLink = document.createElement("a");
+                        wikiLink.href = placeData.wiki_link;
+                        wikiLink.target = "_blank";
+                        wikiLink.innerText = "Wikipedia";
+                        linksContainer.appendChild(wikiLink);
+                    } else {
+                        // If no Wikipedia link, add Wikidata link
+                        const wikiDataLink = document.createElement("a");
+                        wikiDataLink.href = `https://www.wikidata.org/wiki/${wikiId}`;
+                        wikiDataLink.target = "_blank";
+                        wikiDataLink.innerText = "Wikidata";
+                        linksContainer.appendChild(wikiDataLink);
+                    }
+
+                    // Placeholder for entity detail link
+                    const detailLink = document.createElement("a");
+                    detailLink.href = "#"; // Placeholder, replace later
+                    detailLink.innerText = "Detail";
+                    linksContainer.appendChild(detailLink);
+
+                    tooltip.appendChild(linksContainer);
+
+                    // Append tooltip to geoTag
+                    geoTag.appendChild(tooltip);
                 }
             });
         }
+
+        markGeoEntityOccurrences();
+
+        const toggleButton = document.querySelector(".toggle-geo-entities");
+        const geoEntities = document.querySelectorAll("w.geo-entity-present");
+
+        if (toggleButton && geoEntities.length > 0) {
+            toggleButton.addEventListener("click", function() {
+                $(this).toggleClass('bi-eye bi-eye-slash');
+                console.log("Toggling geo entities " + geoEntities.length);
+                geoEntities.forEach(entity => entity.classList.toggle("geo-entity-hidden"));
+            });
+        }
+
 
         if(window.innerWidth > 768) {
             var headingHeight = getElementHeightWithMargin(document.querySelector('nav')) 
@@ -97,7 +188,6 @@
             });
         });
 
-        markGeoEntityOccurences();
     });
 </script>
 {% endblock %}

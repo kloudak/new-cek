@@ -1148,25 +1148,201 @@ dialog::backdrop {
 }
 
 .geo-entity-present {
-	display: inline-block;
-	position: relative;
-	background-color: rgb(157, 198, 152);
-	cursor: default;
+    display: inline-block;
+    position: relative;
+    background-color: rgba(157, 198, 152, 0.8);
+    cursor: default;
 }
 
-.geo-entity-present a {
-	display: none;
-	background-color: rgba(157, 198, 152, 0.9);
-	height: 1.5rem;
-	position: absolute;
-	font-size: 80%;
-	padding-left: 0.5rem;
-	padding-right: 0.5rem;
-	top: -1.5rem;
-	left: -1px;
-	border-radius: 5px 5px 5px 0px;
+.geo-tooltip {
+    display: none;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 8px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    font-size: 85%;
+    width: 250px;
+    left: 100%;
+    top: 0;
+    white-space: normal;
+    z-index: 1000;
+    border-radius: 5px;
 }
 
-.geo-entity-present:hover a {
-	display: inline-block;	
+.geo-tooltip-lemma {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.geo-tooltip-summary {
+    font-size: 90%;
+    margin-bottom: 5px;
+}
+
+.geo-tooltip-links {
+    text-align: right;
+}
+
+.geo-tooltip-links a {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+.geo-tooltip-links a:hover {
+    text-decoration: underline;
+}
+
+/* Show tooltip on hover */
+.geo-entity-present:hover .geo-tooltip {
+    display: block;
+}
+
+.bi-eye.disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+.geo-entity-hidden {
+    background-color: transparent;
+}
+
+.geo-entity-hidden:hover .geo-tooltip {
+    display: none;
+}
+
+/* Letter Navigation */
+.letter-navigation {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.letter-navigation a {
+    margin: 0 5px;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.letter-navigation a:hover {
+    text-decoration: underline;
+}
+
+/* Entity List */
+.rejstrik-wrapper {
+    max-height: 70vh;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+}
+
+.entity-letter-header {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.entity-letter-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Fixed-width columns */
+    gap: 10px; /* Space between entities */
+    padding: 10px 0;
+}
+
+.entity {
+    text-align: left;
+    padding: 5px;
+    white-space: nowrap; /* Prevents text wrapping */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Ensures text does not overflow */
+}
+
+.entity a {
+    text-decoration: none;
+}
+
+.entity a:hover {
+    text-decoration: underline;
+}
+
+.source {
+    font-size: 90%;
+    display: block;
+    text-align: right;
+    border-bottom: 1px solid #ddd;
+}
+
+.rejstrik-author-poem-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rejstrik-author-poem-list > li {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+.rejstrik-author-poem-list ul {
+    list-style: none;
+    padding-left: 20px;
+    margin-top: 5px;
+    border-left: 3px solid #ddd;
+}
+
+.rejstrik-author-poem-list ul li {
+    font-size: 1rem;
+    padding: 5px 0;
+}
+
+.rejstrik-author-poem-list ul li span.year {
+    color: #777;
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.entity-detail-container {
+    background-color: #f8f9fa;
+    padding: 1rem;
+}
+
+.entity-summary-container {
+    display: flex;
+    gap: 1rem;
+}
+
+.entity-summary {
+    flex: 2;
+}
+
+.entity-tokens {
+    flex: 1;
+}
+
+.entity-summary-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.entity-summary-container ul li {
+    background-color: #eaeaea;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .entity-summary-container {
+        flex-direction: column;
+    }
+
+    .entity-summary, .mentions {
+        flex: none;
+        width: 100%;
+    }
 }

@@ -1,0 +1,81 @@
+{% extends 'web/base.html' %}
+
+{% block title %}{{ entity.lemma }}{% endblock %}
+
+{% block content %}
+<h1 class="page-title">
+    {% if entity.type == "place" %}
+        <i class="bi bi-geo-alt"></i>
+    {% else %}
+        <i class="bi bi-person"></i>
+    {% endif %}
+    {{ entity.lemma }}
+</h1>
+
+<!-- Entity Summary -->
+<div class="entity-detail-container">    
+    <div class="entity-summary-container">
+        <p class="entity-summary">
+            {% if summary %}
+                {{ summary }}
+            {% else %}
+                Pro tuto entitu není k dispozici žádný popis.
+            {% endif %}
+            <span class="source">
+                více na
+                <a href="{{ wiki_link }}" target="_blank">
+                    {% if entity.wiki_link %}
+                        Wikipedia.org
+                    {% else %}
+                        Wikidata.org
+                    {% endif %}
+                </a>
+            </span>
+        </p>
+        <div class="entity-tokens">
+            <strong>V básních zmíněno jako:</strong>
+            <ul>
+                {% for token in tokens %}
+                    <li>{{ token }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <!-- List of Poems Grouped by Author -->
+    <h2>Básně obsahující tuto entitu</h2>
+    {% if poems_by_author %}
+        <ul class="rejstrik-author-poem-list">
+            {% for author_key, ad in poems_by_author.items %}
+                <li>
+                    <a href="{% url 'author_detail' ad.author.id %}">{{ ad.author.firstname }} {{ ad.author.surname }}</a>
+                    <ul>
+                        {% for poem_id, pd in ad.poems.items %}
+                            <li>
+                                <a href="{% url 'poem_AI' poem_id %}">
+                                    {% if pd.poem.title %}
+                                        {{ pd.poem.title|striptags|safe}}
+                                    {% else %}
+                                        <i>báseň bez názvu</i>
+                                    {% endif %}
+                                </a>
+                                ({{ pd.poem.book.year }})
+                                <!-- - zmíněno jako: {{ pd.tokens|join:", " }} -->
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Tato entita nebyla nalezena v žádné básni.</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    $(document).ready(function () {
+        
+    });
+</script>
+{% endblock %}
