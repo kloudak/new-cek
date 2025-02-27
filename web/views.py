@@ -836,6 +836,10 @@ def editorial_note(request):
     return render(request, "web/editorial_note.html")
 
 
+def data_models_literature(request):
+    return render(request, "web/data_models_literature.html")
+
+
 def robots(request):
     template = loader.get_template("web/robots.txt")
     return HttpResponse(template.render(), content_type="text/plain")

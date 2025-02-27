@@ -36,6 +36,7 @@ urlpatterns = [
     path("osobni-udaje", views.personal_data, name="personal_data"),
     path("editori", views.editors, name="editors"),
     path("edicni-poznamka", views.editorial_note, name="editorial_note"),
+    path("data-modely-literatura", views.data_models_literature, name="data_models_literature"),
     path('robots.txt', views.robots, name='robots'),
 ]
 
