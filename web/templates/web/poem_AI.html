@@ -71,6 +71,7 @@
         var placesData = {
             {% for place in places %}
             "{{ place.wiki_id }}": {
+                "id" : "{{ place.id|escapejs }}",
                 "lemma": "{{ place.lemma|escapejs }}",
                 "summary": "{{ place.summary|escapejs }}",
                 "wiki_link": "{{ place.wiki_link|escapejs }}"
@@ -129,7 +130,7 @@
 
                     // Placeholder for entity detail link
                     const detailLink = document.createElement("a");
-                    detailLink.href = "#"; // Placeholder, replace later
+                    detailLink.href = "/rejstrik/" + placeData.id; // Placeholder, replace later
                     detailLink.innerText = "Detail";
                     linksContainer.appendChild(detailLink);
 
