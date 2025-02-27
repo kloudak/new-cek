@@ -35,7 +35,7 @@ class Command(BaseCommand):
             
             for row in reader:
                 poem_id = row['cek_id']
-                print(poem_id)
+                self.stdout.write(self.style.NOTICE(f'Processing poem {poem_id} with entities_done={row["entities_done"]}'))
                 if not poem_id or poem_id == 'NULL':
                     continue    
                 lemma = row['lemma']
@@ -52,6 +52,7 @@ class Command(BaseCommand):
                         # Set entities_done if applicable
                         if row['entities_done'] == '1':
                             poem.entities_done = True
+                            poem.save()
                         else:
                             poem.entities_done = False
                             poem.save()
