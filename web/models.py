@@ -288,6 +288,7 @@ class Poem(models.Model):
     versology_text = models.TextField(blank=True, null=True)
     versology_stats = models.TextField(blank=True, null=True)
     similar_poems = models.TextField(blank=True, null=True)
+    entities_done = models.BooleanField(default=False)
 
 
     def __str__(self):
