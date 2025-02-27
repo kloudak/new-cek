@@ -255,12 +255,19 @@ def poem_AI(request, id):
     poem_text = None
     poem_ai_text = PoemAIText.objects.filter(poem=poem).first()
 
-    places = []
+    entities = []
+    n_places = 0
+    n_persons = 0
     if poem_ai_text and poem_ai_text.text:
         poem_text = f'<div class="poem-text-with-entities">{poem_ai_text.text}</div>'
-        places = Entity.objects.filter(
-            occurrences__poem_ai_text=poem_ai_text, type=Entity.PLACE
+        entities = Entity.objects.filter(
+            occurrences__poem_ai_text=poem_ai_text, to_index=True
         ).distinct()
+        for e in entities:
+            if e.type == Entity.PLACE:
+                n_places += 1
+            elif e.type == Entity.PERSON:
+                n_persons += 1
     else:
         print(f"PoemAIText for Poem {poem.id} does not exist or is empty")
 
@@ -305,12 +312,15 @@ def poem_AI(request, id):
             "poem_count": poem_count,
             "similar_poems": similar_poems,
             "show_text": show_text,
-            "places": places,
+            "entities": entities,
+            "n_places": n_places,
+            "n_persons": n_persons,
         },
     )
 
 
 # REJSTRIK
+@csrf_protect
 def geo_rejstrik(request):
     # Fetch all entities of type "Place" and precompute the number of poems they appear in
     places = (
@@ -355,6 +365,52 @@ def geo_rejstrik(request):
 
     context = {
         "type": "place",
+        "entity_dict": entity_dict,
+        "sorted_letters": sorted_letters,
+    }
+    return render(request, "web/rejstrik.html", context)
+
+def person_rejstrik(request):
+    persons = (
+        Entity.objects.filter(type=Entity.PERSON).filter(to_index=True)
+        .exclude(lemma__isnull=True)
+        .exclude(lemma="")
+        .annotate(poem_count=models.Count("occurrences__poem_ai_text", distinct=True))
+        .order_by("lemma")
+    )
+
+    entity_dict = defaultdict(list)
+
+    czech_alphabet = list("ABCČDĎEFGHIJKLŁMNŇOPQRŘSŠTŤUVWXYZŽ")
+
+    for person in persons:
+        first_letter = person.lemma[0].upper()
+        if not first_letter in czech_alphabet:
+            first_letter = unicodedata.normalize("NFD", person.lemma)[0].upper()
+        entity_dict[first_letter].append(person)
+
+    # Sort dictionary keys (Czech alphabet order)
+    sorted_letters = [letter for letter in czech_alphabet if letter in entity_dict]
+
+    entity_dict = dict(
+        sorted(
+            entity_dict.items(),
+            key=lambda x: (
+                czech_alphabet.index(
+                    x[0]
+                )  # If the letter is in Czech alphabet, use its index
+                if x[0] in czech_alphabet
+                else (
+                    czech_alphabet.index(unicodedata.normalize("NFD", x[0])[0].upper())
+                    if unicodedata.normalize("NFD", x[0])[0].upper() in czech_alphabet
+                    else len(czech_alphabet)  # If still unknown, put it at the end
+                )
+            ),
+        )
+    )
+
+    context = {
+        "type": "person",
         "entity_dict": entity_dict,
         "sorted_letters": sorted_letters,
     }

@@ -17,9 +17,6 @@ urlpatterns = [
     path("basen/<int:id>/v-knize", views.poem_in_book, name="poem_in_book"),
     path("basen/<int:id>/versologie", views.poem_versology, name="poem_versology"),
     path("basen/<int:id>/AI", views.poem_AI, name="poem_AI"),
-    # rejstrik
-    path("rejstrik/mist", views.geo_rejstrik, name="geo_rejstrik"),
-    path("rejstrik/<int:id>", views.entity_detail, name="entity_detail"),
     # search
     path("hledani", views.search, name="search"),
     path('cancel-search/', views.cancel_search, name='cancel_search'),
@@ -29,6 +26,10 @@ urlpatterns = [
     # advanced_search
     path("badatelske-nastroje", views.advanced_search, name="advanced_search"),
     path("badatelske-nastroje-vysledky", views.advanced_search_results, name="advanced_search_results"),
+    # rejstrik
+    path("rejstrik/mist", views.geo_rejstrik, name="geo_rejstrik"),
+    path("rejstrik/osob", views.person_rejstrik, name="person_rejstrik"),
+    path("rejstrik/<int:id>", views.entity_detail, name="entity_detail"),
     # static pages
     path("o-projektu", views.about_project, name="about_project"),
     path("pro-skoly", views.for_schools, name="for_schools"),

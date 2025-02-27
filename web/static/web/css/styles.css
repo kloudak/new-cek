@@ -1154,7 +1154,14 @@ dialog::backdrop {
     cursor: default;
 }
 
-.geo-tooltip {
+.person-entity-present {
+    display: inline-block;
+    position: relative;
+    background-color: rgba(206, 169, 169, 0.6);
+    cursor: default;
+}
+
+.entity-tooltip {
     display: none;
     position: absolute;
     background-color: rgba(255, 255, 255, 0.95);
@@ -1170,31 +1177,32 @@ dialog::backdrop {
     border-radius: 5px;
 }
 
-.geo-tooltip-lemma {
+.entity-tooltip-lemma {
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.geo-tooltip-summary {
+.entity-tooltip-summary {
     font-size: 90%;
     margin-bottom: 5px;
 }
 
-.geo-tooltip-links {
+.entity-tooltip-links {
     text-align: right;
 }
 
-.geo-tooltip-links a {
+.entity-tooltip-links a {
     margin-left: 10px;
     text-decoration: none;
 }
 
-.geo-tooltip-links a:hover {
+.entity-tooltip-links a:hover {
     text-decoration: underline;
 }
 
 /* Show tooltip on hover */
-.geo-entity-present:hover .geo-tooltip {
+.geo-entity-present:hover .entity-tooltip,
+.person-entity-present:hover .entity-tooltip {
     display: block;
 }
 
@@ -1203,11 +1211,13 @@ dialog::backdrop {
     cursor: default;
 }
 
-.geo-entity-hidden {
+.geo-entity-hidden,
+.person-entity-hidden {
     background-color: transparent;
 }
 
-.geo-entity-hidden:hover .geo-tooltip {
+.geo-entity-hidden:hover .entity-tooltip,
+.person-entity-hidden:hover .entity-tooltip {
     display: none;
 }
 
@@ -1336,6 +1346,31 @@ dialog::backdrop {
     color: #333;
 }
 
+.with-help-text {
+    position: relative;
+    display: block;
+    cursor: pointer;
+}
+
+.with-help-text .help-text {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: normal;
+    z-index: 10;
+}
+
+.with-help-text:hover .help-text {
+    display: block;
+}
+
 @media (max-width: 768px) {
     .entity-summary-container {
         flex-direction: column;
@@ -1346,3 +1381,4 @@ dialog::backdrop {
         width: 100%;
     }
 }
+

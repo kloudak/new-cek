@@ -15,17 +15,19 @@
 {% endblock%}
 
 {% block poem_right_content%}
-    <h4>Místa a osoby</h4>
-    <p>
-        V textu básně jsme se pokusili najít slova, která označují konkrétní místa (města, státy atp.) a osoby.
-        Zdrojem dat pro místa je projekt <a href="https://versologie.cz/poetree/">PoeTree</a> a pro osoby ruční anotace básní pracovníků UČL.
-    <p>
-        {% if places|length > 0 %}
+    <h4 class="with-help-text">
+        Místa a osoby <i class="bi bi-question-circle"></i>
+        <span class="help-text">
+            V textu básně jsme se pokusili najít slova, která označují konkrétní místa (města, státy atp.) a osoby. 
+            Výstupy jsou založeny na datech z projektu <a href="https://versologie.cz/poetree/" target="_blank">PoeTree</a> (místa) a ruční anotace básní pracovníků UČL (osoby)."
+        </span>
+    </h4>
+        {% if n_places > 0 %}
             <span class="versology-buttons"><i class="bi bi-eye toggle-geo-entities"></i></span> 
-            v básni jsme nalezli {{ places|length }} 
-            {% if places|length == 1 %}
+            v básni jsme nalezli {{ n_places }} 
+            {% if n_places == 1 %}
                 místo,
-            {% elif places|length < 5 %}
+            {% elif n_places < 5 %}
                 místa,
             {% else %}
                 míst,
@@ -33,6 +35,20 @@
             v básni jsou označena <span class="geo-entity-present">takto</span><br>
         {% else %}
             <i class="bi bi-eye disabled"></i></span> V této básni jsme nenašli žádná místa<br>
+        {% endif %}
+        {% if n_persons > 0 %}
+            <span class="versology-buttons"><i class="bi bi-eye toggle-person-entities"></i></span> 
+            v básni jsme nalezli {{ n_persons }} 
+            {% if n_persons == 1 %}
+                osobu,
+            {% elif n_persons < 5 %}
+                osoby,
+            {% else %}
+                osob,
+            {% endif %}
+            v básni jsou označena <span class="person-entity-present">takto</span><br>
+        {% else %}
+            <i class="bi bi-eye disabled"></i></span> V této básni jsme nenašli žádné osoby<br>
         {% endif %}
     </p>
     {% if poem_in_cluster %}
@@ -68,49 +84,55 @@
 <script>
     $(document).ready( function () {
 
-        var placesData = {
-            {% for place in places %}
-            "{{ place.wiki_id }}": {
-                "id" : "{{ place.id|escapejs }}",
-                "lemma": "{{ place.lemma|escapejs }}",
-                "summary": "{{ place.summary|escapejs }}",
-                "wiki_link": "{{ place.wiki_link|escapejs }}"
+        var entitiesData = {
+            {% for entity in entities %}
+            "{{ entity.wiki_id }}": {
+                "id" : "{{ entity.id|escapejs }}",
+                "lemma": "{{ entity.lemma|escapejs }}",
+                "summary": "{{ entity.summary|escapejs }}",
+                "wiki_link": "{{ entity.wiki_link|escapejs }}"
             }{% if not forloop.last %},{% endif %}
             {% endfor %}
         };
 
-        function markGeoEntityOccurrences() {
-            const geoEntities = document.querySelectorAll('div.poem-text w[d-geo="1"]');
+        function markEntityOccurrences(type) {
+            if(type == 'geo') {
+                var entities = document.querySelectorAll('div.poem-text w[d-geo="1"]');
+            } else if (type == 'person') {
+                var entities = document.querySelectorAll('div.poem-text w[d-person="1"]');
+            } else {
+                return;
+            }
 
-            geoEntities.forEach((geoTag) => {
+            entities.forEach((geoTag) => {
                 geoTag.classList.add("entity-present");
-                geoTag.classList.add("geo-entity-present");
+                geoTag.classList.add(`${type}-entity-present`);
                 geoTag.id = null;
                 
-                const wikiId = geoTag.getAttribute("d-geo-wiki");
+                const wikiId = geoTag.getAttribute(`d-${type}-wiki`); 
 
-                if (wikiId && wikiId.trim() !== "" && placesData[wikiId]) {
-                    const placeData = placesData[wikiId];
+                if (wikiId && wikiId.trim() !== "" && entitiesData[wikiId]) {
+                    const placeData = entitiesData[wikiId];
 
                     // Create tooltip container
                     const tooltip = document.createElement("div");
-                    tooltip.classList.add("geo-tooltip");
+                    tooltip.classList.add("entity-tooltip");
 
                     // Lemma
                     const lemmaDiv = document.createElement("div");
-                    lemmaDiv.classList.add("geo-tooltip-lemma");
+                    lemmaDiv.classList.add("entity-tooltip-lemma");
                     lemmaDiv.innerText = placeData.lemma;
                     tooltip.appendChild(lemmaDiv);
 
                     // Summary
                     const summaryDiv = document.createElement("div");
-                    summaryDiv.classList.add("geo-tooltip-summary");
+                    summaryDiv.classList.add("entity-tooltip-summary");
                     summaryDiv.innerText = placeData.summary || "No description available.";
                     tooltip.appendChild(summaryDiv);
 
                     // Links container
                     const linksContainer = document.createElement("div");
-                    linksContainer.classList.add("geo-tooltip-links");
+                    linksContainer.classList.add("entity-tooltip-links");
 
                     // Wikipedia link (if available)
                     if (placeData.wiki_link) {
@@ -142,16 +164,26 @@
             });
         }
 
-        markGeoEntityOccurrences();
+        markEntityOccurrences("geo");
+        markEntityOccurrences("person");
 
-        const toggleButton = document.querySelector(".toggle-geo-entities");
+        const toggleGeoButton = document.querySelector(".toggle-geo-entities");
         const geoEntities = document.querySelectorAll("w.geo-entity-present");
 
-        if (toggleButton && geoEntities.length > 0) {
-            toggleButton.addEventListener("click", function() {
+        if (toggleGeoButton && geoEntities.length > 0) {
+            toggleGeoButton.addEventListener("click", function() {
                 $(this).toggleClass('bi-eye bi-eye-slash');
-                console.log("Toggling geo entities " + geoEntities.length);
                 geoEntities.forEach(entity => entity.classList.toggle("geo-entity-hidden"));
+            });
+        }
+
+        const togglePersonButton = document.querySelector(".toggle-person-entities");
+        const personEntities = document.querySelectorAll("w.person-entity-present");
+
+        if (togglePersonButton && personEntities.length > 0) {
+            togglePersonButton.addEventListener("click", function() {
+                $(this).toggleClass('bi-eye bi-eye-slash');
+                personEntities.forEach(entity => entity.classList.toggle("person-entity-hidden"));
             });
         }
 
@@ -188,7 +220,6 @@
                 verse.insertBefore(verseNumberSpan, verse.firstChild);
             });
         });
-
     });
 </script>
 {% endblock %}
