@@ -26,10 +26,14 @@
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'for_schools' %}" href="{% url 'for_schools' %}">Pro školy</a>
                 </li>
-                <li class="nav-item not-on-small-screens">
-                    <a class="nav-link {% is_active 'advanced_search' %}" href="{% url 'advanced_search' %}">Badatelské
-                        nástroje</a>
-                </li>
+                <li class="nav-item dropdown not-on-small-screens">
+                    <a class="nav-link" href="#">Badatelské nástroje</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item {% is_active 'advanced_search' %}" href="{% url 'advanced_search' %}">Pokročilé vyhledávání</a></li>
+                        <li><a class="dropdown-item {% is_active 'clustering' %}" href="{% url 'clustering' %}">Shluková analýza</a></li>
+                        <li><a class="dropdown-item {% is_active 'data_models_literature' %}" href="{% url 'data_models_literature' %}">Data, modely, literatura</a></li>
+                    </ul>
+                </li>                  
                 <li class="nav-item">
                     <a class="nav-link {% is_active 'clustering' %}" href="{% url 'clustering' %}">Shluková analýza</a>
                 </li>

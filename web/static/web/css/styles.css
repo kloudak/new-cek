@@ -244,6 +244,52 @@ a.camera-icon-in-header {
     }
 }
 
+/* Style the dropdown container */
+.nav-item.dropdown {
+    position: relative;
+}
+
+/* Style the dropdown menu (initially hidden) */
+.nav-item .dropdown-menu {
+    display: none;
+    position: absolute;
+    left: 20%;
+    top: 100%;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    list-style: none;
+    padding: 0;
+    min-width: 200px;
+    z-index: 1000;
+}
+
+/* Style dropdown links */
+.nav-item .dropdown-menu li {
+    padding: 0;
+}
+
+.nav-item .dropdown-menu .dropdown-item {
+    display: block;
+    padding: 10px 15px;
+    text-decoration: none;
+    color: black;
+    white-space: nowrap;
+}
+
+.nav-item .dropdown-menu .dropdown-item:hover {
+    background: #f0f0f0;
+}
+
+/* Show dropdown on hover */
+.nav-item.dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.dropdown-item.active, .dropdown-item:active {
+    background: #f0f0f0;
+}
+
 @media (min-width:992px) {
     li.nav-item a {
         position: relative;
