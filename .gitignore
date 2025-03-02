@@ -192,6 +192,8 @@ web/data/embeddings/books.csv
 web/static/web/js/search-data.js
 web/data/entities.json
 web/data/entities_pers.csv
+web/data/entities_done.csv
+web/data/NER-dataset/*.*
 
 # video files
 __video_files
