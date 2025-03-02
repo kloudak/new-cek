@@ -1,12 +1,79 @@
 {% extends 'web/base.html' %}
 
+{% load static %}
+
 {% block title %}Data, modely, literatura{% endblock %}
 
 {% block content %}
 <h1 class="page-title">Data, modely, literatura</h1>
 <div class="long-text">
     <div>
-        TBA
+        <h2>Zdroje dat</h2>
+        <ul>
+            <li>
+                Hlavním zdrojem dat je <b>1 700 souborů</b> ve formátu XML, z nichž každý reprezentuje jednu básnickou sbírku.
+                Tyto soubory vnikly v pro <a href="https://cek.ucl.cas.cz/cek/">starou verzi</a> <b>České elektronické knihovny</b> na přelomu tisíciletí.
+            </li>
+            <li>
+                Velká část těchto sbírek byla zpracována <a href="https://versologie.cz">Versologickým týmem</a> do formátu JSON a doplněna o další informace, jakými jsou lemmata a morfologické značky k jednotlivým slovům vč. informací o metru atp. Tato data jsou dostupná jako <a href="https://github.com/versotym/corpusCzechVerse">Korpus českého verše</a>.
+            </li>
+            <li>
+                Nově je <i>Korpus českého verše</i> součástí vícejazyčného projektu <a href="https://versologie.cz/poetree/">PoeTree</a>, kde byla data doplněna jeětě o vyznačené místní entity (názvy měst, států atp.).
+            </li>
+        </ul>
+        <h2>Vzniklý dataset jmenných entit</h2>
+        <ul>
+            <li>
+                <b>ČEK-NER-dataset</b> je dataset jmenných entit (osoby v textu), který vznikl nad datay z <i>Korpusu českého verše</i> a je doplněn i místními entitami získaných z projektu PoeTree.
+            </li>
+            <li>
+                Dataset je stále doplňován, nyní obsahuje <b>5 675</b> básní, které byly ručně anotovány pracovníky UČL.
+            </li>
+            <li>
+                Každá báseň je obsažena ve dvou souborech:
+                <ul>
+                    <li>
+                        <b>txt</b> soubor obsahuje báseň  ve formátu <b>CoNLL 2003</b>.
+                    </li>
+                    <li>
+                        <b>csv</b> soubor vedle vyznačených entit obsahuje u vybraných z nich ještě <a href="https://www.wikidata.org">wikidata.org</a> ID.
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="{% static 'web/files/CEK-NER-dataset.zip' %}" download>
+                    Stáhnout dataset (CEK-NER-dataset.zip, 15,9 MB)
+                </a> (informace o formátu a anotaci jsou v README.txt souboru)
+            </li>
+            </ul>
+            <h2>Související člásnky</h2>
+            <ul>
+                <li>
+                    Kořínková, L.; Nováková, T.; Kosák, M.; Flaišman, J.; Klouda, K.<br>
+                    <b>Motivické a tematické klastry v básnických textech české poezie 19. a počátku 20. století</b><br>
+                    Česká literatura. 2024, 72(2), 204-217. ISSN 0009-0468.<br>
+                    <a href="https://doi.org/10.51305/cl.2024.02.04">doi.org/10.51305/cl.2024.02.04</a>
+                </li>
+                <li>
+                    Klesnilová, K.; Klouda, K.; Friedjungová, M.; Plecháč, P.<br>
+                    <b>Automatic Poetic Metre Detection for Czech Verse</b><br>
+                    Studia Metrica et Poetica. 2024, 11(1), 44-61. ISSN 2346-6901.<br>
+                    <a href="https://doi.org/10.12697/smp.2024.11.1.02">doi.org/10.12697/smp.2024.11.1.02</a>
+
+                </li>
+            </ul>
+            <h2>Modely AI</h2>
+            <ul>
+                <li>
+                    Pro shlukovou analýzu jsme využili model <a href="https://top2vec.readthedocs.io/en/latest/Top2Vec.html">Top2Vec</a>.
+                </li>
+                <li>
+                    V rámci práce na tomto projektu jsme vytvořili model pro detekci metra v českém verši. Je založen na archytektuře BiLSTM-CRF, více zde: <a href="https://github.com/magdafriedjungova/metre_detection">https://github.com/magdafriedjungova/metre_detection</a>.
+                </li>
+                <li>
+                    Pro práci s detekcí jmenných entit jsme používali model <a href="https://ufal.mff.cuni.cz/nametag/1/users-manual#run_ner_output_formats">NameTag</a> (Straka, Straková, ÚFAL MFF UK).
+                </li>
+            </ul>
     </div>
 </div>
 {% endblock %}
