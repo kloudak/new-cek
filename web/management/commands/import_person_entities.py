@@ -16,9 +16,12 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('csv_file', type=str, help='Relative path to the CSV file')
+        parser.add_argument('update_csv_file', nargs='?', type=str, help='Optional CSV file with cek_id values to update entities_done')
 
     def handle(self, *args, **options):
         csv_file_path = options['csv_file']
+        update_csv_file_path = options.get('update_csv_file')
+        
         if not os.path.exists(csv_file_path):
             self.stderr.write(self.style.ERROR(f'File not found: {csv_file_path}'))
             return
@@ -85,4 +88,16 @@ class Command(BaseCommand):
                     tokens=row['tokens']
                 )
         
+        if update_csv_file_path and os.path.exists(update_csv_file_path):
+            self.stdout.write(self.style.SUCCESS(f'Updating entities_done from {update_csv_file_path}'))
+            with open(update_csv_file_path, newline='', encoding='utf-8') as update_csvfile:
+                reader = csv.DictReader(update_csvfile)
+                for row in reader:
+                    poem_id = row['cek_id']
+                    poem = Poem.objects.filter(id=poem_id).first()
+                    if poem:
+                        poem.entities_done = True
+                        poem.save()
+            self.stdout.write(self.style.SUCCESS('Successfully updated entities_done for specified poems'))
+
         self.stdout.write(self.style.SUCCESS('Successfully imported person entities'))
