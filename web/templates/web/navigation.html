@@ -30,6 +30,8 @@
                     <a class="nav-link" href="#">Badatelské nástroje</a>
                     <ul class="dropdown-menu">
                         <li><a class="dropdown-item {% is_active 'advanced_search' %}" href="{% url 'advanced_search' %}">Pokročilé vyhledávání</a></li>
+                        <li><a class="dropdown-item {% is_active 'geo_rejstrik' %}" href="{% url 'geo_rejstrik' %}">Rejstřík míst</a></li>
+                        <li><a class="dropdown-item {% is_active 'person_rejstrik' %}" href="{% url 'person_rejstrik' %}">Rejstřík osob</a></li>
                         <!-- <li><a class="dropdown-item {% is_active 'clustering' %}" href="{% url 'clustering' %}">Shluková analýza</a></li> -->
                         <li><a class="dropdown-item {% is_active 'data_models_literature' %}" href="{% url 'data_models_literature' %}">Data, modely, literatura</a></li>
                     </ul>
