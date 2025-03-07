@@ -28,6 +28,7 @@ GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser;
 ### 3. Configure the Application
 
 Copy the sample configuration and update it with your credentials:
+
 ```sh
 cp cek/config.sample.py cek/config.py
 ```
@@ -37,7 +38,7 @@ Edit `cek/config.py` and update:
  * Database credentials (from Step 2)
  * `SECRET_KEY` (generate one using: `python -c 'import secrets; print(secrets.token_hex(32))'`)
 
-### 4. Appply migrations
+### 4. Apply migrations
 
 ```sh
 python manage.py migrate
