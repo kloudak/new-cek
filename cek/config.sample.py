@@ -5,7 +5,7 @@ ALLOWED_HOSTS = []
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cek',                 
+        'NAME': '_DB_name_', 
         'USER': '_DB_username_',
         'PASSWORD': '_DB_password_',
         'HOST': 'localhost',
