@@ -17,6 +17,7 @@
 
 
 <div class="row homepage-poem-of-today-container">
+    {% if pod %}
     <div class="col-md-6 left-col">
         <h4 id="poem-of-today__header">BÁSEŇ DNE {{ pod.day|date:"j. n." }}
             <a href="#" class="open-modal-video camera-icon-in-header" data-video="video-basen-dne"><i
@@ -44,6 +45,21 @@
                     src="{% static 'web/images/arrow.svg' %}" alt="link arrow"></span></a>
         </div>
     </div>
+    {% else %}
+    <div class="col-md-6 left-col">
+        <h4 id="poem-of-today__header">BÁSEŇ DNE
+            <a href="#" class="open-modal-video camera-icon-in-header" data-video="video-basen-dne"><i
+                    class="bi bi-camera-reels-fill"></i></a>
+        </h4>
+        <p id="poem-of-today-description">
+            
+            
+        </p>
+        <div id="poem-of-today-text">
+            Báseň pro dnešní den nebyla vybrána.
+        </div>
+    </div>
+    {% endif %}
     <div class="col-md-6 right-col-flex-container">
         <div class="mb-3">
             <h4>{{ n_authors }} autorů</h4>

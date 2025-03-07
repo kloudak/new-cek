@@ -47,13 +47,12 @@ metre = {
 def index(request):
     n_books = Book.objects.count()
     n_authors = Person.objects.count()
-    poem_of_today = PoemOfTheDay.objects.filter(day=timezone.localtime().date()).first()
     try:
+        poem_of_today = PoemOfTheDay.objects.filter(day=timezone.localtime().date()).first()
         poem_of_today.set_poem_text()
     except:
-        poem_of_today.html_text = (
-            '<div class="poem-text"><i>text básně se nepodařilo najít</i></div>'
-        )
+        poem_of_today = None
+        
     return render(
         request,
         "web/index.html",
