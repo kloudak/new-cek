@@ -119,6 +119,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+log_directory = os.path.join(BASE_DIR, 'web/__mylog__')
+os.makedirs(log_directory, exist_ok=True)
+
 # LOGGING
 LOGGING = {
     'version': 1,
